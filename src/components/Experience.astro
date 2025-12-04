@@ -1,0 +1,38 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="experience" class="py-16 px-4 max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold mb-8 text-center">{t("experience.title")}</h2>
+
+    <div class="relative border-l border-gray-200 ml-4 space-y-10">
+        <div class="mb-10 ml-6">
+            <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white">
+                <svg class="w-2.5 h-2.5 text-blue-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                    ></path>
+                </svg>
+            </span>
+            <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900">SaaS Founder & Builder</h3>
+            <time class="block mb-2 text-sm font-normal leading-none text-gray-400">2023 - Present</time>
+            <p class="mb-4 text-base font-normal text-gray-500">Building FrameFlow, PowerFlow, and other AI-driven tools.</p>
+        </div>
+
+        <div class="mb-10 ml-6">
+            <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white">
+                <svg class="w-2.5 h-2.5 text-blue-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                    ></path>
+                </svg>
+            </span>
+            <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900">Work at ByteDance</h3>
+            <time class="block mb-2 text-sm font-normal leading-none text-gray-400">2021 - Present</time>
+            <p class="mb-4 text-base font-normal text-gray-500">Applied AI + workflow design + enterprise-grade architecture.</p>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+:root {
+    color-scheme: light;
+    --page-bg: #f7f9fc;
+    --panel-bg: #ffffff;
+    --panel-subtle: #f2f4f8;
+    --border-subtle: #e5e7eb;
+    --muted-text: #475569;
+}
+
+html {
+    background-color: var(--page-bg);
+}
+
+html.dark {
+    color-scheme: dark;
+    --page-bg: #0f1115;
+    --panel-bg: #161b23;
+    --panel-subtle: #1b202b;
+    --border-subtle: #242b35;
+    --muted-text: #c4ccda;
+}
+
+body {
+    background-color: var(--page-bg);
+    transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}

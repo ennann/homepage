@@ -1,0 +1,19 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const stack = ["React", "Astro", "Next.js", "TypeScript", "Node.js", "NestJS", "Python", "FastAPI", "SwiftUI", "Docker", "Cloudflare", "PostgreSQL"];
+---
+
+<section id="stack" class="py-16 px-4 max-w-4xl mx-auto text-center">
+    <h2 class="text-3xl font-bold mb-6">{t("stack.title")}</h2>
+    <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
+        {t("stack.desc")}
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-3">
+        {stack.map((tech) => <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium text-sm hover:bg-gray-200 transition">{tech}</span>)}
+    </div>
+</section>

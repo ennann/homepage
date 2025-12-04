@@ -1,0 +1,11 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="py-10 px-4 text-center text-[var(--muted-text)] text-sm">
+    <p>{t("footer.copyright")}{t("footer.builtWith")}</p>
+</footer>

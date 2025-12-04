@@ -1,0 +1,26 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const areas = ["Human–AI Collaboration in Education", "AI Literacy for Teachers and Students", "Informal Learning with Generative AI", "Affordance-Based Learning Technology Analysis"];
+---
+
+<section id="research" class="py-16 px-4 max-w-4xl mx-auto bg-gray-50 rounded-3xl my-10">
+    <h2 class="text-3xl font-bold mb-6 text-center">{t("research.title")}</h2>
+    <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto text-center">
+        {t("research.desc")}
+    </p>
+
+    <div class="grid gap-4 md:grid-cols-2 max-w-2xl mx-auto">
+        {
+            areas.map((area) => (
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-sm">
+                    <span class="text-blue-500 mr-3">●</span>
+                    <span class="font-medium text-gray-800">{area}</span>
+                </div>
+            ))
+        }
+    </div>
+</section>

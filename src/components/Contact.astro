@@ -1,0 +1,22 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+interface Props {
+    showTitle?: boolean;
+}
+
+const { showTitle = true } = Astro.props;
+---
+
+<section id="contact" class="py-20 px-4 text-center bg-white">
+    {showTitle && <h2 class="text-4xl font-bold mb-8">{t("contact.title")}</h2>}
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="mailto:hi@yizhe.me" class="px-8 py-4 bg-black text-white rounded-full font-bold hover:bg-gray-800 transition shadow-lg"> Email Me </a>
+        <a href="https://github.com/ennann" target="_blank" class="px-8 py-4 bg-white text-gray-900 border border-gray-200 rounded-full font-bold hover:bg-gray-50 transition shadow-sm"> GitHub </a>
+        <a href="https://x.com/qingnianxiaozhe" target="_blank" class="px-8 py-4 bg-white text-gray-900 border border-gray-200 rounded-full font-bold hover:bg-gray-50 transition shadow-sm"> X (Twitter) </a>
+    </div>
+</section>

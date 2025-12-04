@@ -1,0 +1,25 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Tools from "../../components/Tools.astro";
+import TechStack from "../../components/TechStack.astro";
+import Experience from "../../components/Experience.astro";
+import Contact from "../../components/Contact.astro";
+import Footer from "../../components/Footer.astro";
+import { useTranslations } from "../../i18n/utils";
+
+const t = useTranslations("en");
+---
+
+<Layout title="Resume - Ethan Zhao">
+    <main class="pt-20">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4">Resume</h1>
+            <p class="text-gray-600">My professional experience and skills.</p>
+        </div>
+        <Experience />
+        <TechStack />
+        <Tools />
+        <Contact showTitle={false} />
+    </main>
+    <Footer />
+</Layout>

@@ -1,0 +1,63 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const projects = [
+    {
+        title: "FrameFlow",
+        desc: "AI-Driven Video Creation Platform",
+        sub: "Designed and built with a product mindset and AI-first workflow.",
+        color: "bg-blue-50",
+        link: "https://framingflow.com",
+    },
+    {
+        title: "PowerFlow (macOS/iOS)",
+        desc: "Device Intelligence Toolkit",
+        sub: "Driven by SwiftUI craftsmanship + applied AI insights.",
+        color: "bg-indigo-50",
+        // link: "https://powerflow.app",
+    },
+    {
+        title: "App Store Price",
+        desc: "Globally Compare App Price",
+        sub: "Real-time tracking of global App Store pricing to help developers optimize strategies and users find value.",
+        color: "bg-purple-50",
+        link: "https://appstoreprice.org",
+    },
+    {
+        title: "Feishu aPaaS Solutions",
+        desc: "Retail Process Digitalization",
+        sub: "Applied AI + workflow design + enterprise-grade architecture.",
+        color: "bg-orange-50",
+    },
+];
+---
+
+<section id="projects" class="py-16 px-4 max-w-4xl mx-auto">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold mb-2">{t("projects.title")}</h2>
+        <p class="text-gray-500">{t("projects.subtitle")}</p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2">
+        {
+            projects.map((project) =>
+                project.link ? (
+                    <a href={project.link} target="_blank" class={`block p-6 rounded-xl border border-gray-100 hover:shadow-md transition ${project.color} hover:-translate-y-1`}>
+                        <h3 class="text-xl font-bold mb-2">{project.title}</h3>
+                        <p class="font-semibold text-gray-800 mb-2">{project.desc}</p>
+                        <p class="text-sm text-gray-600 italic">{project.sub}</p>
+                    </a>
+                ) : (
+                    <div class={`p-6 rounded-xl border border-gray-100 hover:shadow-md transition ${project.color}`}>
+                        <h3 class="text-xl font-bold mb-2">{project.title}</h3>
+                        <p class="font-semibold text-gray-800 mb-2">{project.desc}</p>
+                        <p class="text-sm text-gray-600 italic">{project.sub}</p>
+                    </div>
+                ),
+            )
+        }
+    </div>
+</section>

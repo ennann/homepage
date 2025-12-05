@@ -1,0 +1,46 @@
+---
+import Section from "../Section.astro";
+import cv from "../data/cv.json";
+
+const basics = cv.basics ?? {};
+const { summary = "", highlights = [] } = basics;
+---
+
+<Section title="关于我">
+    <p>{summary}</p>
+    {Array.isArray(highlights) && highlights.length > 0 && (
+        <ul>
+            {highlights.map((item) => (
+                <li>{item}</li>
+            ))}
+        </ul>
+    )}
+</Section>
+
+<style>
+    ul {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 8px;
+    }
+
+    li {
+        position: relative;
+        padding-left: 14px;
+        color: #444;
+        line-height: 1.5;
+    }
+
+    li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.6em;
+        width: 6px;
+        height: 6px;
+        border-radius: 9999px;
+        background: #111;
+    }
+</style>

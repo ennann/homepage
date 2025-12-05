@@ -1,1 +1,5 @@
 / /en/ 301
+/resume          https://resume.yizhe.me/ 301
+/resume/*        https://resume.yizhe.me/:splat 301
+/en/resume*      https://resume.yizhe.me/:splat 301
+/zh/resume*      https://resume.yizhe.me/:splat 301

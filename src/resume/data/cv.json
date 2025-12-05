@@ -1,0 +1,210 @@
+{
+  "meta": {
+    "theme": "professional"
+  },
+  "basics": {
+    "name": "赵宜哲",
+    "label": "飞书AI应用解决方案工程师｜低代码解决方案工程师",
+    "email": "hi@yizhe.me",
+    "phone": "17624863927",
+    "url": "https://yizhe.me",
+    "summary": "AI × SaaS 解决方案工程师，深耕零售/消费数字化，主导飞书「一店一群」等标杆方案，擅长平台化沉淀与生态赋能，项目累计影响 ARR 过千万；能在不确定中拆解问题、设计方案、推进落地，跨产研/GTM/生态高效协同。",
+    "highlights": [
+      "性格踏实直爽，注重执行力与责任感，习惯在不确定中主动发现并推进问题闭环。",
+      "深耕零售/消费行业数字化，主导飞书「一店一群」门店经营方案落地，具备前线需求洞察与标准方案建设经验。",
+      "主导多个平台级项目 0→1 交付，覆盖方案设计、技术架构、项目管理与商业化推广，支撑门店协作平台从千店到万店演进。",
+      "重视平台化沉淀与生态共建，上架模板/组件/连接器 20+，提升交付效率与客户成功率。",
+      "关注 AI × SaaS 场景，基于飞书 Aily 构建智能助手，能结合业务需求设计 Prompt 与功能边界。",
+      "沟通表达优秀，可跨产研、GTM、生态团队高效协同；英语可作为工作语言，雅思均分 6.5。"
+    ],
+    "location": {
+      "city": "杭州",
+      "region": "浙江",
+      "countryCode": "CN"
+    },
+    "profiles": []
+  },
+  "work": [
+    {
+      "name": "字节跳动 · 飞书",
+      "position": "低代码平台解决方案工程师",
+      "url": "https://www.feishu.cn/",
+      "startDate": "2021-07-01",
+      "summary": "围绕飞书 aPaaS 主导行业方案、架构设计与商业化落地，沉淀模板/组件/连接器 20+，赋能伙伴交付与认证，服务奈雪、蜜雪冰城、绫致、美宜佳等客户。",
+      "highlights": [
+        "牵头「一店一群」2.0/3.0 架构，支撑门店规模 2000→6000+，打造高性能任务中心与消息推送。",
+        "方案累计影响 ARR 350 万+，成为奈雪、名创、武商等客户采购飞书的关键；绫致项目获客户效率评比一等奖。",
+        "主导资产管理助手方案，落地欢乐互娱、美图等 10+ 客户，ARR 124 万，跨部门整合 RFID/资产团队形成商业闭环。",
+        "深度参与 PLM 协同方案，驻场禾赛/导远等客户，闭环平台需求与问题 100+；基于 Aily 构建 PLM 智能助手。",
+        "沉淀模板/组件/连接器 20+，反馈平台能力/Bug 90+；录制培训、组织 60+ 伙伴认证，提升生态交付效率。",
+        "主导性能压测与缓存优化，完成万店规模应用挑战预研，支撑平台从千店到万店的容量演进。"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "门店经营管理方案（飞书「一店一群」）",
+      "description": "标杆案例，ARR 350 万+，零售门店经营管理与任务闭环平台。",
+      "isActive": true,
+      "highlights": [
+        "负责 2.0/3.0 架构，覆盖消息/任务闭环、角色权限与门店多角色协同。",
+        "打造高性能任务中心与消息推送，沉淀应用模板、交付规范与培训资料。",
+        "奈雪、名创、武商等客户的采购决策关键方案，绫致项目获效率评比一等奖。",
+        "从 2000 家到 6000+ 门店的性能与稳定性演进，持续支撑扩张。"
+      ],
+      "url": "https://bytedance.larkoffice.com/wiki/CiURw3i1GizB4akmCuXcF5Udnic"
+    },
+    {
+      "name": "资产管理助手方案",
+      "description": "落地 10+ 客户，ARR 124 万，聚焦 RFID 场景差异化。",
+      "highlights": [
+        "从方案设计到上线全程主导，服务欢乐互娱、美图等客户。",
+        "识别 RFID 场景痛点，推动与资产团队跨部门协同，形成商业闭环。",
+        "沉淀模板与交付手册，支持伙伴复制与规模化。"
+      ],
+      "url": "https://bytedance.larkoffice.com/wiki/JSzHwIFJiislLhkgdEdcrkLonwh"
+    },
+    {
+      "name": "飞书 PLM 协同方案与智能助手",
+      "description": "服务制造业客户，基于 Aily 构建 PLM 智能助手。",
+      "highlights": [
+        "主导 CMF 协同中心方案设计与推广，服务蔚来、倍思等客户。",
+        "驻场禾赛、导远等项目，识别并闭环平台需求/问题 100+，确保按期上线。",
+        "基于 Aily 构建 PLM 智能助手，结合文档/视频推广方案，提升品牌影响力。",
+        "在制造业场景中完善权限、版本、变更流程的协同体验。"
+      ],
+      "url": "https://bytedance.larkoffice.com/docx/NLVhd7tQ2oM8NGxYsQccPIQxnf9"
+    }
+  ],
+  "skills": [
+    {
+      "name": "飞书 aPaaS",
+      "level": "Expert",
+      "keywords": []
+    },
+    {
+      "name": "零售/消费行业方案",
+      "level": "Expert",
+      "keywords": []
+    },
+    {
+      "name": "平台化与模板沉淀",
+      "level": "Advanced",
+      "keywords": []
+    },
+    {
+      "name": "行业方案与交付",
+      "level": "Expert",
+      "keywords": []
+    },
+    {
+      "name": "AI 大模型与 Prompt",
+      "level": "Advanced",
+      "keywords": []
+    },
+    {
+      "name": "Node.js",
+      "level": "Advanced",
+      "keywords": [
+        "nodejs"
+      ]
+    },
+    {
+      "name": "系统架构与性能压测",
+      "level": "Advanced",
+      "keywords": []
+    },
+    {
+      "name": "React",
+      "level": "Advanced",
+      "keywords": [
+        "react"
+      ]
+    },
+    {
+      "name": "Python",
+      "level": "Intermediate",
+      "keywords": [
+        "python"
+      ]
+    },
+    {
+      "name": "RFID/资产管理场景",
+      "level": "Intermediate",
+      "keywords": []
+    },
+    {
+      "name": "伙伴赋能与生态",
+      "level": "Advanced",
+      "keywords": []
+    },
+    {
+      "name": "制造业 PLM 协同",
+      "level": "Advanced",
+      "keywords": []
+    },
+    {
+      "name": "英语（IELTS 6.5）",
+      "level": "Professional",
+      "keywords": []
+    }
+  ],
+  "education": [
+    {
+      "institution": "浙江工业大学",
+      "area": "",
+      "studyType": "硕士",
+      "startDate": "2018-09-01",
+      "endDate": "2021-07-01"
+    },
+    {
+      "institution": "沈阳理工大学",
+      "area": "",
+      "studyType": "本科",
+      "startDate": "2014-09-01",
+      "endDate": "2018-07-01"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Spot Bonus ×4",
+      "date": "2024-09-01",
+      "awarder": "字节跳动 Lark 部门",
+      "summary": "围绕成就客户与担当可信赖获得多次即时嘉奖。"
+    },
+    {
+      "title": "Lark 部门 2023 Q3 团队奖",
+      "date": "2023-09-01",
+      "awarder": "字节跳动",
+      "summary": "成就客户（连锁零售项目）。"
+    },
+    {
+      "title": "Lark 部门 2024 Q2 个人奖",
+      "date": "2024-06-01",
+      "awarder": "字节跳动",
+      "summary": "有担当可信赖。"
+    },
+    {
+      "title": "Lark 部门 2024 Q3 团队奖",
+      "date": "2024-09-01",
+      "awarder": "字节跳动",
+      "summary": "成就客户。"
+    },
+    {
+      "title": "浙江省优秀毕业生 / 中国国际「互联网+」大赛金奖",
+      "date": "2021-07-01",
+      "awarder": "浙江工业大学",
+      "summary": "第六届中国国际“互联网+”大赛金奖，一等奖学业奖学金。"
+    }
+  ],
+  "languages": [
+    {
+      "language": "Chinese",
+      "fluency": "Native"
+    },
+    {
+      "language": "English",
+      "fluency": "IELTS 6.5"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+---
+import Section from "../Section.astro";
+import cv from "../data/cv.json";
+
+const awards = Array.isArray(cv.awards) ? cv.awards : [];
+---
+
+<Section title="奖项与认可">
+    <ul>
+        {awards.map(({ title, awarder, date, summary }) => {
+            const year = date ? new Date(date).getFullYear() : "";
+            return (
+                <li>
+                    <div class="meta">
+                        <h3>{title}</h3>
+                        <span class="org">{awarder}</span>
+                        {year && <span class="year">{year}</span>}
+                    </div>
+                    {summary && <p>{summary}</p>}
+                </li>
+            );
+        })}
+    </ul>
+</Section>
+
+<style>
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 12px;
+    }
+
+    li {
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    li:last-child {
+        border-bottom: none;
+    }
+
+    .meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .org {
+        color: #444;
+        font-size: 0.9rem;
+    }
+
+    .year {
+        color: #666;
+        font-size: 0.85rem;
+        margin-left: auto;
+    }
+
+    p {
+        margin: 0;
+        color: #555;
+        line-height: 1.5;
+    }
+</style>

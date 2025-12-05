@@ -1,0 +1,82 @@
+---
+import Section from "../Section.astro";
+import cv from "../data/cv.json";
+
+const education = Array.isArray(cv.education) ? cv.education : [];
+---
+
+<Section title="教育经历">
+    <ul>
+        {education.map(({ institution, area, studyType, startDate, endDate, url = "" }) => {
+            const startYear = startDate ? new Date(startDate).getFullYear() : "";
+            const endYear = endDate ? new Date(endDate).getFullYear() : "";
+            return (
+                <li>
+                    <article>
+                        <header>
+                            <div>
+                                <h3>{url ? <a href={url} target="_blank">{institution}</a> : institution}</h3>
+                                <h4>{area}</h4>
+                            </div>
+                            <div>
+                                {startDate && (
+                                    <time datetime={startDate} data-title={startDate}>
+                                        {startYear}
+                                    </time>
+                                )}
+                                {startDate && endDate && " - "}
+                                {endDate && (
+                                    <time datetime={endDate} data-title={endDate}>
+                                        {endYear}
+                                    </time>
+                                )}
+                            </div>
+                        </header>
+                        <p>{studyType}</p>
+                    </article>
+                </li>
+            );
+        })}
+    </ul>
+</Section>
+
+<style>
+    ul {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    article {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    article h3 {
+        font-weight: 500;
+    }
+
+    article h4 {
+        color: #222;
+        font-weight: 400;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    time {
+        color: #555;
+        font-size: 0.85rem;
+        min-width: 82px;
+    }
+
+    @media (width <= 700px) {
+        time {
+            text-align: right;
+        }
+    }
+</style>

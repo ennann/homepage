@@ -9,8 +9,11 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@iconify-json/devicon": "^1.2.23",
+    "@iconify-json/simple-icons": "^1.2.33",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.3",
+    "astro-icon": "^1.1.5",
     "tailwindcss": "^4.1.17"
   }
 }

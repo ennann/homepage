@@ -1,0 +1,40 @@
+---
+import Layout from "../../resume/Layout.astro";
+import Hero from "../../resume/sections/Hero.astro";
+import About from "../../resume/sections/About.astro";
+import Work from "../../resume/sections/Work.astro";
+import Education from "../../resume/sections/Education.astro";
+import Projects from "../../resume/sections/Projects.astro";
+import Skills from "../../resume/sections/Skills.astro";
+import Awards from "../../resume/sections/Awards.astro";
+import cv from "../../resume/data/cv.json";
+
+const basics = cv.basics ?? {};
+const pageTitle = basics.name ? `${basics.name} · ${basics.label ?? "简历"}` : "简历";
+---
+
+<Layout title={pageTitle}>
+    <main>
+        <Hero />
+        <About />
+        <Work />
+        <Projects />
+        <Skills />
+        <Awards />
+        <Education />
+    </main>
+</Layout>
+
+<style>
+    main {
+        padding: 4rem;
+        margin: auto;
+        width: 100%;
+    }
+
+    @media (width <= 700px) {
+        main {
+            padding: 2rem;
+        }
+    }
+</style>

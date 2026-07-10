@@ -1103,8 +1103,8 @@ body.route-blog.noise-overlay::before {
  * covers the header. We just kill the per-element fade for the header so it
  * doesn't double-blend during the wipe. */
 
-::view-transition-old(root),
-::view-transition-new(root) {
+html[data-theme-ripple]::view-transition-old(root),
+html[data-theme-ripple]::view-transition-new(root) {
     animation: none;
     mix-blend-mode: normal;
 }

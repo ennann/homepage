@@ -107,6 +107,7 @@ const fontCssHref =
 
                 applyTheme(document);
                 document.addEventListener("astro:before-swap", (event) => {
+                    event.viewTransition?.skipTransition();
                     applyTheme(event.newDocument);
                 });
             })();
@@ -125,7 +126,7 @@ const fontCssHref =
         {preloadImages.map((href) => (
             <link rel="preload" as="image" href={href} type="image/webp" />
         ))}
-        <ClientRouter />
+        <ClientRouter fallback="swap" />
     </head>
     <body
         class:list={["noise-overlay min-h-screen bg-[var(--browser-chrome-bg)] text-[var(--text-primary)] antialiased transition-[background-color,color] duration-300 overscroll-none touch-pan-y site-shell", routeClass]}

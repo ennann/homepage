@@ -4,8 +4,8 @@
     "description": "Ethan Zhao - AI-Driven Product Builder",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#f7f9fb",
-    "theme_color": "#f7f9fb",
+    "background_color": "#eff6fb",
+    "theme_color": "#eff6fb",
     "icons": [
         {
             "src": "/favorite.png",

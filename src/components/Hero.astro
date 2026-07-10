@@ -41,7 +41,8 @@ const t = useTranslations(lang);
     <!-- Text Content -->
     <div class="text-left flex-1 min-w-0 w-full max-w-full flex flex-col items-center md:items-start text-center md:text-left">
         <h1 class="w-full text-4xl md:text-5xl font-bold mb-4 leading-tight text-balance text-[var(--text-primary)]">
-            {t("hero.title")}
+            <span class="title-gradient">{t("hero.title")}</span>
+            <span class="hero-wave" aria-hidden="true"> 👋🏻</span>
         </h1>
         <p class="w-full mb-5 text-sm font-medium tracking-wide text-[var(--text-secondary)]">
             {t("hero.subtitle")}
@@ -54,6 +55,22 @@ const t = useTranslations(lang);
         </p>
     </div>
 </section>
+
+<style>
+    .title-gradient {
+        background: linear-gradient(to right, var(--brand), var(--accent-hover));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .hero-wave {
+        display: inline-block;
+        margin-left: 0.08em;
+        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+        vertical-align: -0.04em;
+    }
+</style>
 
 <script type="module" data-astro-rerun>
     const container = document.getElementById("avatar-container");

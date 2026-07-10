@@ -74,8 +74,43 @@ const fontCssHref =
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Ethan Zhao" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#f7f9fb" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#101418" media="(prefers-color-scheme: dark)" />
+        <meta id="theme-color" name="theme-color" content="#eff6fb" data-light="#eff6fb" data-dark="#101418" />
+        <script is:inline>
+            (() => {
+                if (window.__siteThemeReady) return;
+                window.__siteThemeReady = true;
+
+                const storageKey = "color-theme";
+                const readTheme = () => {
+                    try {
+                        const storedTheme = localStorage.getItem(storageKey);
+                        if (storedTheme === "dark" || storedTheme === "light") {
+                            return storedTheme;
+                        }
+                    } catch {
+                        // Storage can be unavailable in restricted browsing contexts.
+                    }
+
+                    return window.matchMedia("(prefers-color-scheme: dark)").matches
+                        ? "dark"
+                        : "light";
+                };
+
+                const applyTheme = (targetDocument) => {
+                    const isDark = readTheme() === "dark";
+                    targetDocument.documentElement.classList.toggle("dark", isDark);
+
+                    const themeMeta = targetDocument.querySelector('meta[name="theme-color"]');
+                    const themeColor = themeMeta?.getAttribute(isDark ? "data-dark" : "data-light");
+                    if (themeColor) themeMeta.setAttribute("content", themeColor);
+                };
+
+                applyTheme(document);
+                document.addEventListener("astro:before-swap", (event) => {
+                    applyTheme(event.newDocument);
+                });
+            })();
+        </script>
         <link rel="apple-touch-icon" href="/favorite.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
 
@@ -93,7 +128,7 @@ const fontCssHref =
         <ClientRouter />
     </head>
     <body
-        class:list={["noise-overlay min-h-screen bg-[var(--page-bg)] text-[var(--text-primary)] antialiased transition-[background-color,color] duration-300 overscroll-none touch-pan-y site-shell", routeClass]}
+        class:list={["noise-overlay min-h-screen bg-[var(--browser-chrome-bg)] text-[var(--text-primary)] antialiased transition-[background-color,color] duration-300 overscroll-none touch-pan-y site-shell", routeClass]}
         style="padding-bottom: env(safe-area-inset-bottom);"
     >
         <TopNav />

@@ -21,40 +21,45 @@
     </svg>
 </button>
 
-<script is:inline>
-    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-    if (localStorage.getItem("color-theme") === "dark" || (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-        document.documentElement.classList.add("dark");
-    } else {
-        document.documentElement.classList.remove("dark");
-    }
-</script>
-
 <script type="module" data-astro-rerun>
     const themeToggleBtn = document.getElementById("theme-toggle");
     const themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon");
     const themeToggleLightIcon = document.getElementById("theme-toggle-light-icon");
 
-    // Change the icons inside the button based on previous settings
-    if (localStorage.getItem("color-theme") === "dark" || (!("color-theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-        themeToggleLightIcon?.classList.remove("hidden");
-    } else {
-        themeToggleDarkIcon?.classList.remove("hidden");
-    }
+    const readDarkPreference = () => {
+        try {
+            const storedTheme = localStorage.getItem("color-theme");
+            if (storedTheme === "dark" || storedTheme === "light") {
+                return storedTheme === "dark";
+            }
+        } catch {
+            // Fall back to the system preference when storage is unavailable.
+        }
+
+        return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    };
 
     const isDark = () => document.documentElement.classList.contains("dark");
 
-    const applyTheme = (toDark) => {
-        themeToggleDarkIcon?.classList.toggle("hidden");
-        themeToggleLightIcon?.classList.toggle("hidden");
-        if (toDark) {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("color-theme", "dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("color-theme", "light");
+    const applyTheme = (toDark, persist = true) => {
+        document.documentElement.classList.toggle("dark", toDark);
+        themeToggleDarkIcon?.classList.toggle("hidden", toDark);
+        themeToggleLightIcon?.classList.toggle("hidden", !toDark);
+
+        const themeMeta = document.querySelector('meta[name="theme-color"]');
+        const themeColor = themeMeta?.getAttribute(toDark ? "data-dark" : "data-light");
+        if (themeColor) themeMeta.setAttribute("content", themeColor);
+
+        if (persist) {
+            try {
+                localStorage.setItem("color-theme", toDark ? "dark" : "light");
+            } catch {
+                // The current page still changes theme even if storage is blocked.
+            }
         }
     };
+
+    applyTheme(readDarkPreference(), false);
 
     themeToggleBtn?.addEventListener("click", (event) => {
         const targetDark = !isDark();

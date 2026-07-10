@@ -40,86 +40,24 @@ const t = useTranslations(lang);
 
     <!-- Text Content -->
     <div class="text-left flex-1 min-w-0 w-full max-w-full flex flex-col items-center md:items-start text-center md:text-left">
-        <h1 class="w-full text-4xl md:text-5xl font-bold mb-6 leading-tight text-balance">
-            <span id="typewriter-text" class="title-gradient" data-text={t("hero.title")}></span>
-            <span id="hero-wave" class="hero-wave" aria-hidden="true"> 👋🏻</span>
-            <span class="typewriter-cursor">|</span>
+        <h1 class="w-full text-4xl md:text-5xl font-bold mb-4 leading-tight text-balance text-[var(--text-primary)]">
+            {t("hero.title")}
         </h1>
-        <div class="w-full max-w-full flex flex-wrap justify-center md:justify-start gap-2 mb-6">
-            {
-                t("hero.subtitle")
-                    .split(" · ")
-                    .map((tag) => (
-                        <div class="inline-flex max-w-full items-center justify-center px-3 py-1 rounded-full bg-[var(--panel-subtle)] text-[var(--accent-hover)] dark:text-[var(--accent)] text-sm font-medium text-center border border-[var(--border-subtle)] shadow-sm whitespace-normal sm:whitespace-nowrap">
-                            {tag}
-                        </div>
-                    ))
-            }
-        </div>
+        <p class="w-full mb-5 text-sm font-medium tracking-wide text-[var(--text-secondary)]">
+            {t("hero.subtitle")}
+        </p>
         <p class="w-full text-lg text-[var(--muted-text)] mb-6 max-w-2xl">
             {t("hero.desc")}
         </p>
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--panel-subtle)] text-[var(--text-secondary)] text-sm font-medium shadow-sm">
+        <p class="text-sm text-[var(--text-secondary)]">
             {t("hero.location")}
-        </div>
+        </p>
     </div>
 </section>
-
-<style>
-    @keyframes blink {
-        0%,
-        100% {
-            visibility: visible;
-        }
-        50% {
-            visibility: hidden;
-        }
-    }
-    .title-gradient,
-    .typewriter-cursor {
-        background: linear-gradient(to right, var(--brand), var(--accent-hover));
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-
-    .typewriter-cursor {
-        animation: blink 1s step-end infinite;
-        margin-left: 2px;
-        font-weight: 400; /* Regular weight to ensure visibility */
-    }
-
-    .hero-wave {
-        display: none;
-        margin-left: 0.08em;
-        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
-        background: none;
-        -webkit-background-clip: initial;
-        background-clip: initial;
-        color: initial;
-        opacity: 0;
-        transform: translateX(-0.08em);
-        transition:
-            opacity 180ms ease,
-            transform 180ms ease;
-    }
-
-    .hero-wave.is-visible {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    @media (min-width: 768px) {
-        .hero-wave {
-            display: inline-block;
-        }
-    }
-</style>
 
 <script type="module" data-astro-rerun>
     const container = document.getElementById("avatar-container");
     const person = document.getElementById("avatar-person");
-    const waveEl = document.getElementById("hero-wave");
 
     if (container && person) {
         container.addEventListener("mousemove", (e) => {
@@ -143,65 +81,5 @@ const t = useTranslations(lang);
         container.addEventListener("mouseleave", () => {
             person.style.transform = "scale(0.82) translate(0, 4px)";
         });
-    }
-
-    // Typewriter effect with punctuation pauses for more natural cadence.
-    const typewriterEl = document.getElementById("typewriter-text");
-    if (typewriterEl) {
-        const text = typewriterEl.getAttribute("data-text") || "";
-        const chars = Array.from(text);
-        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const pauseMap = {
-            ",": 180,
-            "，": 220,
-            ".": 220,
-            "。": 260,
-            "!": 220,
-            "！": 260,
-            "?": 220,
-            "？": 260,
-            ";": 180,
-            "；": 220,
-            ":": 160,
-            "：": 200,
-        };
-        const rhythmOffsets = [0, 8, -4, 6];
-        let i = 0;
-
-        const getDelay = (char, index) => {
-            if (char in pauseMap) return pauseMap[char];
-            if (char === " ") return 36;
-
-            const isAsciiWord = /[A-Za-z0-9]/.test(char);
-            const baseDelay = isAsciiWord ? 68 : 80;
-            return baseDelay + rhythmOffsets[index % rhythmOffsets.length];
-        };
-
-        const showWave = () => {
-            if (waveEl && window.matchMedia("(min-width: 768px)").matches) {
-                waveEl.classList.add("is-visible");
-            }
-        };
-
-        const typeNext = () => {
-            if (i >= chars.length) return;
-
-            const char = chars[i];
-            typewriterEl.textContent += char;
-            i++;
-
-            if (i < chars.length) {
-                window.setTimeout(typeNext, getDelay(char, i - 1));
-            } else {
-                showWave();
-            }
-        };
-
-        if (prefersReducedMotion) {
-            typewriterEl.textContent = text;
-            showWave();
-        } else {
-            window.setTimeout(typeNext, 280);
-        }
     }
 </script>

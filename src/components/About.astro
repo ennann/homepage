@@ -9,15 +9,15 @@ const moreLabel = lang === "zh" ? "阅读完整介绍 →" : "Read full intro �
 
 <section id="about" class="py-16 px-4 max-w-4xl mx-auto">
     <h2 class="text-3xl font-bold mb-8 text-center dark:text-white">{t("about.title")}</h2>
-    <a href={aboutUrl} class="about-card group block bg-[var(--panel-bg)] p-8 rounded-2xl shadow-sm border border-[var(--border-subtle)] no-underline text-inherit transition duration-300 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--page-bg)]">
-        <p class="text-lg text-[var(--muted-text)] mb-6 leading-relaxed">
+    <div class="border-y border-[var(--border-subtle)] py-8">
+        <p class="text-lg text-[var(--muted-text)] mb-4 leading-relaxed">
             {t("about.desc")}
         </p>
-        <p class="text-lg text-[var(--muted-text)] font-medium italic border-l-4 border-blue-500 pl-4">
+        <p class="text-lg text-[var(--text-secondary)] leading-relaxed">
             {t("about.philosophy")}
         </p>
-        <p class="mt-6 text-sm font-mono tracking-wide text-[var(--muted-text)] group-hover:text-[var(--accent)] transition-colors">
+        <a href={aboutUrl} class="mt-6 inline-block text-sm font-medium text-[var(--accent-hover)] no-underline transition-colors hover:text-[var(--brand)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--page-bg)]">
             {moreLabel}
-        </p>
-    </a>
+        </a>
+    </div>
 </section>

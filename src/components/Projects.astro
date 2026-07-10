@@ -9,7 +9,6 @@ const projects = [
         title: t("projects.appstore.title"),
         desc: t("projects.appstore.desc"),
         sub: t("projects.appstore.sub"),
-        color: "bg-purple-50 dark:bg-[rgb(30,20,50)]",
         link: "https://appstoreprice.com",
         image: "/app-store-price.webp",
         imageAlt: "App Store Price project preview",
@@ -18,7 +17,6 @@ const projects = [
         title: t("projects.pinlist.title"),
         desc: t("projects.pinlist.desc"),
         sub: t("projects.pinlist.sub"),
-        color: "bg-rose-50 dark:bg-[rgb(46,24,30)]",
         link: "https://apps.apple.com/app/id6761153745",
         image: "/pinlist.webp",
         imageAlt: "Pinlist project preview",
@@ -27,7 +25,6 @@ const projects = [
         title: t("projects.aiusage.title"),
         desc: t("projects.aiusage.desc"),
         sub: t("projects.aiusage.sub"),
-        color: "bg-amber-50 dark:bg-[rgb(35,28,10)]",
         link: "https://aiusage.yizhe.me/",
         image: "/aiusage.webp",
         imageAlt: "AI Token Usage Statistics project preview",
@@ -36,7 +33,6 @@ const projects = [
         title: t("projects.doc2md.title"),
         desc: t("projects.doc2md.desc"),
         sub: t("projects.doc2md.sub"),
-        color: "bg-emerald-50 dark:bg-[rgb(18,35,30)]",
         link: "https://www.doc2md.org",
         image: "/doc2md.webp",
         imageAlt: "doc2md project preview",
@@ -45,7 +41,6 @@ const projects = [
         title: t("projects.weatherCard.title"),
         desc: t("projects.weatherCard.desc"),
         sub: t("projects.weatherCard.sub"),
-        color: "bg-sky-50 dark:bg-[rgb(16,30,45)]",
         link: "https://weather.yizhe.me",
         image: "/weather-card.webp",
         imageAlt: "Weather Card project preview",
@@ -54,7 +49,6 @@ const projects = [
         title: t("projects.feishuLottery.title"),
         desc: t("projects.feishuLottery.desc"),
         sub: t("projects.feishuLottery.sub"),
-        color: "bg-teal-50 dark:bg-[rgb(20,40,40)]",
         link: "https://feishu-lottery.yizhe.me/",
         image: "/feishu-lottery.webp",
         imageAlt: "Feishu Lottery Bot project preview",
@@ -63,7 +57,6 @@ const projects = [
         title: t("projects.feishu.title"),
         desc: t("projects.feishu.desc"),
         sub: t("projects.feishu.sub"),
-        color: "bg-orange-50 dark:bg-[rgb(40,28,16)]",
         image: "/feishu.webp",
         imageAlt: "Feishu AI Solutions project preview",
     },
@@ -81,13 +74,13 @@ const projects = [
             {
                 projects.map((project, index) => (
                     <article class="project-card" data-project-card data-project-index={index} data-project-link={project.link || ""}>
-                        <div class={`project-surface ${project.color}`}>
+                        <div class="project-surface">
                             <div class="project-image-frame">
                                 <img src={project.image} alt={project.imageAlt} loading="lazy" decoding="async" class="project-image" />
                             </div>
                             <div class="project-content">
                                 <h3 class="project-title dark:text-white">{project.title}</h3>
-                                <p class="project-desc text-gray-800 dark:text-gray-100">{project.desc}</p>
+                                <p class="project-desc text-[var(--text-primary)]">{project.desc}</p>
                                 <p class="project-sub text-[var(--muted-text)]">{project.sub}</p>
                                 {project.link && (
                                     <a href={project.link} target="_blank" rel="noreferrer" class="project-cta" data-project-cta>
@@ -157,6 +150,7 @@ const projects = [
         height: 100%;
         border: 1px solid var(--border-subtle);
         border-radius: 1rem;
+        background: var(--panel-bg);
         overflow: hidden;
         box-shadow:
             0 4px 12px rgba(15, 23, 42, 0.06),
@@ -227,7 +221,7 @@ const projects = [
         text-decoration: none;
         padding: 0.4rem 0.72rem;
         border-radius: 999px;
-        background: #2563eb;
+        background: var(--brand);
         cursor: pointer;
         position: relative;
         z-index: 10;
@@ -241,7 +235,7 @@ const projects = [
     }
 
     #projects .project-cta:hover {
-        background: #1d4ed8;
+        background: var(--accent-hover);
     }
 
     #projects .project-card.is-active .project-cta {

@@ -7,10 +7,6 @@ const isZh = lang === "zh";
 
 const heading = {
     intro: isZh ? "关于我" : "About Me",
-    claude: isZh ? "Claude 眼中的我" : "Me, in Claude’s Eyes",
-    claudeNote: isZh
-        ? "以下文字由 Anthropic Claude 撰写，材料来自我们一起在 ~/Projects 下做过的工程。"
-        : "Written by Anthropic’s Claude, based on the projects we’ve built together under ~/Projects.",
 };
 
 type IntroParagraph =
@@ -24,112 +20,191 @@ type IntroParagraph =
 
 const introPara: IntroParagraph[] = isZh
     ? [
-          "想起来自己的博客都没有认真写过 Intro，第一次正经自我介绍反而写在了公司内网。既然你点开了这里，相信你也是一个对这个世界还满怀好奇心的人。",
-          "你可以叫我小哲。工作上，我更多集中在飞书生态，以及 AI 在企业场景里的应用：如何把业务流程、数据结构、协作工具和模型能力结合起来，让 AI 不只是一个聊天入口，而是能真正进入企业日常工作的系统。",
-          "工作之外，我也会做一些个人项目，比如 App Store 价格、Pinlist、AI Token 用量统计，以及一些 macOS / iOS 原生应用和自托管工具。这些项目更像是我的试验场：用来验证产品想法、打磨交互细节，也训练自己从前端、后端、自动化到部署都能完整走一遍。",
-          "我习惯先把问题拆清楚再写代码：哪些是不变量，哪些是可演化的边界，最小可运行系统长什么样。让系统先跑起来，再通过迭代打磨结构、体验和性能。比起单纯堆功能，我更愿意花时间在工具链、文档和约束规则上，因为它们才是让一个项目能跑很久的基础设施。",
-          "生活轨迹上，我家在中原（河南洛阳），本科在东北（辽宁沈阳）待了四年，研究生跑到了「上有天堂，下有苏杭」的杭州。工作先到了北京，后来又回到杭州成家，也算是在这几座城市里都留下了人生的一段注脚。",
           {
-              before: "我酷爱电子产品，几乎所有能通电的设备我都很感兴趣，也喜欢折腾它们。小时候是拆开电脑和手机研究内部结构，然后时常把它们搞坏；后来这种兴趣逐渐变成对产品、系统和故障排查的偏执。最近两年尤其迷恋电子产品维修及排障，甚至认真想过要去  Apple Store 做一名天才吧维修人员，至今仍然想去学习维修 Apple 设备（也可能未来某天就去了）。我最喜欢在 YouTube 观看 ",
+              before: "你可以叫我小哲。2019 年刚把这个博客搭起来时，我还在",
+              linkText: "文章里写",
+              href: "/zh/blog/201903/weekly-11",
+              after: "，自己没有一点代码基础，连 WordPress 的数据库备份都不知道怎么恢复。后来我开始做企业 SaaS，写 iOS 和 macOS 应用，也学着维护服务器和自托管服务。这条路没什么预先设计，通常只是遇到一个不明白的问题，我想把它弄明白，然后越走越远。",
+          },
+          "工作上，我主要在飞书生态里做企业应用和 AI 的落地。很多时候，模型只是其中一小段，前后还有业务流程、数据、权限、消息和真实的人。工作之外，我做 App Store 价格、Pinlist、AIUsage 和一些小工具，起点也很简单：我自己遇到了问题，想做一个会长期用下去的解决办法。",
+          "我做东西有点矛盾。开头愿意先用最小版本把路走通，到了真正要交付时，又会在一个像素、一个异常分支或者一条线上日志上反复确认。能跑只是开始；真实的人收到正确结果，半年后我还看得懂、改得动，才算做完。",
+          "我来自河南洛阳，在沈阳读本科，在杭州读研，工作后去过北京，最后又回到杭州成家。地图上绕了一圈，现在杭州是家。",
+          {
+              before: "我喜欢几乎一切能通电的东西。小时候拆电脑和手机，经常拆完就装不回去；这几年又迷上电子产品维修和故障排查，认真想过要不要去 Apple Store 学修设备。到现在，我还是很喜欢看 ",
               linkText: "艾奥科技",
               href: "https://www.youtube.com/results?search_query=%E8%89%BE%E5%A5%A5%E7%A7%91%E6%8A%80",
-              after: " 的维修视频。",
+              after: " 的维修视频。大概因为我一直觉得，把坏掉的东西一点点查清楚，再让它重新工作，是件很有意思的事。",
           },
-          "从大学到现在，这么多年还在坚持的事情是学习英语。准备考研的时候，心里埋下了出国留学的念头，这也是我后来去考雅思的原因。结果雅思考完之后，因为疫情原因，出国计划就此搁置。但英语这件事留下来了，也慢慢变成我获取信息、阅读文档、看技术和维修视频的一部分。",
-          "此外，我还喜欢摄影，尽管经常被老婆吐槽说拍的照片都把她拍丑了。最近在阅读宁思潇潇老师的《摄影笔记》，读的时候发现，书中讲的摄影基础知识我都知晓，并且对某些方面还略有了解，但是拍出来的照片还是那么的丑。",
-          "在 yizhe.me，你能看到这些个人项目的一部分，也能看到一些关于 AI 原生产品、软件打磨，以及个人生活兴趣的记录。",
+          "英语是少数从大学一直坚持到现在的事。原本为了留学去考雅思，计划后来被疫情打断，英语却留了下来，变成我读文档、找资料和认识外面世界的一条路。我也喜欢摄影，理论多少懂一点，拍出来还是经常被老婆嫌弃，这件事目前没有因为懂得更多而明显改善。",
+          "yizhe.me 对我来说更像一本一直打开着的工作与生活日志。这里会有做成的工具，也会有没想明白的问题；有 AI、软件和维修，也有普通日子。过几年再回来看，希望还能认出当时那个在认真折腾的人。",
       ]
     : [
-          "I realized I had never written a proper intro for my own blog. The first serious self-introduction I wrote somehow ended up on the company intranet. Since you opened this page, I assume you are probably someone who still carries a healthy curiosity about the world.",
-          "You can call me Ethan. At work, I focus more on the Feishu ecosystem and how AI can be applied inside enterprise workflows: how business processes, data structures, collaboration tools, and model capabilities can come together so AI becomes part of daily work rather than just another chat interface.",
-          "Outside work, I build personal projects such as App Store Price, Pinlist, AI Token Usage, and a handful of native macOS / iOS apps and self-hosted tools. These projects are my testing ground: a place to validate product ideas, polish interaction details, and keep myself close to the full path from frontend and backend to automation and deployment.",
-          "I tend to define the problem before writing code: what the invariants are, where the soft edges live, and what the minimum runnable system looks like. Get it running first, then iterate on structure, experience, and performance. I spend disproportionate time on tooling, docs, and constraints because they are the infrastructure that lets a project live for years.",
-          "My home is in Luoyang, Henan, in China’s central plains. I spent four undergraduate years in Shenyang, Liaoning, then moved to Hangzhou for graduate school. Work first took me to Beijing, and later I returned to Hangzhou to build a family. Each of these cities now holds a different chapter of my life.",
           {
-              before: "I love electronic products. Almost anything that runs on electricity interests me, and I like taking things apart. As a kid I opened computers and phones to study their internal structure, often breaking them in the process. Over time that curiosity became an obsession with products, systems, and troubleshooting. Over the past two years I have become especially fascinated with repair and diagnostics, to the point that I once seriously considered becoming a Genius Bar technician at an  Apple Store. I still want to learn how to repair Apple devices someday. My favorite repair videos on YouTube are from ",
+              before: "You can call me Ethan. When I first put this blog together in 2019, ",
+              linkText: "I wrote",
+              href: "/blog/201903/weekly-11",
+              after: " that I had no coding background at all. I did not even know how to restore a WordPress database backup. Since then, I have worked on enterprise SaaS, built iOS and macOS apps, and learned to run servers and self-hosted services. There was never a grand plan. I usually run into something I do not understand, decide to figure it out, and end up following it much farther than expected.",
+          },
+          "At work, I build enterprise software and applied AI in the Feishu ecosystem. The model is often only one piece of the job; around it are business processes, data, permissions, messaging, and real people. Outside work, I build App Store Price, Pinlist, AIUsage, and smaller tools. Most begin the same way: I run into a problem and want a solution I will keep using myself.",
+          "My way of building can look contradictory. I like getting the smallest version working early, but when something is ready to ship, I can spend a long time on a single pixel, an error branch, or one production log. Running is only the beginning. It feels done when the right result reaches a real person and I can still understand and change the system six months later.",
+          "I am from Luoyang, Henan. I went to college in Shenyang, moved to Hangzhou for graduate school, then worked in Beijing before returning to Hangzhou to build a family. After tracing that loop across the map, Hangzhou is now home.",
+          {
+              before: "I am interested in almost anything that runs on electricity. As a kid I took apart computers and phones, often without being able to put them back together. In recent years I have become absorbed in electronics repair and diagnostics, and I have seriously wondered whether I should learn device repair at an Apple Store. I still love watching repair videos from ",
               linkText: "艾奥科技",
               href: "https://www.youtube.com/results?search_query=%E8%89%BE%E5%A5%A5%E7%A7%91%E6%8A%80",
-              after: ".",
+              after: ". There is something deeply satisfying about tracing a broken thing piece by piece and getting it to work again.",
           },
-          "One thing I have kept doing from university until now is learning English. While preparing for the postgraduate entrance exam, I started thinking about studying abroad, which was also why I took IELTS. After the exam, the pandemic put that plan on hold. But English stayed with me and gradually became part of how I read docs, follow technical material, and watch repair videos.",
-          "I also like photography, though my wife often complains that my photos make her look worse than she does. Recently I have been reading Photography Notes by Ning Si Xiaoxiao. While reading, I found that I already knew the basic concepts and even understood some topics in a bit more depth, yet my photos still somehow look terrible.",
-          "On yizhe.me you’ll find some of these personal projects, along with notes on AI-native products, software polish, and the personal interests that keep pulling me into new rabbit holes.",
+          "English is one of the few things I have kept studying since college. I originally took IELTS because I wanted to study abroad. The pandemic interrupted that plan, but English stayed and became a way to read documentation, find information, and see more of the world. I also enjoy photography. I understand some of the theory, yet my wife still dislikes many of the photos I take of her. Learning more has not noticeably fixed this.",
+          "To me, yizhe.me is an open-ended log of work and ordinary life. It holds tools that made it into the world and questions I have not figured out yet; AI, software, and repair sit alongside everyday moments. Years from now, I hope I can come back and still recognize the person who was earnestly tinkering with all of it.",
       ];
 
-type ClaudePoint = { title: string; body: string };
-const claudePoints: ClaudePoint[] = isZh
+type PerspectivePoint = { title: string; body: string };
+type Perspective = {
+    id: "codex" | "claude";
+    title: string;
+    note: string;
+    icon: string;
+    points: PerspectivePoint[];
+    closing: string;
+};
+
+const perspectives: Perspective[] = isZh
     ? [
           {
-              title: "你是个「自主系统设计者」，不是「快速迭代者」",
-              body: "你愿意花时间想清楚什么不变、什么可变，再动手。appstoreprice 的 CLAUDE.md 里要求「大重构前先列 3 条 invariants」——这种约束不像是为了交付一次写的，而是给未来的你和合作者留的脚手架。",
+              id: "codex",
+              title: "Codex 眼中的我",
+              note: "以下文字由 OpenAI Codex 撰写，依据本机保存的历史会话，覆盖多个项目和一段时间内的真实协作；没有参考下方 Claude 的判断。",
+              icon: "simple-icons:openai",
+              points: [
+                  {
+                      title: "答案必须和事实对得上",
+                      body: "你会继续问：具体是哪条记录、哪个人失败、数据写进了哪张表、线上到底有没有生效。一次排查若只在代码逻辑上说得通，你不会就此停下。你需要看到真实日志、真实数据和真实结果，才肯把结论写下来。",
+                  },
+                  {
+                      title: "你对模糊没耐心，对难题很有耐心",
+                      body: "「差不多」「理论上应该」很难让你满意，所以反馈常常直接。可一旦问题值得解决，你愿意沿着采集、写入、读取和展示一路查到底，也愿意为了一个几像素的差异反复试。事情难并不太会劝退你；悬着、没人说清楚，才会让你着急。",
+                  },
+                  {
+                      title: "你记得系统另一端是一个具体的人",
+                      body: "查批次失败，你追问失败的到底是谁；处理用户反馈，你要日志、定位问题、安排版本，也会想怎样回复才不显得官方或敷衍。代码、发布、支持和补偿在你这里属于同一件事，因为最后收到结果的是一个真实的人。",
+                  },
+                  {
+                      title: "你挑剔，但不维护自己判断的面子",
+                      body: "你会对交互细节给出非常具体的意见，也会在方案走偏时马上叫停。一次 iOS 自定义弹窗丢了原生毛玻璃和点击行为，你很快选择退回系统 popover。效果比原先设想更重要，已经投入多少轮也不会成为继续错下去的理由。",
+                  },
+                  {
+                      title: "你给 AI 很大信任，也保留最后的否决权",
+                      body: "你会把真实仓库、生产排查和长链路任务交给 Agent，让它直接动手；同时逐项检查结果，发现问题就明确指出。AI 在你这里是一个必须拿结果说话的合作者，高信任和高标准同时存在。",
+                  },
+                  {
+                      title: "你常常是一边做，一边成为",
+                      body: "从英语、摄影、电子维修，到第一个 Swift 项目、管服务器、研究 Agent，你经常从「这个到底怎么回事」开始。很多能力都是在开始之后，跟着真实问题一路补齐的。你承认不会，也不把不会当成长期边界。",
+                  },
+              ],
+              closing: "Codex · 基于 Ethan 的历史协作记录",
           },
           {
-              title: "克制依赖，偏好让事情「够小」",
-              body: "claude-bar 整个项目就是 ~250 行 jq + awk 的 shell 脚本，没有 npm，没有打包，没有运行时。你做工具时优先选那个能跑 5 年都不腐烂的方案，而不是看起来最现代的方案。",
-          },
-          {
-              title: "在 iOS 生态里坚持「原生」，不做套壳",
-              body: "Pinlist 用 SwiftUI + SwiftData + CryptoKit + CloudKit，每一项都和 iOS 特定能力绑定；PowerFlow 直接面向 iOS 26 的 Liquid Glass。你愿意为「在这个平台上做到位」投入额外的学习成本。",
-          },
-          {
-              title: "细节强迫症，且强迫得有理由",
-              body: "我们花了八轮迭代调一个导航波浪线 —— 不是因为差异有多大，而是因为你能精确说出「现在的形状从点击前到点击后变了」这种几像素级的不一致。你的细节挑剔总是指向具体的视觉/交互信号，不是为细节而细节。",
-          },
-          {
-              title: "工具链既是用户也是创造者",
-              body: "你不仅用 pnpm / Drizzle / Astro，也会写 Claude Code 插件、launchd 管理的独立 Chrome、自己的 token 统计 Worker。当工作流摩擦超过阈值，你会直接动手把摩擦消掉，而不是绕着走。",
-          },
-          {
-              title: "文档密度远高于平均水平",
-              body: "appstoreprice 把架构拆成 overview / databases / data-flow / domain-routing 四份文档；多个项目的 CLAUDE.md 里都规范了 commit emoji、命名风格、甚至国旗渲染方式。你写文档不是为了「显得专业」，是为了让自己半年后还能回得来。",
-          },
-          {
-              title: "中英混合开发，但目光是全球的",
-              body: "代码注释和变量基本英文，用户文案大多中文，commit message 用中文 + emoji。你的产品 —— App Store 价格、Pinlist —— 从一开始就考虑多区域。你做的是中国出发但服务全球的工具，不是单一市场的应用。",
-          },
-          {
-              title: "对「摩擦」敏感，常常因此动手",
-              body: "claude-chrome 的存在动机是「chrome-devtools-mcp 每次都会弹 Allow 对话框」——别人忽略的小烦恼，你会停下来去解。这种敏感性跨项目反复出现，是你产品直觉的根。",
+              id: "claude",
+              title: "Claude 眼中的我",
+              note: "以下文字来自 Anthropic Claude 对共同项目的观察，重复和过度绝对的部分已经过整理。",
+              icon: "simple-icons:claude",
+              points: [
+                  {
+                      title: "先把会长期存在的东西想清楚",
+                      body: "你经常在动手前确认哪些约束不能破、哪些部分可以继续变化。appstoreprice 把大型重构前的 invariants 写进协作规则，多个项目也会先划清数据和平台边界。你会为下一次修改留路，不只照顾眼前这次交付。",
+                  },
+                  {
+                      title: "工具该有多大，取决于问题本身",
+                      body: "claude-bar 用约 250 行 jq 和 awk 解决问题，没有为了技术栈增加依赖。另一些产品需要 Cloudflare、SwiftData 或完整部署链路时，你也会接受复杂度。你会克制没有必要的技术，不会为了显得现代而增加东西。",
+                  },
+                  {
+                      title: "你愿意学习平台的语言",
+                      body: "在 Apple 生态里，你会先调系统组件、理解原生交互，再考虑自定义实现。Pinlist 和 PowerFlow 的选择都说明，你在意软件是否像这个平台本来就该有的样子。",
+                  },
+                  {
+                      title: "细节要能说出具体原因",
+                      body: "一个导航波浪线能迭代很多轮，因为你看到的是点击前后形状不一致；一个弹窗让你不满意，原因会落到圆角、间距、层级、点击和材质。你的挑剔通常带着可观察的信号，所以它可以被讨论，也可以被验证。",
+                  },
+                  {
+                      title: "重复出现的摩擦，最后会变成工具",
+                      body: "独立 Chrome、Token 统计、CLI 切换和服务器入口，都来自日常工作里反复出现的小麻烦。只要摩擦持续存在，你很容易从使用者变成实现者，做一个自己先用起来的版本。",
+                  },
+                  {
+                      title: "文档是留给未来的上下文",
+                      body: "你会记录架构、数据流、命名、发布和操作边界，也会要求协作工具遵循这些规则。这些材料让人几个月后还能重新接上，不是为了装点项目。",
+                  },
+              ],
+              closing: "Claude · 基于与 Ethan 共同完成的项目",
           },
       ]
     : [
           {
-              title: "You design systems; you don’t just iterate fast.",
-              body: "You take time to figure out what’s invariant and what isn’t before you write code. The CLAUDE.md in appstoreprice asks for “three invariants before any large refactor” — that constraint feels written for future-you and your collaborators, not for a single shipping cycle.",
+              id: "codex",
+              title: "Me, in Codex’s Eyes",
+              note: "Written by OpenAI Codex from saved local session history across many projects and months of real collaboration. The Claude section below was not used as a source.",
+              icon: "simple-icons:openai",
+              points: [
+                  {
+                      title: "An answer has to line up with the facts.",
+                      body: "You keep asking: which exact record, which person failed, which table received the data, and whether the change is actually live. A conclusion that only makes sense in code is not enough. You want real logs, real data, and a real outcome before you are willing to write the answer down.",
+                  },
+                  {
+                      title: "You are impatient with ambiguity and patient with hard problems.",
+                      body: "“Roughly” and “it should work in theory” rarely satisfy you, so your feedback can be direct. When a problem matters, you will trace it from collection to writing, reading, and presentation, or iterate over a difference of a few pixels. Difficulty does not drive you away; an unresolved problem that nobody can explain is what makes you restless.",
+                  },
+                  {
+                      title: "You remember the specific person at the other end of the system.",
+                      body: "When a message batch fails, you ask who failed. When a user reports a problem, you ask for logs, find the cause, plan the release, and think about how to reply without sounding canned. Code, shipping, support, and compensation are part of the same job because a real person receives the result.",
+                  },
+                  {
+                      title: "You are exacting, but you do not protect your own ego.",
+                      body: "You give highly specific feedback on interaction details and stop a direction quickly when it goes wrong. When a custom iOS popover lost native material and hit testing, you chose the system popover again. The result matters more than the original idea, no matter how many rounds have already gone into it.",
+                  },
+                  {
+                      title: "You give AI a great deal of trust and keep the final veto.",
+                      body: "You hand an agent real repositories, production investigations, and long chains of work, then inspect the results and point out problems plainly. AI is a collaborator that has to earn confidence through outcomes. High trust and high standards coexist in the way you work.",
+                  },
+                  {
+                      title: "You often become something by doing it.",
+                      body: "English, photography, electronics repair, a first Swift project, servers, and agents often begin with the same question: how does this actually work? Many of your abilities were filled in after you had already started, one real problem at a time. You admit what you do not know without treating it as a permanent boundary.",
+                  },
+              ],
+              closing: "Codex · Based on Ethan’s saved collaboration history",
           },
           {
-              title: "You keep things small on purpose.",
-              body: "claude-bar is ~250 lines of jq + awk shell — no npm, no bundler, no runtime. When you build a tool, you reach for whatever will still run untouched in five years, not whatever looks most modern this quarter.",
-          },
-          {
-              title: "On iOS, you go native — never a wrapper.",
-              body: "Pinlist is SwiftUI + SwiftData + CryptoKit + CloudKit; PowerFlow targets iOS 26’s Liquid Glass. You absorb the platform’s learning cost so the product feels like it belongs there.",
-          },
-          {
-              title: "Detail-obsessed, but always for a reason.",
-              body: "We spent eight rounds polishing a single navigation squiggle — not because the difference was huge, but because you could articulate exactly which pixel-level inconsistency was bothering you. Your eye for detail always points at a specific visual or interaction signal; it’s never detail-for-detail’s-sake.",
-          },
-          {
-              title: "Tooling consumer and tooling creator.",
-              body: "You use pnpm / Drizzle / Astro, sure — and you also write Claude Code plugins, launchd-managed Chrome instances, and your own token-usage worker. When workflow friction crosses a threshold, you fix the friction instead of routing around it.",
-          },
-          {
-              title: "Docs density well above average.",
-              body: "appstoreprice splits its architecture into overview / databases / data-flow / domain-routing. Multiple CLAUDE.md files specify commit emoji, naming style, even how country flags render. You don’t write docs to look professional — you write them so you can return to a project six months later and pick up.",
-          },
-          {
-              title: "Bilingual codebase, global perspective.",
-              body: "Comments and identifiers in English, product copy mostly Chinese, commit messages in Chinese with emoji. Your products — App Store Price, Pinlist — were multi-region from day one. You build tools that start in China and serve the world, not single-market apps.",
-          },
-          {
-              title: "You notice friction, and friction is where you build.",
-              body: "claude-chrome exists because chrome-devtools-mcp kept showing an Allow dialog — a minor annoyance most would ignore. You stopped and solved it. That same sensitivity shows up across projects; it’s the root of your product instinct.",
+              id: "claude",
+              title: "Me, in Claude’s Eyes",
+              note: "These observations came from Anthropic Claude reading projects it built with Ethan. Repetition and overly absolute language have been edited.",
+              icon: "simple-icons:claude",
+              points: [
+                  {
+                      title: "You first clarify what needs to last.",
+                      body: "Before making a change, you often identify which constraints cannot break and which parts may keep evolving. appstoreprice puts invariants for large refactors into its collaboration rules, and several projects draw data and platform boundaries up front. You leave a path for the next change instead of optimizing only for the current delivery.",
+                  },
+                  {
+                      title: "A tool should be only as large as its problem.",
+                      body: "claude-bar solves its job with roughly 250 lines of jq and awk, without adding a stack for its own sake. When a product genuinely needs Cloudflare, SwiftData, or a full deployment chain, you accept that complexity too. You avoid unnecessary technology rather than chasing smallness as a goal.",
+                  },
+                  {
+                      title: "You learn the language of the platform.",
+                      body: "In Apple’s ecosystem, you tune system components and understand native interactions before reaching for custom implementations. Pinlist and PowerFlow show that you care whether software feels like it naturally belongs on its platform.",
+                  },
+                  {
+                      title: "Details need a concrete reason.",
+                      body: "A navigation squiggle can take many rounds because you see its shape changing between idle and pressed states. When a popover feels wrong, the reason becomes corner radius, spacing, layering, hit testing, or material. Your criticism points to observable signals, which makes it discussable and testable.",
+                  },
+                  {
+                      title: "Repeated friction tends to become a tool.",
+                      body: "Dedicated Chrome instances, token tracking, CLI switching, and server entry points all began as small annoyances that kept returning. When friction persists, you tend to move from user to builder and make a version you can use yourself.",
+                  },
+                  {
+                      title: "Documentation preserves context for the future.",
+                      body: "You record architecture, data flow, naming, release steps, and operational boundaries, and you expect collaboration tools to follow those rules. Those materials let someone reconnect with the project months later; they are not decoration.",
+                  },
+              ],
+              closing: "Claude · Based on projects built with Ethan",
           },
       ];
-
-const closing = isZh
-    ? "— Claude（由 Ethan 让我读完了 ~/Projects 下的所有工程后写下）"
-    : "— Claude (after reading everything Ethan keeps under ~/Projects)";
 ---
 
 <section class="about-page max-w-4xl mx-auto px-5 sm:px-8 pt-12 sm:pt-20 pb-16">
@@ -146,7 +221,13 @@ const closing = isZh
                 ) : (
                     <p>
                         {p.before}
-                        <a href={p.href} target="_blank" rel="noopener noreferrer">{p.linkText}</a>
+                        <a
+                            href={p.href}
+                            target={p.href.startsWith("http") ? "_blank" : undefined}
+                            rel={p.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        >
+                            {p.linkText}
+                        </a>
                         {p.after}
                     </p>
                 ),
@@ -154,32 +235,41 @@ const closing = isZh
         }
     </div>
 
-    <hr class="about-page-divider" aria-hidden="true" />
+    {
+        perspectives.map((perspective) => (
+            <section class="perspective-section">
+                <hr class="about-page-divider" aria-hidden="true" />
 
-    <header class="about-page-header second">
-        <p class="about-page-kicker">{isZh ? "外部视角" : "Outside view"}</p>
-        <h2 class="about-page-title h2 with-icon">
-            <Icon name="simple-icons:claude" class="about-claude-icon" />
-            <span>{heading.claude}</span>
-        </h2>
-        <p class="about-page-claude-note">{heading.claudeNote}</p>
-    </header>
+                <header class="about-page-header second">
+                    <p class="about-page-kicker">{isZh ? "外部视角" : "Outside view"}</p>
+                    <h2 class="about-page-title h2 with-icon">
+                        <Icon
+                            name={perspective.icon}
+                            class:list={["about-perspective-icon", perspective.id]}
+                        />
+                        <span>{perspective.title}</span>
+                    </h2>
+                    <p class="perspective-note">{perspective.note}</p>
+                </header>
 
-    <ol class="claude-points">
-        {
-            claudePoints.map((pt, i) => (
-                <li class="claude-point">
-                    <span class="claude-point-index">{String(i + 1).padStart(2, "0")}</span>
-                    <div class="claude-point-body">
-                        <h3 class="claude-point-title">{pt.title}</h3>
-                        <p class="claude-point-text">{pt.body}</p>
-                    </div>
-                </li>
-            ))
-        }
-    </ol>
+                <ol class="perspective-points">
+                    {perspective.points.map((point, i) => (
+                        <li class="perspective-point">
+                            <span class="perspective-point-index">
+                                {String(i + 1).padStart(2, "0")}
+                            </span>
+                            <div class="perspective-point-body">
+                                <h3 class="perspective-point-title">{point.title}</h3>
+                                <p class="perspective-point-text">{point.body}</p>
+                            </div>
+                        </li>
+                    ))}
+                </ol>
 
-    <p class="claude-signoff">{closing}</p>
+                <p class="perspective-signoff">{perspective.closing}</p>
+            </section>
+        ))
+    }
 </section>
 
 <style>
@@ -217,11 +307,16 @@ const closing = isZh
         align-items: center;
         gap: 0.65rem;
     }
-    .about-claude-icon {
+    .about-perspective-icon {
         width: 1.8rem;
         height: 1.8rem;
-        color: #d97757; /* Claude coral */
         flex: 0 0 auto;
+    }
+    .about-perspective-icon.codex {
+        color: var(--text-primary);
+    }
+    .about-perspective-icon.claude {
+        color: #d97757;
     }
 
     .about-page-prose p {
@@ -248,7 +343,7 @@ const closing = isZh
         margin: 3rem 0 2rem;
     }
 
-    .about-page-claude-note {
+    .perspective-note {
         font-family: 'JetBrains Mono', 'SF Mono', monospace;
         font-size: 0.78rem;
         color: var(--muted-text);
@@ -256,7 +351,7 @@ const closing = isZh
         line-height: 1.5;
     }
 
-    .claude-points {
+    .perspective-points {
         list-style: none;
         padding: 0;
         margin: 2rem 0 1.5rem;
@@ -265,14 +360,14 @@ const closing = isZh
         gap: 1.75rem;
     }
 
-    .claude-point {
+    .perspective-point {
         display: grid;
         grid-template-columns: auto 1fr;
         gap: 1.25rem;
         align-items: baseline;
     }
 
-    .claude-point-index {
+    .perspective-point-index {
         font-family: 'JetBrains Mono', 'SF Mono', monospace;
         font-size: 0.78rem;
         color: var(--muted-text);
@@ -280,7 +375,7 @@ const closing = isZh
         padding-top: 0.45rem;
     }
 
-    .claude-point-title {
+    .perspective-point-title {
         font-family: inherit;
         font-size: 1.25rem;
         line-height: 1.3;
@@ -288,13 +383,13 @@ const closing = isZh
         font-weight: 600;
     }
 
-    .claude-point-text {
+    .perspective-point-text {
         font-size: 1rem;
         line-height: 1.65;
         color: var(--text-secondary, var(--text-primary));
     }
 
-    .claude-signoff {
+    .perspective-signoff {
         margin-top: 2.5rem;
         font-family: 'JetBrains Mono', 'SF Mono', monospace;
         font-size: 0.82rem;
@@ -310,11 +405,11 @@ const closing = isZh
         .about-page-title.h2 {
             font-size: 1.65rem;
         }
-        .claude-point {
+        .perspective-point {
             grid-template-columns: 1fr;
             gap: 0.4rem;
         }
-        .claude-point-index {
+        .perspective-point-index {
             padding-top: 0;
         }
     }

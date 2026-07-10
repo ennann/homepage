@@ -20,9 +20,9 @@ const en = {
     "hero.location": "📍 Hangzhou, China",
     "about.title": "About Me",
     "about.desc":
-        "I am an engineering-core AI product builder, primarily working on SaaS platforms, macOS/iOS apps, and AI-assisted workflows. I care more about whether a system is clear, stable, and can continuously evolve in real-world usage.",
+        "I build enterprise AI in the Feishu ecosystem, along with native apps, self-hosted services, and small tools that solve problems I run into myself.",
     "about.philosophy":
-        'When building projects, I usually start by defining problem boundaries and the minimum runnable system, then gradually refine the structure, experience, and capabilities through iteration, rather than chasing a "perfect state" from the start.',
+        "Most of my projects begin with a concrete inconvenience: understand it, build a working answer, then keep refining it until I want to use it for a long time.",
     "projects.title": "Selected Projects",
     "projects.subtitle": "SaaS Author / Builder",
     "projects.hint": "Scroll to switch projects, or click a background card to bring it to front.",
@@ -99,8 +99,8 @@ const zh: Record<TranslationKey, string> = {
     "hero.location": "📍 中国 · 杭州",
     "about.title": "关于我",
     "about.desc":
-        "我是一名以工程为核心的 AI 产品构建者，主要工作在 SaaS 平台、macOS / iOS 应用以及 AI 辅助工作流 方向。我更关心系统是否清晰、是否稳定运行，以及能否在真实使用中持续演进。",
-    "about.philosophy": "在项目中，我更关注把需求和问题拆解清楚，先让系统跑起来，再通过持续迭代打磨好。",
+        "我在飞书生态里做企业 AI，也在工作之外写原生应用、自托管服务，以及一些用来解决自己问题的小工具。",
+    "about.philosophy": "很多项目都从一个具体麻烦开始：先把它弄明白，做出能用的答案，再慢慢改到自己愿意长期用下去。",
     "projects.title": "精选项目",
     "projects.subtitle": "SaaS 作者 / 构建者",
     "projects.hint": "滚动可切换项目，或点击后方卡片将其切到前台。",

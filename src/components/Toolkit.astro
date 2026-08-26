@@ -8,6 +8,13 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const subscriptionLedgerUrl = lang === "zh" ? "/zh/ai-subscriptions" : "/ai-subscriptions";
 const { snapshot, asOfDate } = loadSnapshot();
+
+// 首页只看最近 12 个月
+const timelineStart = (() => {
+    const date = new Date(`${asOfDate}T00:00:00Z`);
+    date.setUTCFullYear(date.getUTCFullYear() - 1);
+    return date.toISOString().slice(0, 10);
+})();
 ---
 
 <section id="toolkit" class="py-16 px-4 max-w-[50.4rem] mx-auto">
@@ -31,7 +38,7 @@ const { snapshot, asOfDate } = loadSnapshot();
                     spans={snapshot.coverageSpans}
                     asOf={asOfDate}
                     isZh={lang === "zh"}
-                    domainStart="2024-01-01"
+                    domainStart={timelineStart}
                     interactive={false}
                 />
                 <span class="toolkit-timeline-cta">{lang === "zh" ? "查看完整账本 →" : "View the full ledger →"}</span>

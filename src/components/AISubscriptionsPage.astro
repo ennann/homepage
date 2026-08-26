@@ -275,7 +275,6 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
                 </span>
             ))}
         </span>
-        <span class="meter-label">2022.08 — {asOfDate.slice(0, 7).replace("-", ".")}</span>
         <div class="meter-tip" role="tooltip" hidden>
             <b class="meter-tip-title"></b>
             <pre class="meter-tip-lines"></pre>
@@ -608,7 +607,7 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
     .meter {
         position: relative;
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-columns: auto minmax(0, 1fr);
         gap: 1.4rem;
         align-items: center;
         margin-top: 2.6rem;
@@ -655,6 +654,15 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
     }
 
     .m-col:hover .m-stack { opacity: 1; filter: brightness(1.08); }
+
+    /* Dock 式放大:JS 按鼠标距离写入 --mag,高斯衰减 */
+    .m-stack,
+    .m-empty {
+        transform: scaleY(var(--mag, 1));
+        transform-origin: bottom;
+        transition: transform 100ms ease-out;
+        will-change: transform;
+    }
 
     .m-stack {
         display: flex;
@@ -1008,7 +1016,6 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
         .stat-row > div + div { padding-left: 0; border-top: 1px solid var(--border-subtle); border-left: 0; }
 
         .meter { gap: 0.9rem; margin-top: 2rem; }
-        .meter-label:last-child { display: none; }
         .meter-bars { gap: 2px; }
         .stat-row dd { font-size: 1.8rem; }
 
@@ -1034,6 +1041,50 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
 </style>
 
 <script type="module" data-astro-rerun>
+    // 刻度带 Dock 式放大:鼠标正下方最大,按高斯衰减向两侧递减
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    for (const bars of document.querySelectorAll(".meter-bars")) {
+        if (bars.dataset.magWired || reducedMotion) continue;
+        bars.dataset.magWired = "1";
+        const cols = Array.from(bars.children);
+        let centers = null;
+        let lastX = null;
+        let raf = 0;
+
+        const measure = () => {
+            centers = cols.map((col) => {
+                const rect = col.getBoundingClientRect();
+                return rect.left + rect.width / 2;
+            });
+        };
+
+        const flush = () => {
+            raf = 0;
+            if (lastX === null || !centers) return;
+            for (let i = 0; i < cols.length; i += 1) {
+                const distance = Math.abs(lastX - centers[i]);
+                const scale = 1 + 0.7 * Math.exp(-((distance / 22) ** 2));
+                cols[i].style.setProperty("--mag", scale < 1.02 ? "1" : scale.toFixed(3));
+            }
+        };
+
+        bars.addEventListener("mouseenter", measure);
+        bars.addEventListener("mousemove", (event) => {
+            lastX = event.clientX;
+            if (!raf) raf = requestAnimationFrame(flush);
+        });
+        bars.addEventListener("mouseleave", () => {
+            lastX = null;
+            for (const col of cols) col.style.removeProperty("--mag");
+        });
+        window.addEventListener("resize", () => {
+            centers = null;
+        });
+        bars.addEventListener("mouseover", () => {
+            if (!centers) measure();
+        });
+    }
+
     // 刻度带悬浮卡
     for (const meter of document.querySelectorAll(".meter")) {
         const tip = meter.querySelector(".meter-tip");

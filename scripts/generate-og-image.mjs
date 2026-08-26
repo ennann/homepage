@@ -110,17 +110,17 @@ const page = (isZh) => `<!doctype html><html><head><meta charset="utf-8"><style>
     border-bottom:5px double rgba(23,25,27,.72); padding-bottom:8px; }
   .chart { flex:1; margin-top:24px; position:relative; background:#fbfcfd; border:1.5px solid #dfe8ee;
     border-radius:18px; padding:14px 26px 10px; }
-  .lane { display:grid; grid-template-columns:170px 1fr; align-items:center; height:44px;
+  .lane { display:grid; grid-template-columns:196px 1fr; align-items:center; height:44px;
     border-bottom:1.5px solid rgba(223,232,238,.6); }
   .lane:last-child { border-bottom:0; }
   .label { display:flex; align-items:center; gap:9px; }
-  .label b { font-size:19px; font-weight:700; }
-  .label small { font-family:"JetBrains Mono",Menlo,monospace; font-size:14px; color:#7b858b; }
+  .label b { font-size:19px; font-weight:700; white-space:nowrap; }
+  .label small { font-family:"JetBrains Mono",Menlo,monospace; font-size:14px; color:#7b858b; white-space:nowrap; }
   .track { position:relative; height:100%; }
   .grid { position:absolute; top:16px; bottom:14px; width:1.5px; background:rgba(223,232,238,.85); }
   .now { position:absolute; top:16px; bottom:14px; width:2px; background:rgba(23,25,27,.42); }
   .now b { position:absolute; top:2px; left:50%; transform:translate(-50%,0); background:#17191b; color:#f7f9fb;
-    font-family:"JetBrains Mono",Menlo,monospace; font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px; }
+    font-family:"JetBrains Mono",Menlo,monospace; font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px; white-space:nowrap; }
   .year { position:absolute; top:-2px; transform:translateX(-50%); font-family:"JetBrains Mono",Menlo,monospace;
     font-size:14px; color:#7b858b; }
   .foot { display:flex; justify-content:space-between; margin-top:16px;
@@ -134,11 +134,11 @@ const page = (isZh) => `<!doctype html><html><head><meta charset="utf-8"><style>
   </div>
   <div class="chart">
     <div style="position:relative;height:20px;">
-      ${yearTicks.map((t) => `<span class="year" style="left:calc(170px + (100% - 170px) * ${t.at} / 100)">${t.y}</span>`).join("")}
+      ${yearTicks.map((t) => `<span class="year" style="left:calc(196px + (100% - 196px) * ${t.at} / 100)">${t.y}</span>`).join("")}
     </div>
     ${laneRows}
-    ${yearTicks.map((t) => `<span class="grid" style="left:calc(26px + 170px + (100% - 52px - 170px) * ${t.at} / 100)"></span>`).join("")}
-    <span class="now" style="left:calc(26px + 170px + (100% - 52px - 170px) * ${nowAt} / 100)"><b>${isZh ? "今天" : "TODAY"}</b></span>
+    ${yearTicks.map((t) => `<span class="grid" style="left:calc(26px + 196px + (100% - 52px - 196px) * ${t.at} / 100)"></span>`).join("")}
+    <span class="now" style="left:calc(26px + 196px + (100% - 52px - 196px) * ${nowAt} / 100)"><b>${isZh ? "今天" : "TODAY"}</b></span>
   </div>
   <div class="foot"><span>${isZh ? "最近 12 个月 · LAST 12 MONTHS" : "LAST 12 MONTHS"}</span><span>yizhe.me/ai-subscriptions</span></div>
 </div>

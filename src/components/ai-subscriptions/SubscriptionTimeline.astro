@@ -1,0 +1,405 @@
+---
+interface CoverageSpan {
+    product: "chatgpt" | "claude" | "copilot";
+    planKey: string;
+    channel: string;
+    start: string;
+    end: string;
+    current?: boolean;
+}
+
+interface Props {
+    spans: CoverageSpan[];
+    asOf: string;
+    isZh: boolean;
+}
+
+const { spans, asOf, isZh } = Astro.props;
+const width = 900;
+const left = 172;
+const right = 32;
+const top = 46;
+const rowHeight = 47;
+const height = 262;
+const plotWidth = width - left - right;
+const domainStart = Date.parse("2022-08-01T00:00:00Z");
+const domainEnd = Date.parse("2026-10-01T00:00:00Z");
+const x = (date: string) => left + ((Date.parse(`${date}T00:00:00Z`) - domainStart) / (domainEnd - domainStart)) * plotWidth;
+
+const planLabels = {
+    "chatgpt-plus": "ChatGPT Plus",
+    "chatgpt-pro-20x": "ChatGPT Pro 20x",
+    "copilot-monthly": isZh ? "Copilot 月付" : "Copilot monthly",
+    "copilot-pro": "Copilot Pro",
+    "claude-pro": "Claude Pro",
+    "claude-max-5x": "Claude Max 5x",
+};
+
+const channelLabels = {
+    "github-direct": isZh ? "GitHub 直付" : "GitHub direct",
+    "openai-direct": isZh ? "OpenAI 直付" : "OpenAI direct",
+    "anthropic-direct": isZh ? "Anthropic 直付" : "Anthropic direct",
+    "apple-turkey": isZh ? "App Store · 土耳其区" : "App Store · Türkiye",
+    "apple-nigeria": isZh ? "App Store · 尼日利亚区" : "App Store · Nigeria",
+};
+
+const laneDefinitions = [
+    {
+        key: "chatgpt-plus",
+        title: "ChatGPT",
+        subtitle: "Plus",
+        spans: spans.filter((span) => span.planKey === "chatgpt-plus"),
+    },
+    {
+        key: "chatgpt-pro-20x",
+        title: "ChatGPT",
+        subtitle: "Pro 20x",
+        spans: spans.filter((span) => span.planKey === "chatgpt-pro-20x"),
+    },
+    {
+        key: "copilot",
+        title: "GitHub Copilot",
+        subtitle: isZh ? "月付 / Pro" : "Monthly / Pro",
+        spans: spans.filter((span) => span.product === "copilot"),
+    },
+    {
+        key: "claude",
+        title: "Claude",
+        subtitle: "Pro / Max 5x",
+        spans: spans.filter((span) => span.product === "claude"),
+    },
+];
+
+const yearTicks = [
+    { label: "2022", date: "2022-08-01" },
+    { label: "2023", date: "2023-01-01" },
+    { label: "2024", date: "2024-01-01" },
+    { label: "2025", date: "2025-01-01" },
+    { label: "2026", date: "2026-01-01" },
+];
+
+const formatDate = (date: string) =>
+    new Intl.DateTimeFormat(isZh ? "zh-CN" : "en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        timeZone: "UTC",
+    }).format(new Date(`${date}T00:00:00Z`));
+
+const mobileSpans = [...spans].sort((a, b) => a.start.localeCompare(b.start));
+const description = isZh
+    ? "四条泳道展示 ChatGPT Plus、ChatGPT Pro 20x、GitHub Copilot 和 Claude 的订阅覆盖时间，并区分直付与 App Store 渠道。"
+    : "Four lanes show subscription coverage for ChatGPT Plus, ChatGPT Pro 20x, GitHub Copilot, and Claude, distinguishing direct billing from App Store billing.";
+---
+
+<div class="timeline-desktop">
+    <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-labelledby="subscription-timeline-title subscription-timeline-desc">
+        <title id="subscription-timeline-title">{isZh ? "AI 订阅生命周期" : "AI subscription lifecycle"}</title>
+        <desc id="subscription-timeline-desc">{description}</desc>
+
+        <g aria-hidden="true">
+            {yearTicks.map((tick) => (
+                <g>
+                    <line x1={x(tick.date)} x2={x(tick.date)} y1={top - 17} y2={height - 28} class="year-grid" />
+                    <text x={x(tick.date)} y={top - 26} text-anchor="middle" class="year-label">{tick.label}</text>
+                </g>
+            ))}
+
+            {laneDefinitions.map((lane, laneIndex) => {
+                const y = top + laneIndex * rowHeight;
+                return (
+                    <g>
+                        <text x={left - 14} y={y + 13} text-anchor="end" class="lane-title">{lane.title}</text>
+                        <text x={left - 14} y={y + 28} text-anchor="end" class="lane-subtitle">{lane.subtitle}</text>
+                        <line x1={left} x2={width - right} y1={y + 18.5} y2={y + 18.5} class="lane-guide" />
+
+                        {lane.spans.map((span) => {
+                            const startX = x(span.start);
+                            const endX = x(span.end);
+                            const spanWidth = Math.max(3, endX - startX);
+                            const isDirect = span.channel.endsWith("direct");
+                            const label = planLabels[span.planKey as keyof typeof planLabels];
+                            return (
+                                <g>
+                                    <rect
+                                        x={startX}
+                                        y={y + 8}
+                                        width={spanWidth}
+                                        height="21"
+                                        rx="4"
+                                        class:list={[
+                                            "timeline-span",
+                                            `span-${span.product}`,
+                                            isDirect ? "is-direct" : "is-app-store",
+                                            span.current && "is-current",
+                                        ]}
+                                    />
+                                    {spanWidth > 86 && (
+                                        <text x={startX + 8} y={y + 22} class="span-label">{label}</text>
+                                    )}
+                                    {span.current && (
+                                        <circle cx={endX} cy={y + 18.5} r="4" class={`current-dot dot-${span.product}`} />
+                                    )}
+                                </g>
+                            );
+                        })}
+                    </g>
+                );
+            })}
+
+            <line x1={x(asOf)} x2={x(asOf)} y1={top - 8} y2={height - 27} class="today-line" />
+            <text x={x(asOf) - 5} y={height - 13} text-anchor="end" class="today-label">
+                {isZh ? "现在" : "Now"}
+            </text>
+        </g>
+    </svg>
+
+    <div class="timeline-key" aria-hidden="true">
+        <span><i class="key-line is-direct"></i>{isZh ? "官网直付" : "Direct billing"}</span>
+        <span><i class="key-line is-app-store"></i>App Store</span>
+        <span><i class="key-current"></i>{isZh ? "当前有效" : "Current"}</span>
+    </div>
+</div>
+
+<ol class="timeline-mobile" aria-label={isZh ? "AI 订阅生命周期明细" : "AI subscription lifecycle details"}>
+    {mobileSpans.map((span) => (
+        <li class:list={["mobile-event", `event-${span.product}`, span.current && "is-current"]}>
+            <span class="mobile-event-marker" aria-hidden="true"></span>
+            <div class="mobile-event-content">
+                <div class="mobile-event-heading">
+                    <strong>{planLabels[span.planKey as keyof typeof planLabels]}</strong>
+                    {span.current && <span class="current-badge">{isZh ? "当前" : "Current"}</span>}
+                </div>
+                <p>{formatDate(span.start)} — {formatDate(span.end)}</p>
+                <span>{channelLabels[span.channel as keyof typeof channelLabels]}</span>
+            </div>
+        </li>
+    ))}
+</ol>
+
+<style>
+    .timeline-desktop {
+        display: block;
+    }
+
+    .timeline-desktop svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+    }
+
+    .year-grid,
+    .lane-guide {
+        stroke: var(--border-subtle);
+        stroke-width: 0.75;
+        shape-rendering: crispEdges;
+        vector-effect: non-scaling-stroke;
+    }
+
+    .year-grid {
+        stroke-dasharray: 2 5;
+    }
+
+    .year-label,
+    .lane-subtitle,
+    .span-label,
+    .today-label {
+        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .year-label {
+        fill: var(--muted-text);
+        font-size: 10.5px;
+        font-weight: 500;
+    }
+
+    .lane-title {
+        fill: var(--text-primary);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .lane-subtitle {
+        fill: var(--muted-text);
+        font-size: 9.5px;
+    }
+
+    .timeline-span {
+        stroke-width: 1;
+        vector-effect: non-scaling-stroke;
+    }
+
+    .span-chatgpt { fill: var(--ai-chatgpt-soft); stroke: var(--ai-chatgpt); }
+    .span-claude { fill: var(--ai-claude-soft); stroke: var(--ai-claude); }
+    .span-copilot { fill: var(--ai-copilot-soft); stroke: var(--ai-copilot); }
+
+    .timeline-span.is-app-store {
+        stroke-dasharray: 3 2;
+    }
+
+    .timeline-span.is-current {
+        stroke-width: 1.75;
+    }
+
+    .span-label {
+        fill: var(--text-primary);
+        font-size: 9.5px;
+        font-weight: 600;
+        pointer-events: none;
+    }
+
+    .current-dot {
+        fill: var(--panel-bg);
+        stroke-width: 2;
+        vector-effect: non-scaling-stroke;
+    }
+
+    .dot-chatgpt { stroke: var(--ai-chatgpt); }
+    .dot-claude { stroke: var(--ai-claude); }
+    .dot-copilot { stroke: var(--ai-copilot); }
+
+    .today-line {
+        stroke: var(--text-secondary);
+        stroke-width: 1;
+        stroke-dasharray: 3 4;
+        vector-effect: non-scaling-stroke;
+    }
+
+    .today-label {
+        fill: var(--text-secondary);
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+    .timeline-key {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: -0.25rem;
+        color: var(--muted-text);
+        font-size: 0.72rem;
+    }
+
+    .timeline-key span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .key-line {
+        display: inline-block;
+        width: 1.5rem;
+        height: 0;
+        border-top: 1.5px solid var(--text-secondary);
+    }
+
+    .key-line.is-app-store {
+        border-top-style: dashed;
+    }
+
+    .key-current {
+        width: 0.45rem;
+        height: 0.45rem;
+        border: 1.5px solid var(--text-secondary);
+        border-radius: 50%;
+    }
+
+    .timeline-mobile {
+        display: none;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    @media (max-width: 800px) {
+        .timeline-desktop {
+            display: none;
+        }
+
+        .timeline-mobile {
+            display: grid;
+            gap: 0;
+        }
+
+        .mobile-event {
+            --event-color: var(--muted-text);
+            position: relative;
+            display: grid;
+            grid-template-columns: 1.1rem 1fr;
+            gap: 0.8rem;
+            min-height: 5rem;
+        }
+
+        .mobile-event::before {
+            content: "";
+            position: absolute;
+            left: 0.33rem;
+            top: 0.8rem;
+            bottom: -0.15rem;
+            width: 1px;
+            background: var(--border-subtle);
+        }
+
+        .mobile-event:last-child::before {
+            bottom: 2.4rem;
+        }
+
+        .event-chatgpt { --event-color: var(--ai-chatgpt); }
+        .event-claude { --event-color: var(--ai-claude); }
+        .event-copilot { --event-color: var(--ai-copilot); }
+
+        .mobile-event-marker {
+            position: relative;
+            z-index: 1;
+            width: 0.7rem;
+            height: 0.7rem;
+            margin-top: 0.45rem;
+            border: 2px solid var(--panel-bg);
+            border-radius: 50%;
+            background: var(--event-color);
+            box-shadow: 0 0 0 1px var(--event-color);
+        }
+
+        .mobile-event-content {
+            padding: 0 0 1.25rem;
+        }
+
+        .mobile-event-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.7rem;
+        }
+
+        .mobile-event-heading strong {
+            color: var(--text-primary);
+            font-size: 0.92rem;
+        }
+
+        .current-badge {
+            flex: none;
+            padding: 0.15rem 0.45rem;
+            border: 1px solid color-mix(in srgb, var(--event-color) 44%, var(--border-subtle));
+            border-radius: 999px;
+            color: var(--event-color);
+            font-size: 0.64rem;
+            font-weight: 700;
+        }
+
+        .mobile-event-content p {
+            margin: 0.28rem 0 0.18rem;
+            color: var(--text-secondary);
+            font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+            font-size: 0.72rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .mobile-event-content > span {
+            color: var(--muted-text);
+            font-size: 0.72rem;
+        }
+    }
+</style>

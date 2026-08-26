@@ -4,6 +4,7 @@ import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const subscriptionLedgerUrl = lang === "zh" ? "/zh/ai-subscriptions" : "/ai-subscriptions";
 ---
 
 <section id="toolkit" class="py-16 px-4 max-w-4xl mx-auto">
@@ -12,15 +13,24 @@ const t = useTranslations(lang);
     <div class="toolkit-groups">
         <!-- AI Subscriptions -->
         <div class="toolkit-group">
-            <h3 class="toolkit-label">{t("toolkit.aiSubs")}</h3>
+            <h3 class="toolkit-label">
+                {t("toolkit.aiSubs")}
+                <a href={subscriptionLedgerUrl} class="toolkit-label-link">
+                    {lang === "zh" ? "费用账本" : "Cost ledger"}
+                </a>
+            </h3>
             <div class="toolkit-items">
                 <div class="toolkit-pill">
                     <Icon name="simple-icons:openai" class="toolkit-icon icon-openai" />
-                    <span class="toolkit-name">ChatGPT Pro + Plus</span>
+                    <span class="toolkit-name">ChatGPT Pro 20x + Plus</span>
                 </div>
                 <div class="toolkit-pill">
                     <Icon name="simple-icons:claude" class="toolkit-icon icon-claude" />
-                    <span class="toolkit-name">Claude Max + Pro</span>
+                    <span class="toolkit-name">Claude Max 5x</span>
+                </div>
+                <div class="toolkit-pill">
+                    <Icon name="simple-icons:githubcopilot" class="toolkit-icon icon-copilot" />
+                    <span class="toolkit-name">GitHub Copilot Pro</span>
                 </div>
                 <div class="toolkit-pill">
                     <Icon name="simple-icons:googlegemini" class="toolkit-icon icon-gemini" />
@@ -263,6 +273,8 @@ const t = useTranslations(lang);
     .icon-openai { color: #1a1a1a; }
     :global(.dark) .icon-openai { color: #d4d4d8; }
     .icon-gemini { color: #4285f4; }
+    .icon-copilot { color: #111827; }
+    :global(.dark) .icon-copilot { color: #d4d4d8; }
     .icon-kimi { color: #1a1a1a; }
     :global(.dark) .icon-kimi { color: #d4d4d8; }
     .icon-ghostty { color: #6b5b50; }

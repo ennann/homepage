@@ -1,0 +1,286 @@
+---
+interface Transaction {
+    date: string;
+    scope: "core" | "mixed";
+    product: "chatgpt" | "claude" | "copilot" | "mixed";
+    estimatedCny: number;
+}
+
+interface Props {
+    records: Transaction[];
+    scope: "core" | "wide";
+    mobile?: boolean;
+    isZh: boolean;
+}
+
+const { records, scope, mobile = false, isZh } = Astro.props;
+const visibleRecords = scope === "core" ? records.filter((record) => record.scope === "core") : records;
+const productOrder = scope === "core"
+    ? (["chatgpt", "claude", "copilot"] as const)
+    : (["chatgpt", "claude", "copilot", "mixed"] as const);
+
+const width = mobile ? 360 : 900;
+const height = mobile ? 420 : 430;
+const left = mobile ? 38 : 58;
+const right = mobile ? 14 : 68;
+const plotWidth = width - left - right;
+
+const cumulativeTop = mobile ? 34 : 38;
+const cumulativeBottom = mobile ? 238 : 246;
+const cumulativeHeight = cumulativeBottom - cumulativeTop;
+const barsTop = mobile ? 292 : 308;
+const barsBottom = mobile ? 374 : 382;
+const barsHeight = barsBottom - barsTop;
+
+const monthStart = new Date("2022-08-01T00:00:00Z");
+const monthEnd = new Date("2026-08-01T00:00:00Z");
+const months: string[] = [];
+for (const cursor = new Date(monthStart); cursor <= monthEnd; cursor.setUTCMonth(cursor.getUTCMonth() + 1)) {
+    months.push(cursor.toISOString().slice(0, 7));
+}
+
+const monthly = months.map((month) => {
+    const values = Object.fromEntries(productOrder.map((product) => [product, 0])) as Record<string, number>;
+    for (const record of visibleRecords) {
+        if (record.date.slice(0, 7) !== month) continue;
+        values[record.product] = (values[record.product] ?? 0) + record.estimatedCny;
+    }
+    return {
+        month,
+        values,
+        total: Object.values(values).reduce((sum, value) => sum + value, 0),
+    };
+});
+
+let running = 0;
+const cumulative = monthly.map((item) => {
+    running += item.total;
+    return { month: item.month, total: running };
+});
+
+const total = cumulative.at(-1)?.total ?? 0;
+const cumulativeMax = total * 1.08;
+const monthlyMax = Math.max(...monthly.map((item) => item.total), 1) * 1.06;
+const step = plotWidth / months.length;
+const barWidth = Math.max(mobile ? 2.6 : 6, step * (mobile ? 0.62 : 0.68));
+
+const xForIndex = (index: number) => left + step * index + step / 2;
+const yCumulative = (value: number) => cumulativeBottom - (value / cumulativeMax) * cumulativeHeight;
+const yMonthly = (value: number) => barsBottom - (value / monthlyMax) * barsHeight;
+
+const linePath = cumulative
+    .map((point, index) => `${index === 0 ? "M" : "L"}${xForIndex(index).toFixed(2)},${yCumulative(point.total).toFixed(2)}`)
+    .join(" ");
+const areaPath = `${linePath} L${xForIndex(cumulative.length - 1).toFixed(2)},${cumulativeBottom} L${xForIndex(0).toFixed(2)},${cumulativeBottom} Z`;
+
+const barSegments = monthly.flatMap((item, monthIndex) => {
+    let stacked = 0;
+    return productOrder.map((product) => {
+        const value = item.values[product] ?? 0;
+        const start = stacked;
+        stacked += value;
+        return {
+            product,
+            month: item.month,
+            value,
+            x: xForIndex(monthIndex) - barWidth / 2,
+            y: yMonthly(stacked),
+            width: barWidth,
+            height: Math.max(0, yMonthly(start) - yMonthly(stacked)),
+        };
+    });
+});
+
+const yearTicks = months
+    .map((month, index) => ({ year: month.slice(0, 4), index, month }))
+    .filter((tick, index) => index === 0 || tick.month.endsWith("-01"))
+    .filter((tick) => !mobile || ["2022", "2024", "2026"].includes(tick.year));
+
+const compactCny = (value: number) => {
+    if (value >= 10000) return `¥${(value / 10000).toFixed(1)}万`;
+    if (value >= 1000) return `¥${(value / 1000).toFixed(1)}k`;
+    return `¥${Math.round(value)}`;
+};
+const totalLabel = new Intl.NumberFormat(isZh ? "zh-CN" : "en-US", {
+    style: "currency",
+    currency: "CNY",
+    maximumFractionDigits: 0,
+}).format(total);
+const chartId = `spend-history-${scope}-${mobile ? "mobile" : "desktop"}`;
+const title = isZh
+    ? `${scope === "core" ? "核心 AI" : "宽口径 AI"}累计与月度支出`
+    : `${scope === "core" ? "Core AI" : "Broad AI-related"} cumulative and monthly spend`;
+const description = isZh
+    ? `从 2022 年 8 月到 2026 年 8 月，累计估算人民币支出为 ${totalLabel}。上方折线表示累计支出，下方堆叠柱表示每月按产品拆分的支出。`
+    : `From August 2022 to August 2026, estimated cumulative spend reached ${totalLabel}. The upper line shows cumulative spend and the lower stacked bars show monthly spend by product.`;
+---
+
+<svg
+    class:list={["spend-history-chart", mobile ? "is-mobile" : "is-desktop"]}
+    viewBox={`0 0 ${width} ${height}`}
+    role="img"
+    aria-labelledby={`${chartId}-title ${chartId}-desc`}
+>
+    <title id={`${chartId}-title`}>{title}</title>
+    <desc id={`${chartId}-desc`}>{description}</desc>
+
+    <g aria-hidden="true">
+        <text x={left} y={mobile ? 15 : 17} class="panel-kicker">
+            {isZh ? "累计支出" : "Cumulative spend"}
+        </text>
+        <text x={left} y={barsTop - 17} class="panel-kicker">
+            {isZh ? "每月支出" : "Monthly spend"}
+        </text>
+
+        {[0, total / 2, total].map((value) => {
+            const y = yCumulative(value);
+            return (
+                <g>
+                    <line x1={left} x2={width - right} y1={y} y2={y} class="gridline" />
+                    <text x={left - 7} y={y + 3.5} text-anchor="end" class="axis-label">
+                        {compactCny(value)}
+                    </text>
+                </g>
+            );
+        })}
+
+        <path d={areaPath} class="cumulative-area" />
+        <path d={linePath} class="cumulative-line" />
+
+        {barSegments.filter((segment) => segment.value > 0).map((segment) => (
+            <rect
+                x={segment.x}
+                y={segment.y}
+                width={segment.width}
+                height={segment.height}
+                rx={mobile ? 0.8 : 1.2}
+                class={`bar bar-${segment.product}`}
+            />
+        ))}
+
+        <line x1={left} x2={width - right} y1={barsBottom + 0.5} y2={barsBottom + 0.5} class="baseline" />
+
+        {yearTicks.map((tick) => (
+            <g>
+                <line
+                    x1={xForIndex(tick.index)}
+                    x2={xForIndex(tick.index)}
+                    y1={barsBottom + 1}
+                    y2={barsBottom + 5}
+                    class="tickline"
+                />
+                <text x={xForIndex(tick.index)} y={barsBottom + 19} text-anchor="middle" class="axis-label year-label">
+                    {tick.year}
+                </text>
+            </g>
+        ))}
+
+        <circle
+            cx={xForIndex(cumulative.length - 1)}
+            cy={yCumulative(total)}
+            r={mobile ? 3.2 : 3.8}
+            class="endpoint-dot"
+        />
+        <text
+            x={width - right - 2}
+            y={yCumulative(total) - 10}
+            text-anchor="end"
+            class="endpoint-label"
+        >
+            {totalLabel}
+        </text>
+    </g>
+</svg>
+
+<style>
+    .spend-history-chart {
+        display: block;
+        width: 100%;
+        height: auto;
+        color: var(--text-primary);
+        overflow: visible;
+    }
+
+    .panel-kicker,
+    .axis-label,
+    .endpoint-label {
+        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .panel-kicker {
+        fill: var(--text-secondary);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+    }
+
+    .axis-label {
+        fill: var(--muted-text);
+        font-size: 10.5px;
+        font-weight: 500;
+    }
+
+    .year-label {
+        font-size: 11px;
+    }
+
+    .gridline,
+    .baseline,
+    .tickline {
+        stroke: var(--border-subtle);
+        stroke-width: 0.75;
+        shape-rendering: crispEdges;
+        vector-effect: non-scaling-stroke;
+    }
+
+    .cumulative-area {
+        fill: var(--ai-total-fill);
+        opacity: 0.58;
+    }
+
+    .cumulative-line {
+        fill: none;
+        stroke: var(--ai-total-line);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        vector-effect: non-scaling-stroke;
+    }
+
+    .endpoint-dot {
+        fill: var(--panel-bg);
+        stroke: var(--ai-total-line);
+        stroke-width: 2;
+        vector-effect: non-scaling-stroke;
+    }
+
+    .endpoint-label {
+        fill: var(--text-primary);
+        font-size: 12px;
+        font-weight: 700;
+        paint-order: stroke fill;
+        stroke: var(--panel-bg);
+        stroke-width: 3px;
+        stroke-linejoin: round;
+    }
+
+    .bar-chatgpt { fill: var(--ai-chatgpt); }
+    .bar-claude { fill: var(--ai-claude); }
+    .bar-copilot { fill: var(--ai-copilot); }
+    .bar-mixed { fill: var(--ai-mixed); }
+
+    @media (max-width: 639px) {
+        .panel-kicker {
+            font-size: 10.5px;
+        }
+
+        .axis-label {
+            font-size: 10px;
+        }
+
+        .endpoint-label {
+            font-size: 11.5px;
+        }
+    }
+</style>

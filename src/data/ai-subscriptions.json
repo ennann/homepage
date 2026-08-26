@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "asOf": "2026-08-26",
   "integrity": {
-    "coreRecordCount": 71,
-    "wideRecordCount": 74,
-    "coreEstimatedCny": 10192.54,
-    "wideEstimatedCny": 10592.68,
-    "currentEstimatedCny": 1766.3,
+    "coreRecordCount": 93,
+    "wideRecordCount": 96,
+    "coreEstimatedCny": 12214.52,
+    "wideEstimatedCny": 12614.66,
+    "currentEstimatedCny": 1781.3,
     "hasProvisionalFx": true
   },
   "currentSubscriptions": [
@@ -57,6 +57,18 @@
       "statusType": "renews",
       "statusDate": "2026-08-29",
       "provisionalFx": false
+    },
+    {
+      "product": "google",
+      "app": "Google AI Pro",
+      "planKey": "google-ai-pro",
+      "channel": "google-direct",
+      "currency": "CNY",
+      "originalAmount": 15,
+      "estimatedCny": 15,
+      "statusType": "through",
+      "statusDate": "2027-07-01",
+      "provisionalFx": false
     }
   ],
   "coverageSpans": [
@@ -65,29 +77,14 @@
       "planKey": "copilot-monthly",
       "channel": "github-direct",
       "start": "2022-08-22",
-      "end": "2022-12-25"
+      "end": "2025-10-19"
     },
     {
-      "product": "copilot",
-      "planKey": "copilot-monthly",
-      "channel": "github-direct",
-      "start": "2024-05-17",
-      "end": "2025-09-25"
-    },
-    {
-      "product": "copilot",
-      "planKey": "copilot-pro",
-      "channel": "github-direct",
-      "start": "2025-10-19",
-      "end": "2025-12-25"
-    },
-    {
-      "product": "copilot",
-      "planKey": "copilot-pro",
-      "channel": "apple-nigeria",
-      "start": "2025-12-29",
-      "end": "2026-08-29",
-      "current": true
+      "product": "chatgpt",
+      "planKey": "chatgpt-plus",
+      "channel": "apple-us",
+      "start": "2024-02-25",
+      "end": "2024-08-25"
     },
     {
       "product": "chatgpt",
@@ -98,12 +95,11 @@
       "current": true
     },
     {
-      "product": "chatgpt",
-      "planKey": "chatgpt-pro-20x",
-      "channel": "openai-direct",
-      "start": "2026-06-11",
-      "end": "2026-09-11",
-      "current": true
+      "product": "google",
+      "planKey": "google-ai-pro",
+      "channel": "google-direct",
+      "start": "2025-04-01",
+      "end": "2026-04-01"
     },
     {
       "product": "claude",
@@ -111,6 +107,21 @@
       "channel": "apple-nigeria",
       "start": "2025-09-29",
       "end": "2026-02-28"
+    },
+    {
+      "product": "copilot",
+      "planKey": "copilot-pro",
+      "channel": "github-direct",
+      "start": "2025-10-19",
+      "end": "2025-12-29"
+    },
+    {
+      "product": "copilot",
+      "planKey": "copilot-pro",
+      "channel": "apple-nigeria",
+      "start": "2025-12-29",
+      "end": "2026-08-29",
+      "current": true
     },
     {
       "product": "claude",
@@ -132,6 +143,29 @@
       "channel": "apple-nigeria",
       "start": "2026-05-10",
       "end": "2026-06-10"
+    },
+    {
+      "product": "chatgpt",
+      "planKey": "chatgpt-pro-20x",
+      "channel": "openai-direct",
+      "start": "2026-06-11",
+      "end": "2026-09-11",
+      "current": true
+    },
+    {
+      "product": "google",
+      "planKey": "google-ai-pro",
+      "channel": "google-direct",
+      "start": "2026-07-01",
+      "end": "2027-07-01",
+      "current": true
+    },
+    {
+      "product": "kimi",
+      "planKey": "kimi-code",
+      "channel": "moonshot-direct",
+      "start": "2026-07-20",
+      "end": "2026-08-20"
     },
     {
       "product": "claude",
@@ -209,6 +243,214 @@
       "provisionalFx": false
     },
     {
+      "date": "2022-12-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 69.6,
+      "servicePeriod": "2022-12-26 - 2023-01-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-01-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 67.8,
+      "servicePeriod": "2023-01-26 - 2023-02-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-02-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 69.3,
+      "servicePeriod": "2023-02-26 - 2023-03-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-03-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 68.8,
+      "servicePeriod": "2023-03-26 - 2023-04-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-04-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 69.2,
+      "servicePeriod": "2023-04-26 - 2023-05-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-05-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 70.6,
+      "servicePeriod": "2023-05-26 - 2023-06-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-06-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 72.2,
+      "servicePeriod": "2023-06-26 - 2023-07-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-07-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 71.5,
+      "servicePeriod": "2023-07-26 - 2023-08-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-08-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 72.9,
+      "servicePeriod": "2023-08-26 - 2023-09-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-09-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 73,
+      "servicePeriod": "2023-09-26 - 2023-10-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-10-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 73.2,
+      "servicePeriod": "2023-10-26 - 2023-11-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-11-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 71.5,
+      "servicePeriod": "2023-11-26 - 2023-12-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2023-12-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 71,
+      "servicePeriod": "2023-12-26 - 2024-01-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2024-02-27",
+      "scope": "core",
+      "product": "chatgpt",
+      "app": "ChatGPT",
+      "planKey": "chatgpt-plus",
+      "channel": "apple-us",
+      "currency": "USD",
+      "originalAmount": 19.99,
+      "estimatedCny": 143.88,
+      "servicePeriod": "2024-02-25 - 2024-03-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2024-03-25",
+      "scope": "core",
+      "product": "chatgpt",
+      "app": "ChatGPT",
+      "planKey": "chatgpt-plus",
+      "channel": "apple-us",
+      "currency": "USD",
+      "originalAmount": 19.99,
+      "estimatedCny": 144.13,
+      "servicePeriod": "2024-03-25 - 2024-04-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2024-04-25",
+      "scope": "core",
+      "product": "chatgpt",
+      "app": "ChatGPT",
+      "planKey": "chatgpt-plus",
+      "channel": "apple-us",
+      "currency": "USD",
+      "originalAmount": 19.99,
+      "estimatedCny": 144.85,
+      "servicePeriod": "2024-04-25 - 2024-05-25",
+      "provisionalFx": false
+    },
+    {
       "date": "2024-05-17",
       "scope": "core",
       "product": "copilot",
@@ -219,6 +461,19 @@
       "originalAmount": 3,
       "estimatedCny": 21.67,
       "servicePeriod": "2024-05-17 - 2024-05-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2024-05-25",
+      "scope": "core",
+      "product": "chatgpt",
+      "app": "ChatGPT",
+      "planKey": "chatgpt-plus",
+      "channel": "apple-us",
+      "currency": "USD",
+      "originalAmount": 19.99,
+      "estimatedCny": 144.78,
+      "servicePeriod": "2024-05-25 - 2024-06-25",
       "provisionalFx": false
     },
     {
@@ -248,6 +503,19 @@
       "provisionalFx": false
     },
     {
+      "date": "2024-06-25",
+      "scope": "core",
+      "product": "chatgpt",
+      "app": "ChatGPT",
+      "planKey": "chatgpt-plus",
+      "channel": "apple-us",
+      "currency": "USD",
+      "originalAmount": 19.99,
+      "estimatedCny": 145.19,
+      "servicePeriod": "2024-06-25 - 2024-07-25",
+      "provisionalFx": false
+    },
+    {
       "date": "2024-06-27",
       "scope": "core",
       "product": "copilot",
@@ -258,6 +526,19 @@
       "originalAmount": 10,
       "estimatedCny": 72.69,
       "servicePeriod": "2024-06-26 - 2024-07-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2024-07-25",
+      "scope": "core",
+      "product": "chatgpt",
+      "app": "ChatGPT",
+      "planKey": "chatgpt-plus",
+      "channel": "apple-us",
+      "currency": "USD",
+      "originalAmount": 19.99,
+      "estimatedCny": 144.55,
+      "servicePeriod": "2024-07-25 - 2024-08-25",
       "provisionalFx": false
     },
     {
@@ -479,6 +760,19 @@
       "originalAmount": 10,
       "estimatedCny": 72.64,
       "servicePeriod": "2025-03-26 - 2025-04-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2025-04-01",
+      "scope": "core",
+      "product": "google",
+      "app": "Google AI Pro",
+      "planKey": "google-ai-pro",
+      "channel": "google-direct",
+      "currency": "CNY",
+      "originalAmount": 20,
+      "estimatedCny": 20,
+      "servicePeriod": "1 Apr 2025 - 1 Apr 2026",
       "provisionalFx": false
     },
     {
@@ -1015,6 +1309,19 @@
       "provisionalFx": false
     },
     {
+      "date": "2026-07-01",
+      "scope": "core",
+      "product": "google",
+      "app": "Google AI Pro",
+      "planKey": "google-ai-pro",
+      "channel": "google-direct",
+      "currency": "CNY",
+      "originalAmount": 15,
+      "estimatedCny": 15,
+      "servicePeriod": "1 Jul 2026 - 1 Jul 2027",
+      "provisionalFx": false
+    },
+    {
       "date": "2026-07-11",
       "scope": "core",
       "product": "chatgpt",
@@ -1038,6 +1345,19 @@
       "originalAmount": 1979.99,
       "estimatedCny": 285.56,
       "servicePeriod": "Renews 13 Jul 2027",
+      "provisionalFx": false
+    },
+    {
+      "date": "2026-07-20",
+      "scope": "core",
+      "product": "kimi",
+      "app": "Kimi Code",
+      "planKey": "kimi-code",
+      "channel": "moonshot-direct",
+      "currency": "CNY",
+      "originalAmount": 199,
+      "estimatedCny": 199,
+      "servicePeriod": "20 Jul 2026 - 20 Aug 2026",
       "provisionalFx": false
     },
     {

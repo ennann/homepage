@@ -10,7 +10,7 @@ const subscriptionLedgerUrl = lang === "zh" ? "/zh/ai-subscriptions" : "/ai-subs
 const { snapshot, asOfDate } = loadSnapshot();
 ---
 
-<section id="toolkit" class="py-16 px-4 max-w-4xl mx-auto">
+<section id="toolkit" class="py-16 px-4 max-w-[50.4rem] mx-auto">
     <h2 class="text-3xl font-bold mb-10 text-center dark:text-white">{t("toolkit.title")}</h2>
 
     <div class="toolkit-groups">
@@ -391,7 +391,9 @@ const { snapshot, asOfDate } = loadSnapshot();
     .toolkit-timeline {
         --tl-row-h: 38px;
         --tl-axis-h: 26px;
-        --tl-label-w: 118px;
+        --tl-label-w: 138px;
+        /* logo 高度与厂商名行高一致 */
+        --tl-icon-size: 0.78rem;
         position: relative;
         display: block;
         padding: 1.1rem 1.2rem 2.1rem;
@@ -431,7 +433,7 @@ const { snapshot, asOfDate } = loadSnapshot();
     @media (max-width: 640px) {
         .toolkit-timeline {
             --tl-row-h: 34px;
-            --tl-label-w: 92px;
+            --tl-label-w: 108px;
             padding: 0.9rem 0.8rem 1.9rem;
         }
     }

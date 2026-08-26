@@ -1,1864 +1,1104 @@
 ---
 import { Icon } from "astro-icon/components";
-import snapshotJson from "../data/ai-subscriptions.json";
 import { getLangFromUrl } from "../i18n/utils";
-import SpendHistoryChart from "./ai-subscriptions/SpendHistoryChart.astro";
+import { loadSnapshot, YEARLY_PLANS } from "../lib/ai-subscriptions";
+import GoogleMark from "./ai-subscriptions/GoogleMark.astro";
 import SubscriptionTimeline from "./ai-subscriptions/SubscriptionTimeline.astro";
 
-type Scope = "core" | "wide";
-type Product = "chatgpt" | "claude" | "copilot" | "mixed";
-
-interface Transaction {
-    date: string;
-    scope: "core" | "mixed";
-    product: Product;
-    app: string;
-    planKey: string;
-    channel: string;
-    currency: string;
-    originalAmount: number;
-    estimatedCny: number;
-    servicePeriod: string | null;
-    provisionalFx: boolean;
-}
-
-interface CurrentSubscription {
-    product: Exclude<Product, "mixed">;
-    app: string;
-    planKey: string;
-    channel: string;
-    currency: string;
-    originalAmount: number;
-    estimatedCny: number;
-    statusType: "through" | "renews";
-    statusDate: string;
-    provisionalFx: boolean;
-}
-
-interface CoverageSpan {
-    product: "chatgpt" | "claude" | "copilot";
-    planKey: string;
-    channel: string;
-    start: string;
-    end: string;
-    current?: boolean;
-}
-
-interface Snapshot {
-    schemaVersion: number;
-    asOf: string;
-    integrity: {
-        coreRecordCount: number;
-        wideRecordCount: number;
-        coreEstimatedCny: number;
-        wideEstimatedCny: number;
-        currentEstimatedCny: number;
-        hasProvisionalFx: boolean;
-    };
-    currentSubscriptions: CurrentSubscription[];
-    coverageSpans: CoverageSpan[];
-    records: Transaction[];
-}
-
-const snapshot = snapshotJson as Snapshot;
 const lang = getLangFromUrl(Astro.url);
 const isZh = lang === "zh";
 const locale = isZh ? "zh-CN" : "en-US";
 
+const { snapshot, buildToday, asOfDate } = loadSnapshot();
+const thisYear = Number(buildToday.slice(0, 4));
+
 const copy = isZh
     ? {
-          kicker: "PERSONAL AI LEDGER · 2022—现在",
-          title: "我的 AI 订阅账本",
-          intro: "从第一笔 Copilot 到同时使用 ChatGPT Pro 20x、ChatGPT Plus、Claude Max 5x 与 Copilot Pro：这里记录我为 AI 服务实际支付过的每一笔费用。",
-          lifetime: "累计核心支出",
-          records: "笔付款",
-          since: "始于 2022 年 8 月",
-          updated: "数据更新",
-          estimated: "历史汇率估算",
-          originalCurrencies: "原币累计",
-          originalNote: "不同币种不直接相加",
-          coreScope: "核心 AI",
-          coreScopeHint: "只计以 AI 服务为主要购买目的的套餐",
-          wideScope: "含混合权益",
-          wideScopeHint: "额外计入 Microsoft 365 与 X Premium",
-          currentEyebrow: "01 · 正在订阅",
-          currentTitle: "4 个套餐当前有效",
-          currentIntro: "ChatGPT 有两个并行计划；Claude 当前为官网直付的 Max 5x。金额按各套餐最近一笔付款汇率估算。",
-          currentCycle: "当前周期",
-          perMonth: "约 / 月",
-          compositionEyebrow: "02 · 钱花到哪里",
-          compositionTitleCore: "ChatGPT 仍是最大支出，Claude 已升至 27.44%",
-          compositionTitleWide: "混合权益只占宽口径支出的不到 4%",
-          compositionIntro: "长度表示累计人民币支出占比。产品名称、金额与百分比直接标注，不需要依赖颜色判断。",
-          spendEyebrow: "03 · 支出如何增长",
-          spendTitle: "2026 年贡献了历史支出的",
-          spendIntro: "上方折线回答“总共花了多少”，下方堆叠柱回答“每个月花给了谁”。2023 年没有找到付费记录。",
-          cumulative: "累计与每月支出",
-          yearTotal: "年度小计",
-          timelineEyebrow: "04 · 套餐如何切换",
-          timelineTitle: "从单一 Copilot，到四个同时有效的计划",
-          timelineIntro: "泳道表示实际服务覆盖期：实线为官网直付，虚线为 App Store。空白不是零支出，而是没有找到付费覆盖。",
-          gapCopilot: "Copilot：2025 年底从 GitHub 直付切到 App Store，中间 3 天缺口。",
-          gapClaude: "Claude：Apple Max 5x 结束后停了 44 天，再恢复为 Anthropic 直付。",
-          overlapChatgpt: "ChatGPT：Plus 自 2024 年持续，2026 年 6 月加入 Pro 20x。",
-          ledgerEyebrow: "05 · 每一笔付款",
-          ledgerTitleCore: "全部 71 笔核心 AI 记录",
-          ledgerTitleWide: "全部 74 笔 AI 相关记录",
-          ledgerIntro: "按付款年份展开。公开数据只保留日期、产品、套餐、渠道、原币金额、人民币估算与服务期。",
-          date: "日期",
-          productPlan: "产品 / 套餐",
-          channel: "渠道",
-          original: "原币",
-          cny: "估算人民币",
-          service: "服务期",
-          payments: "笔",
-          methodologyEyebrow: "06 · 口径与隐私",
-          methodologyTitle: "可复核，但不公开私人收据",
-          coreDefinition: "核心口径：ChatGPT、Claude、GitHub Copilot 等以 AI 本身为主要购买目的的套餐。",
-          wideDefinition: "宽口径：在核心口径上加入 Microsoft 365 Family 与 X Premium 这类同时包含非 AI 权益的套餐。",
-          fxDefinition: "人民币金额按付款日可用的官方历史汇率逐笔估算，不等同于银行卡或礼品卡的真实人民币资金成本。",
-          privacyDefinition: "原始 PDF、发票截图、邮箱、地址、账号、订单号、收据号、付款卡和本地路径均保留在私人证据库，不进入网站。",
-          provisionalDefinition: "2026-08-25 的 Claude 美元付款暂用 FRED 当时最新的 08-21 报价；H.10 发布对应观测后会复核。",
-          sources: "数据源",
-          sourceList: "GitHub Payment History、OpenAI 与 Anthropic 收据、两个 App Store 账户的购买记录",
-          usageNote: "这是订阅费用账本，不代表模型调用量、Token 数或 Copilot 请求次数。",
-          usageLink: "查看最近 30 天 AI 使用量",
-          related: "相关文章：如何用其他区 App Store 订阅 AI 服务",
-          provisional: "汇率待复核",
-          current: "当前",
-          scopeStatusCore: "当前显示核心 AI 口径：71 笔，累计 ¥10,192.54。",
-          scopeStatusWide: "当前显示含混合权益口径：74 笔，累计 ¥10,592.68。",
+          heroTag: "AI SUBSCRIPTION LEDGER",
+          titleBefore: "我为 AI ",
+          titleVerb: "付费",
+          titleAfter: "这四年",
+          intro: "2022 年 8 月付了第一笔 Copilot，账越记越长，现在 5 个订阅同时在跑。",
+          statTotal: "TO DATE",
+          statYear: `IN ${thisYear}`,
+          statMonthly: "MONTHLY",
+          payments: "笔付款",
+          active: "个订阅在跑",
+          currentTitle: "正在订阅中",
+          perMonth: "/ 月",
+          yearly: "年付",
+          renews: "续费",
+          through: "服务至",
+          timelineTitle: "订阅时间线",
+          timelineIntro: "Copilot 一路没断，ChatGPT 从 2024 年加入，Google、Claude 陆续跟上，Kimi 试了一个月。",
+          mixTitle: "按产品",
+          mixIntro: "只算 AI 订阅本身，捆绑套餐没记进来。",
+          yearTitle: "按年份",
+          yearIntro: `${thisYear} 年还没过完，已经超过前四年的总和。`,
+          ongoing: "进行中",
+          fxNote: "非人民币金额按付款当月汇率折算成人民币",
+          updated: "更新于",
+          usage: "最近 30 天 AI 用量",
+          related: "跨区订阅怎么开",
       }
     : {
-          kicker: "PERSONAL AI LEDGER · 2022—NOW",
-          title: "My AI Subscription Ledger",
-          intro: "From my first Copilot payment to running ChatGPT Pro 20x, ChatGPT Plus, Claude Max 5x, and Copilot Pro at the same time, this is every payment I have made for AI services.",
-          lifetime: "Core lifetime spend",
-          records: "payments",
-          since: "Since August 2022",
-          updated: "Updated",
-          estimated: "Estimated at historical FX rates",
-          originalCurrencies: "Original currencies",
-          originalNote: "Different currencies are not added together",
-          coreScope: "Core AI",
-          coreScopeHint: "Plans purchased primarily for the AI service",
-          wideScope: "Including bundles",
-          wideScopeHint: "Also includes Microsoft 365 and X Premium",
-          currentEyebrow: "01 · ACTIVE NOW",
-          currentTitle: "Four plans are currently active",
-          currentIntro: "Two ChatGPT plans run in parallel, while Claude is currently billed directly as Max 5x. Estimates use the latest payment rate for each plan.",
-          currentCycle: "Current cycle",
-          perMonth: "approx. / month",
-          compositionEyebrow: "02 · WHERE THE MONEY WENT",
-          compositionTitleCore: "ChatGPT remains the largest cost; Claude is now 27.44%",
-          compositionTitleWide: "Bundles account for less than 4% of broad AI-related spend",
-          compositionIntro: "Length represents each product’s share of estimated CNY spend. Names, values, and percentages are directly labeled so color is never the only cue.",
-          spendEyebrow: "03 · HOW SPEND GREW",
-          spendTitle: "Share of lifetime spend paid in 2026",
-          spendIntro: "The upper line answers “how much in total”; the lower stacked bars answer “who was paid each month.” No paid records were found for 2023.",
-          cumulative: "Cumulative and monthly spend",
-          yearTotal: "Annual totals",
-          timelineEyebrow: "04 · HOW PLANS CHANGED",
-          timelineTitle: "From one Copilot plan to four active subscriptions",
-          timelineIntro: "Lanes represent actual service coverage. Solid outlines are direct billing; dashed outlines are App Store billing. Blank space means no paid coverage was found.",
-          gapCopilot: "Copilot moved from GitHub direct billing to the App Store at the end of 2025, with a three-day gap.",
-          gapClaude: "Claude paused for 44 days after Apple Max 5x ended, then resumed with Anthropic direct billing.",
-          overlapChatgpt: "ChatGPT Plus has run since 2024; Pro 20x was added in June 2026.",
-          ledgerEyebrow: "05 · EVERY PAYMENT",
-          ledgerTitleCore: "All 71 core AI payments",
-          ledgerTitleWide: "All 74 AI-related payments",
-          ledgerIntro: "Expand by payment year. Public data keeps only date, product, plan, channel, original amount, CNY estimate, and service period.",
-          date: "Date",
-          productPlan: "Product / plan",
-          channel: "Channel",
-          original: "Original",
-          cny: "Est. CNY",
-          service: "Service period",
+          heroTag: "AI SUBSCRIPTION LEDGER",
+          titleBefore: "four years of ",
+          titleVerb: "paying",
+          titleAfter: " for ai",
+          intro: "first charge: github copilot, august 2022. five subscriptions are running now.",
+          statTotal: "TO DATE",
+          statYear: `IN ${thisYear}`,
+          statMonthly: "MONTHLY",
           payments: "payments",
-          methodologyEyebrow: "06 · METHOD & PRIVACY",
-          methodologyTitle: "Auditable without publishing private receipts",
-          coreDefinition: "Core scope: plans where ChatGPT, Claude, GitHub Copilot, or another AI service is the main purpose of purchase.",
-          wideDefinition: "Broad scope: core AI plus bundles such as Microsoft 365 Family and X Premium that also contain substantial non-AI benefits.",
-          fxDefinition: "CNY values are estimated transaction by transaction using the official historical rate available for the payment date. They are not actual card or gift-card funding costs.",
-          privacyDefinition: "Original PDFs, invoice captures, email, address, account labels, order and receipt IDs, payment cards, and local paths remain in a private evidence archive and never enter this site.",
-          provisionalDefinition: "The Claude payment on August 25, 2026 temporarily uses FRED’s then-latest August 21 observation and will be checked when the matching H.10 observation is published.",
-          sources: "Sources",
-          sourceList: "GitHub Payment History, OpenAI and Anthropic receipts, and purchase history from two App Store accounts",
-          usageNote: "This ledger measures subscription cost, not model calls, tokens, or Copilot request volume.",
-          usageLink: "View my last 30 days of AI usage",
-          related: "Related: subscribing to AI services through another App Store region",
-          provisional: "FX pending review",
-          current: "Current",
-          scopeStatusCore: "Showing core AI: 71 payments and ¥10,192.54 estimated lifetime spend.",
-          scopeStatusWide: "Showing broad AI-related spend: 74 payments and ¥10,592.68 estimated lifetime spend.",
+          active: "active plans",
+          currentTitle: "active subscriptions",
+          perMonth: "/ mo",
+          yearly: "yearly",
+          renews: "Renews",
+          through: "Through",
+          timelineTitle: "the timeline",
+          timelineIntro: "copilot never stopped. chatgpt joined in 2024, google and claude followed, and kimi lasted one month.",
+          mixTitle: "by product",
+          mixIntro: "ai plans only, bundles not counted.",
+          yearTitle: "by year",
+          yearIntro: `${thisYear} is not over yet and already tops the previous four years combined.`,
+          ongoing: "ongoing",
+          fxNote: "non-cny amounts are converted at the month-of-payment rate",
+          updated: "updated",
+          usage: "ai usage, last 30 days",
+          related: "how i set up cross-region plans",
       };
 
 const planLabels: Record<string, string> = {
     "chatgpt-pro-20x": "ChatGPT Pro 20x",
-    "chatgpt-pro-20x-adjustment": isZh ? "ChatGPT Pro 20x · 调整" : "ChatGPT Pro 20x · adjustment",
     "chatgpt-plus": "ChatGPT Plus",
     "claude-max-5x": "Claude Max 5x",
     "claude-pro": "Claude Pro",
     "copilot-pro": "GitHub Copilot Pro",
     "copilot-monthly": isZh ? "GitHub Copilot 月付" : "GitHub Copilot monthly",
-    "microsoft-365-family": "Microsoft 365 Family",
-    "x-premium": "X Premium",
-    monthly: isZh ? "月付" : "Monthly",
+    "kimi-code": "Kimi Code",
+    "google-ai-pro": "Google AI Pro",
 };
 
 const channelLabels: Record<string, string> = {
     "github-direct": isZh ? "GitHub 直付" : "GitHub direct",
     "openai-direct": isZh ? "OpenAI 直付" : "OpenAI direct",
     "anthropic-direct": isZh ? "Anthropic 直付" : "Anthropic direct",
-    "apple-turkey": isZh ? "App Store · 土耳其区" : "App Store · Türkiye",
-    "apple-nigeria": isZh ? "App Store · 尼日利亚区" : "App Store · Nigeria",
+    "moonshot-direct": isZh ? "月之暗面直付" : "Moonshot direct",
+    "google-direct": isZh ? "Google 直付" : "Google direct",
+    "apple-us": isZh ? "App Store 美区" : "App Store US",
+    "apple-turkey": isZh ? "App Store 土区" : "App Store Türkiye",
+    "apple-nigeria": isZh ? "App Store 尼区" : "App Store Nigeria",
 };
 
-const productMeta: Record<Product, { label: string; icon?: string; symbol: string }> = {
-    chatgpt: { label: "ChatGPT", icon: "simple-icons:openai", symbol: "circle" },
-    claude: { label: "Claude", icon: "simple-icons:claude", symbol: "square" },
-    copilot: { label: "GitHub Copilot", icon: "simple-icons:githubcopilot", symbol: "diamond" },
-    mixed: { label: isZh ? "混合 AI 权益" : "Bundled AI benefits", symbol: "stripe" },
-};
+const productMeta = {
+    chatgpt: { label: "ChatGPT", icon: "simple-icons:openai" },
+    claude: { label: "Claude", icon: "simple-icons:claude" },
+    copilot: { label: "Copilot", icon: "simple-icons:githubcopilot" },
+    google: { label: "Google", icon: "simple-icons:google" },
+    kimi: { label: "Kimi", icon: "simple-icons:moonshotai" },
+} as const;
 
-const productOrder: Product[] = ["chatgpt", "claude", "copilot", "mixed"];
-const currencyOrder = ["USD", "PHP", "TRY", "NGN"];
-const currencySymbols: Record<string, string> = { USD: "US$", PHP: "₱", TRY: "₺", NGN: "₦" };
-
+const productOrder = ["chatgpt", "claude", "copilot", "google", "kimi"] as const;
+const currencyOrder = ["USD", "PHP", "TRY", "NGN", "CNY"];
+const currencySymbols: Record<string, string> = { USD: "US$", PHP: "₱", TRY: "₺", NGN: "₦", CNY: "¥" };
+const round2 = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
 const formatNumber = (value: number, digits = 2) =>
-    new Intl.NumberFormat(locale, {
-        minimumFractionDigits: digits,
-        maximumFractionDigits: digits,
-    }).format(value);
+    new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
 const formatCny = (value: number, digits = 2) => `¥${formatNumber(value, digits)}`;
 const formatOriginal = (currency: string, value: number) =>
     `${currencySymbols[currency] ?? `${currency} `}${formatNumber(value, 2)}`;
-const formatDate = (date: string, compact = false) =>
-    new Intl.DateTimeFormat(locale, compact
-        ? { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "UTC" }
-        : { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" }
-    ).format(new Date(`${date}T00:00:00Z`));
+const formatDate = (date: string) =>
+    new Intl.DateTimeFormat(locale, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        timeZone: "UTC",
+    }).format(new Date(`${date}T00:00:00Z`));
+const formatShortDate = (date: string) =>
+    date.slice(0, 4) === buildToday.slice(0, 4)
+        ? new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", timeZone: "UTC" }).format(
+              new Date(`${date}T00:00:00Z`),
+          )
+        : formatDate(date);
 
-const parseLooseDate = (value: string) => {
-    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
-    const parsed = new Date(`${value.replace("Sept", "Sep")} UTC`);
-    return Number.isNaN(parsed.valueOf()) ? null : parsed.toISOString().slice(0, 10);
-};
+const coreRecords = snapshot.records.filter((record) => record.scope === "core");
+const lifetimeTotal = round2(coreRecords.reduce((sum, record) => sum + record.estimatedCny, 0));
+const currentTotal = round2(snapshot.currentSubscriptions.reduce((sum, item) => sum + item.estimatedCny, 0));
+const thisYearTotal = round2(
+    coreRecords
+        .filter((record) => Number(record.date.slice(0, 4)) === thisYear)
+        .reduce((sum, record) => sum + record.estimatedCny, 0),
+);
+const activeProducts = productOrder.filter((product) =>
+    snapshot.currentSubscriptions.some((sub) => sub.product === product),
+);
 
-const formatServicePeriod = (servicePeriod: string | null) => {
-    if (!servicePeriod) return null;
-    if (servicePeriod.startsWith("Renews ")) {
-        const date = parseLooseDate(servicePeriod.slice(7));
-        return date ? `${isZh ? "续费" : "Renews"} ${formatDate(date)}` : servicePeriod;
-    }
-    const parts = servicePeriod.split(" - ");
-    if (parts.length === 2) {
-        const start = parseLooseDate(parts[0]);
-        const end = parseLooseDate(parts[1]);
-        if (start && end) return `${formatDate(start)} — ${formatDate(end)}`;
-    }
-    return servicePeriod;
-};
-
-const round2 = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
-
-function buildScope(scope: Scope) {
-    const records = scope === "core"
-        ? snapshot.records.filter((record) => record.scope === "core")
-        : snapshot.records;
-    const total = round2(records.reduce((sum, record) => sum + record.estimatedCny, 0));
-    const products = productOrder
-        .map((product) => {
-            const value = round2(
-                records
-                    .filter((record) => record.product === product)
-                    .reduce((sum, record) => sum + record.estimatedCny, 0),
-            );
-            return {
-                product,
-                value,
-                share: value > 0 ? (value / total) * 100 : 0,
-                count: records.filter((record) => record.product === product).length,
-            };
-        })
-        .filter((item) => item.value > 0);
-    const originals = currencyOrder
-        .map((currency) => ({
-            currency,
-            value: records
-                .filter((record) => record.currency === currency)
-                .reduce((sum, record) => sum + record.originalAmount, 0),
-        }))
-        .filter((item) => item.value > 0);
-    const years = [2022, 2023, 2024, 2025, 2026].map((year) => {
-        const yearRecords = records.filter((record) => Number(record.date.slice(0, 4)) === year);
+const products = productOrder
+    .map((product) => {
+        const records = coreRecords.filter((record) => record.product === product);
+        const value = round2(records.reduce((sum, record) => sum + record.estimatedCny, 0));
         return {
-            year,
-            records: yearRecords,
-            count: yearRecords.length,
-            total: round2(yearRecords.reduce((sum, record) => sum + record.estimatedCny, 0)),
+            product,
+            count: records.length,
+            value,
+            share: lifetimeTotal ? (value / lifetimeTotal) * 100 : 0,
         };
-    });
-    const ledgerYears = [...years].filter((year) => year.count > 0).reverse();
-    const share2026 = (years.find((year) => year.year === 2026)?.total ?? 0) / total * 100;
+    })
+    .filter((item) => item.count > 0)
+    .sort((a, b) => b.value - a.value);
 
-    return { scope, records, total, products, originals, years, ledgerYears, share2026 };
+const yearTotals = [2022, 2023, 2024, 2025, 2026].map((year) => {
+    const records = coreRecords.filter((record) => Number(record.date.slice(0, 4)) === year);
+    return {
+        year,
+        count: records.length,
+        value: round2(records.reduce((sum, record) => sum + record.estimatedCny, 0)),
+    };
+});
+const maxYearTotal = Math.max(...yearTotals.map((year) => year.value), 1);
+
+const originals = currencyOrder
+    .map((currency) => ({
+        currency,
+        value: coreRecords
+            .filter((record) => record.currency === currency)
+            .reduce((sum, record) => sum + record.originalAmount, 0),
+    }))
+    .filter((item) => item.value > 0);
+
+// 月度支出刻度带:2022-08 至今按付款月聚合,柱内按币种堆叠;平方根缩放保住早期月份的可读性
+interface MeterMonth {
+    key: string;
+    total: number;
+    byCurrency: { currency: string; cny: number; original: number }[];
 }
+const meterMonths: MeterMonth[] = [];
+{
+    const cursor = new Date(Date.UTC(2022, 7, 1));
+    const end = new Date(`${asOfDate.slice(0, 7)}-01T00:00:00Z`);
+    while (cursor <= end) {
+        const key = cursor.toISOString().slice(0, 7);
+        const records = coreRecords.filter((record) => record.date.startsWith(key));
+        meterMonths.push({
+            key,
+            total: round2(records.reduce((sum, record) => sum + record.estimatedCny, 0)),
+            byCurrency: currencyOrder
+                .map((currency) => {
+                    const matching = records.filter((record) => record.currency === currency);
+                    return {
+                        currency,
+                        cny: round2(matching.reduce((sum, record) => sum + record.estimatedCny, 0)),
+                        original: round2(matching.reduce((sum, record) => sum + record.originalAmount, 0)),
+                    };
+                })
+                .filter((item) => item.cny > 0),
+        });
+        cursor.setUTCMonth(cursor.getUTCMonth() + 1);
+    }
+}
+const maxMeterMonth = Math.max(...meterMonths.map((month) => month.total), 1);
+const meterHeight = (month: MeterMonth) =>
+    month.total > 0 ? Math.max(14, Math.sqrt(month.total / maxMeterMonth) * 100) : 0;
+const meterTipLines = (month: MeterMonth) =>
+    month.byCurrency
+        .map((item) =>
+            item.currency === "CNY"
+                ? `CNY ${formatOriginal("CNY", item.original)}`
+                : `${item.currency} ${formatOriginal(item.currency, item.original)} ≈ ${formatCny(item.cny)}`,
+        )
+        .join("\n");
 
-const scopes = { core: buildScope("core"), wide: buildScope("wide") };
-const updatedLabel = formatDate(snapshot.asOf);
-const currentTotal = snapshot.integrity.currentEstimatedCny;
-const relatedUrl = isZh
-    ? "/zh/blog/202603/app-store-ai-subscription"
-    : "/blog/202603/app-store-ai-subscription";
+const heroTotalRounded = Math.round(lifetimeTotal);
+const updatedLabel = formatDate(asOfDate);
+const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/202603/app-store-ai-subscription";
 ---
 
-<article class="ai-ledger-page" data-ai-ledger data-scope="core">
-    <header class="ledger-hero">
-        <div class="hero-copy">
-            <p class="ledger-kicker">{copy.kicker}</p>
-            <h1>{copy.title}</h1>
-            <p class="hero-intro">{copy.intro}</p>
+<article class="ai-ledger">
+    <header class="hero">
+        <p class="eyebrow"><i class="sq" aria-hidden="true"></i>{copy.heroTag} · 2022—{thisYear}</p>
+        <h1>{copy.titleBefore}<em>{copy.titleVerb}</em>{copy.titleAfter}</h1>
+        <p class="hero-intro">{copy.intro}</p>
 
-            <nav class="scope-switch" aria-label={isZh ? "统计口径" : "Accounting scope"}>
-                <a href="?scope=core" data-scope-target="core" aria-current="page">
-                    <span>{copy.coreScope}</span>
-                    <small>{copy.coreScopeHint}</small>
-                </a>
-                <a href="?scope=wide" data-scope-target="wide">
-                    <span>{copy.wideScope}</span>
-                    <small>{copy.wideScopeHint}</small>
-                </a>
-            </nav>
-            <p class="sr-only" data-scope-live aria-live="polite">{copy.scopeStatusCore}</p>
-        </div>
-
-        <div class="hero-ledger" aria-label={copy.lifetime}>
-            <p>{copy.lifetime}</p>
-            <strong data-scope-view="core">{formatCny(scopes.core.total)}</strong>
-            <strong data-scope-view="wide">{formatCny(scopes.wide.total)}</strong>
-            <div class="hero-total-meta">
-                <span data-scope-view="core">{scopes.core.records.length} {copy.records}</span>
-                <span data-scope-view="wide">{scopes.wide.records.length} {copy.records}</span>
-                <span>{copy.since}</span>
-            </div>
-            <div class="hero-stamp">
-                <span>{copy.updated}</span>
-                <time datetime={snapshot.asOf}>{updatedLabel}</time>
-                <small>{copy.estimated}</small>
-            </div>
-        </div>
-
-        {(["core", "wide"] as Scope[]).map((scope) => (
-            <div class="currency-ledger" data-scope-view={scope}>
-                <div class="currency-ledger-title">
-                    <span>{copy.originalCurrencies}</span>
-                    <small>{copy.originalNote}</small>
-                </div>
-                <div class="currency-ledger-values">
-                    {scopes[scope].originals.map((item) => (
-                        <span>
-                            <b>{item.currency}</b>
-                            {formatOriginal(item.currency, item.value)}
-                        </span>
-                    ))}
-                </div>
-            </div>
-        ))}
-    </header>
-
-    <section class="story-section current-section" aria-labelledby="current-title">
-        <div class="section-heading split-heading">
-            <div>
-                <p class="section-eyebrow">{copy.currentEyebrow}</p>
-                <h2 id="current-title">{copy.currentTitle}</h2>
-                <p>{copy.currentIntro}</p>
-            </div>
-            <div class="current-run-rate">
-                <span>{copy.currentCycle}</span>
-                <strong>{formatCny(currentTotal)}</strong>
-                <small>{copy.perMonth}</small>
-            </div>
-        </div>
-
-        <ol class="current-subscriptions">
-            {snapshot.currentSubscriptions.map((subscription) => {
-                const meta = productMeta[subscription.product];
-                return (
-                    <li class={`current-row product-${subscription.product}`}>
-                        <div class="current-product">
-                            {meta.icon && <Icon name={meta.icon} class="current-icon" aria-hidden="true" />}
-                            <div>
-                                <strong>{planLabels[subscription.planKey]}</strong>
-                                <span>{channelLabels[subscription.channel]}</span>
-                            </div>
-                        </div>
-                        <div class="current-status">
-                            <span class="status-dot" aria-hidden="true"></span>
-                            <span>
-                                {subscription.statusType === "renews"
-                                    ? (isZh ? "续费" : "Renews")
-                                    : (isZh ? "服务至" : "Through")}
-                                {" "}{formatDate(subscription.statusDate)}
-                            </span>
-                        </div>
-                        <div class="current-price">
-                            <strong>{formatOriginal(subscription.currency, subscription.originalAmount)}</strong>
-                            <span>≈ {formatCny(subscription.estimatedCny)}</span>
-                            {subscription.provisionalFx && <em>{copy.provisional}</em>}
-                        </div>
-                    </li>
-                );
-            })}
-        </ol>
-    </section>
-
-    <section class="story-section composition-section" aria-labelledby="composition-title">
-        <div class="section-heading">
-            <p class="section-eyebrow">{copy.compositionEyebrow}</p>
-            <h2 id="composition-title">
-                <span data-scope-view="core">{copy.compositionTitleCore}</span>
-                <span data-scope-view="wide">{copy.compositionTitleWide}</span>
-            </h2>
-            <p>{copy.compositionIntro}</p>
-        </div>
-
-        {(["core", "wide"] as Scope[]).map((scope) => (
-            <div class="composition-view" data-scope-view={scope}>
-                <div
-                    class="composition-bar"
-                    role="img"
-                    aria-label={scopes[scope].products
-                        .map((item) => `${productMeta[item.product].label} ${item.share.toFixed(2)}%`)
-                        .join(", ")}
-                >
-                    {scopes[scope].products.map((item) => (
-                        <span
-                            class={`composition-segment segment-${item.product}`}
-                            style={`width: ${item.share}%;`}
-                            title={`${productMeta[item.product].label}: ${formatCny(item.value)} · ${item.share.toFixed(2)}%`}
-                        >
-                            {item.share >= 10 && <b>{item.share.toFixed(1)}%</b>}
-                        </span>
-                    ))}
-                </div>
-
-                <ol class="composition-list">
-                    {scopes[scope].products.map((item, index) => {
-                        const meta = productMeta[item.product];
-                        return (
-                            <li>
-                                <span class={`product-symbol symbol-${meta.symbol}`} aria-hidden="true"></span>
-                                <span class="composition-rank">0{index + 1}</span>
-                                <strong>{meta.label}</strong>
-                                <span>{item.count} {copy.payments}</span>
-                                <b>{formatCny(item.value)}</b>
-                                <em>{item.share.toFixed(2)}%</em>
-                            </li>
-                        );
-                    })}
-                </ol>
-            </div>
-        ))}
-    </section>
-
-    <section class="story-section spend-section" aria-labelledby="spend-title">
-        <div class="section-heading split-heading">
-            <div>
-                <p class="section-eyebrow">{copy.spendEyebrow}</p>
-                <h2 id="spend-title">{copy.spendTitle}</h2>
-                <p>{copy.spendIntro}</p>
-            </div>
-            <strong class="year-share" data-scope-view="core">{scopes.core.share2026.toFixed(1)}%</strong>
-            <strong class="year-share" data-scope-view="wide">{scopes.wide.share2026.toFixed(1)}%</strong>
-        </div>
-
-        <div class="product-key" aria-label={isZh ? "图表产品图例" : "Chart product key"}>
-            {productOrder.map((product) => (
-                <span class:list={[product === "mixed" && "mixed-key"]}>
-                    <i class={`product-symbol symbol-${productMeta[product].symbol}`} aria-hidden="true"></i>
+        <ul class="stack-chips" aria-label={isZh ? "在用的 AI 产品" : "ai products in use"}>
+            {activeProducts.map((product) => (
+                <li class={`chip chip-${product}`}>
+                    {product === "google" ? <GoogleMark /> : <Icon name={productMeta[product].icon} aria-hidden="true" />}
                     {productMeta[product].label}
-                </span>
+                </li>
             ))}
-        </div>
-
-        {(["core", "wide"] as Scope[]).map((scope) => (
-            <div class="spend-view" data-scope-view={scope}>
-                <div class="chart-desktop">
-                    <SpendHistoryChart records={snapshot.records} scope={scope} isZh={isZh} />
-                </div>
-                <div class="chart-mobile">
-                    <SpendHistoryChart records={snapshot.records} scope={scope} isZh={isZh} mobile />
-                </div>
-
-                <div class="annual-strip" aria-label={copy.yearTotal}>
-                    {scopes[scope].years.map((year) => (
-                        <div class:list={[year.count === 0 && "is-empty"]}>
-                            <span>{year.year}</span>
-                            <strong>{formatCny(year.total)}</strong>
-                            <small>{year.count} {copy.payments}</small>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        ))}
-    </section>
-
-    <section class="story-section timeline-section" aria-labelledby="timeline-title">
-        <div class="section-heading">
-            <p class="section-eyebrow">{copy.timelineEyebrow}</p>
-            <h2 id="timeline-title">{copy.timelineTitle}</h2>
-            <p>{copy.timelineIntro}</p>
-        </div>
-
-        <SubscriptionTimeline spans={snapshot.coverageSpans} asOf={snapshot.asOf} isZh={isZh} />
-
-        <ul class="timeline-notes">
-            <li class="note-copilot">{copy.gapCopilot}</li>
-            <li class="note-claude">{copy.gapClaude}</li>
-            <li class="note-chatgpt">{copy.overlapChatgpt}</li>
         </ul>
-    </section>
 
-    <section class="story-section ledger-section" aria-labelledby="ledger-title">
-        <div class="section-heading">
-            <p class="section-eyebrow">{copy.ledgerEyebrow}</p>
-            <h2 id="ledger-title">
-                <span data-scope-view="core">{copy.ledgerTitleCore}</span>
-                <span data-scope-view="wide">{copy.ledgerTitleWide}</span>
-            </h2>
-            <p>{copy.ledgerIntro}</p>
-        </div>
-
-        {(["core", "wide"] as Scope[]).map((scope) => (
-            <div class="ledger-years" data-scope-view={scope}>
-                {scopes[scope].ledgerYears.map((year) => (
-                    <details open={year.year === 2026}>
-                        <summary>
-                            <span>{year.year}</span>
-                            <span>{year.count} {copy.payments}</span>
-                            <strong>{formatCny(year.total)}</strong>
-                        </summary>
-
-                        <div class="ledger-table" role="table" aria-label={`${year.year} ${copy.ledgerEyebrow}`}>
-                            <div class="ledger-table-head" role="row">
-                                <span role="columnheader">{copy.date}</span>
-                                <span role="columnheader">{copy.productPlan}</span>
-                                <span role="columnheader">{copy.channel}</span>
-                                <span role="columnheader">{copy.original}</span>
-                                <span role="columnheader">{copy.cny}</span>
-                            </div>
-                            <ol role="rowgroup">
-                                {[...year.records].reverse().map((record) => {
-                                    const serviceLabel = formatServicePeriod(record.servicePeriod);
-                                    return (
-                                        <li role="row" class={`ledger-row product-${record.product}`}>
-                                            <time role="cell" datetime={record.date}>{formatDate(record.date, true)}</time>
-                                            <span role="cell" class="ledger-product">
-                                                <i class={`product-symbol symbol-${productMeta[record.product].symbol}`} aria-hidden="true"></i>
-                                                <span>
-                                                    <strong>{record.app}</strong>
-                                                    <small>{planLabels[record.planKey]}</small>
-                                                    {serviceLabel && <em>{copy.service}: {serviceLabel}</em>}
-                                                </span>
-                                            </span>
-                                            <span role="cell" class="ledger-channel">{channelLabels[record.channel]}</span>
-                                            <span role="cell" class="ledger-original">{formatOriginal(record.currency, record.originalAmount)}</span>
-                                            <strong role="cell" class="ledger-cny">
-                                                {formatCny(record.estimatedCny)}
-                                                {record.provisionalFx && <em>{copy.provisional}</em>}
-                                            </strong>
-                                        </li>
-                                    );
-                                })}
-                            </ol>
-                        </div>
-                    </details>
-                ))}
-            </div>
-        ))}
-    </section>
-
-    <section class="story-section methodology-section" aria-labelledby="methodology-title">
-        <div class="section-heading">
-            <p class="section-eyebrow">{copy.methodologyEyebrow}</p>
-            <h2 id="methodology-title">{copy.methodologyTitle}</h2>
-        </div>
-
-        <div class="method-grid">
+        <dl class="stat-row">
             <div>
-                <span>01</span>
-                <p>{copy.coreDefinition}</p>
+                <dt>{copy.statTotal}</dt>
+                <dd data-countup={heroTotalRounded}>
+                    <span class="stat-currency">¥</span><span class="ledger-digits">{formatNumber(heroTotalRounded, 0)}</span>
+                </dd>
             </div>
             <div>
-                <span>02</span>
-                <p>{copy.wideDefinition}</p>
+                <dt>{copy.statYear}</dt>
+                <dd><span class="stat-currency">¥</span>{formatNumber(Math.round(thisYearTotal), 0)}</dd>
             </div>
             <div>
-                <span>03</span>
-                <p>{copy.fxDefinition}</p>
-            </div>
-            <div>
-                <span>04</span>
-                <p>{copy.privacyDefinition}</p>
-            </div>
-        </div>
-
-        <div class="provisional-note">
-            <span aria-hidden="true">※</span>
-            <p>{copy.provisionalDefinition}</p>
-        </div>
-
-        <dl class="source-list">
-            <div>
-                <dt>{copy.sources}</dt>
-                <dd>{copy.sourceList}</dd>
-            </div>
-            <div>
-                <dt>{copy.updated}</dt>
-                <dd><time datetime={snapshot.asOf}>{updatedLabel}</time></dd>
+                <dt>{copy.statMonthly}</dt>
+                <dd><span class="stat-currency">≈ ¥</span>{formatNumber(Math.round(currentTotal), 0)}</dd>
             </div>
         </dl>
 
-        <div class="ledger-links">
-            <p>{copy.usageNote}</p>
-            <div>
-                <a href="https://aiusage.yizhe.me" target="_blank" rel="noopener noreferrer">{copy.usageLink} ↗</a>
-                <a href={relatedUrl}>{copy.related} →</a>
-            </div>
+        <p class="fx-line" aria-label={isZh ? "原币累计" : "original-currency totals"}>
+            {originals.map((item, index) => (
+                <span>{index > 0 && " · "}<b>{item.currency}</b> {formatOriginal(item.currency, item.value)}</span>
+            ))}
+        </p>
+    </header>
+
+    <aside class="meter" aria-label={isZh ? "月度支出刻度" : "monthly spend readout"}>
+        <span class="meter-label">PAYMENTS · {coreRecords.length}</span>
+        <span class="meter-bars">
+            {meterMonths.map((month) => (
+                <span
+                    class="m-col"
+                    data-tip-title={`${month.key.replace("-", ".")} · ${month.total > 0 ? formatCny(month.total, 0) : "¥0"}`}
+                    data-tip-lines={meterTipLines(month)}
+                >
+                    {month.total > 0 ? (
+                        <i class="m-stack" style={`height:${meterHeight(month).toFixed(1)}%`}>
+                            {month.byCurrency.map((item) => (
+                                <b class={`cur-${item.currency}`} style={`flex-grow:${item.cny}`}></b>
+                            ))}
+                        </i>
+                    ) : (
+                        <i class="m-empty"></i>
+                    )}
+                </span>
+            ))}
+        </span>
+        <span class="meter-label">2022.08 — {asOfDate.slice(0, 7).replace("-", ".")}</span>
+        <div class="meter-tip" role="tooltip" hidden>
+            <b class="meter-tip-title"></b>
+            <pre class="meter-tip-lines"></pre>
+        </div>
+    </aside>
+
+    <section class="block" aria-labelledby="current-title">
+        <p class="eyebrow"><i class="sq" aria-hidden="true"></i>01 · RUNNING</p>
+        <h2 id="current-title">{copy.currentTitle}</h2>
+        <p class="block-meta">≈ {formatCny(Math.round(currentTotal), 0)} {copy.perMonth} · {snapshot.currentSubscriptions.length} {copy.active}</p>
+
+        <ol class="plan-rows">
+            {snapshot.currentSubscriptions.map((sub) => (
+                <li class={`plan-row tint-${sub.product}`}>
+                    <span class="plan-icon">{sub.product === "google" ? <GoogleMark /> : <Icon name={productMeta[sub.product].icon} aria-hidden="true" />}</span>
+                    <span class="plan-name">
+                        <strong>{planLabels[sub.planKey]}</strong>
+                        <small>{channelLabels[sub.channel]}{YEARLY_PLANS.has(sub.planKey) && ` · ${copy.yearly}`}</small>
+                    </span>
+                    <i class="plan-dots" aria-hidden="true"></i>
+                    <span class="plan-price">
+                        <strong>{formatOriginal(sub.currency, sub.originalAmount)}</strong>
+                        {sub.currency !== "CNY" && <small>≈ {formatCny(sub.estimatedCny)}</small>}
+                    </span>
+                    <span class="plan-date">
+                        <small>{sub.statusType === "renews" ? copy.renews : copy.through}</small>
+                        <time datetime={sub.statusDate}>{formatShortDate(sub.statusDate)}</time>
+                    </span>
+                </li>
+            ))}
+        </ol>
+    </section>
+
+    <section class="block" aria-labelledby="timeline-title">
+        <p class="eyebrow"><i class="sq" aria-hidden="true"></i>02 · TIMELINE</p>
+        <h2 id="timeline-title">{copy.timelineTitle}</h2>
+        <p class="block-intro">{copy.timelineIntro}</p>
+
+        <div class="timeline-shell">
+            <SubscriptionTimeline spans={snapshot.coverageSpans} asOf={asOfDate} isZh={isZh} />
         </div>
     </section>
+
+    <section class="block split" aria-label={isZh ? "支出统计" : "spending stats"}>
+        <div class="split-col" aria-labelledby="mix-title">
+            <p class="eyebrow"><i class="sq" aria-hidden="true"></i>03 · BY PRODUCT</p>
+            <h2 id="mix-title">{copy.mixTitle}</h2>
+            <p class="block-intro">{copy.mixIntro}</p>
+
+            <div class="mix-band" role="img" aria-label={products.map((item) => `${productMeta[item.product].label} ${item.share.toFixed(1)}%`).join(", ")}>
+                {products.map((item) => (
+                    <span class={`band-${item.product}`} style={`width:${item.share}%`}></span>
+                ))}
+            </div>
+
+            <ol class="mix-rows">
+                {products.map((item) => (
+                    <li class={`tint-${item.product}`}>
+                        <span class="plan-icon small">{item.product === "google" ? <GoogleMark /> : <Icon name={productMeta[item.product].icon} aria-hidden="true" />}</span>
+                        <span class="mix-name">
+                            <strong>{productMeta[item.product].label}</strong>
+                            <small>{item.count} {copy.payments}</small>
+                        </span>
+                        <i class="plan-dots" aria-hidden="true"></i>
+                        <b class="mix-value">{formatCny(item.value, 0)}</b>
+                        <em class="mix-share">{item.share.toFixed(1)}%</em>
+                    </li>
+                ))}
+            </ol>
+        </div>
+
+        <div class="split-col" aria-labelledby="year-title">
+            <p class="eyebrow"><i class="sq" aria-hidden="true"></i>04 · BY YEAR</p>
+            <h2 id="year-title">{copy.yearTitle}</h2>
+            <p class="block-intro">{copy.yearIntro}</p>
+
+            <div class="mix-band year-band" role="img" aria-label={yearTotals.map((item) => `${item.year} ${formatCny(item.value, 0)}`).join(", ")}>
+                {yearTotals.map((item, index) => (
+                    <span
+                        class:list={[item.year === thisYear && "band-now"]}
+                        style={`width:${(item.value / lifetimeTotal) * 100}%;--band-alpha:${0.14 + index * 0.12}`}
+                    ></span>
+                ))}
+            </div>
+
+            <ol class="year-rows">
+                {yearTotals.map((item) => (
+                    <li class:list={[item.year === thisYear && "is-now"]}>
+                        <time datetime={`${item.year}`}>{item.year}</time>
+                        <span class="year-bar"><i style={`width:${(item.value / maxYearTotal) * 100}%`}></i></span>
+                        <b>{formatCny(item.value, 0)}</b>
+                        <small>{item.year === thisYear ? copy.ongoing : `${item.count} ${copy.payments}`}</small>
+                    </li>
+                ))}
+            </ol>
+        </div>
+    </section>
+
+    <footer class="colophon">
+        <p>{copy.fxNote} · {copy.updated} <time datetime={asOfDate}>{updatedLabel}</time></p>
+        <nav aria-label={isZh ? "相关链接" : "related links"}>
+            <a href="https://aiusage.yizhe.me" target="_blank" rel="noopener noreferrer">{copy.usage} ↗</a>
+            <a href={relatedUrl}>{copy.related} →</a>
+        </nav>
+    </footer>
 </article>
 
-<script type="module" data-astro-rerun define:vars={{ coreMessage: copy.scopeStatusCore, wideMessage: copy.scopeStatusWide }}>
-    window.__aiLedgerAbortController?.abort();
-    const controller = new AbortController();
-    window.__aiLedgerAbortController = controller;
-    const signal = controller.signal;
-    const root = document.querySelector("[data-ai-ledger]");
-
-    const applyScope = (scope, updateUrl = false) => {
-        if (!root || (scope !== "core" && scope !== "wide")) return;
-        root.dataset.scope = scope;
-        root.querySelectorAll("[data-scope-target]").forEach((link) => {
-            if (link.dataset.scopeTarget === scope) link.setAttribute("aria-current", "page");
-            else link.removeAttribute("aria-current");
-        });
-
-        const live = root.querySelector("[data-scope-live]");
-        if (live) live.textContent = scope === "wide" ? wideMessage : coreMessage;
-
-        if (updateUrl) {
-            const url = new URL(window.location.href);
-            if (scope === "core") url.searchParams.delete("scope");
-            else url.searchParams.set("scope", "wide");
-            history.pushState({ ...history.state, aiLedgerScope: scope }, "", url);
-        }
-    };
-
-    root?.querySelectorAll("[data-scope-target]").forEach((link) => {
-        link.addEventListener("click", (event) => {
-            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-            event.preventDefault();
-            applyScope(link.dataset.scopeTarget, true);
-        }, { signal });
-    });
-
-    window.addEventListener("popstate", () => {
-        const scope = new URL(window.location.href).searchParams.get("scope") === "wide" ? "wide" : "core";
-        applyScope(scope);
-    }, { signal });
-
-    const initialScope = new URL(window.location.href).searchParams.get("scope") === "wide" ? "wide" : "core";
-    applyScope(initialScope);
-</script>
-
 <style>
-    .ai-ledger-page {
-        --ai-chatgpt: #23745f;
-        --ai-chatgpt-soft: #dceee8;
-        --ai-claude: #a95735;
-        --ai-claude-soft: #f4e3db;
-        --ai-copilot: #5264a5;
-        --ai-copilot-soft: #e3e6f4;
-        --ai-mixed: #707981;
-        --ai-mixed-soft: #e9ecee;
-        --ai-total-line: #426e7e;
-        --ai-total-fill: #dbe9ee;
-        width: min(100% - 2.5rem, 68rem);
+    /* Hallmark · redesign: ledger · themes: Studio (light) / Lumen Night (dark) · macrostructure: Long Document */
+    /* 数据色:Observable 10 色板(d3 官方 categorical),按占比与品牌联想分配 */
+    .ai-ledger {
+        --ink-chatgpt: #4269d0;
+        --ink-claude: #ff725c;
+        --ink-copilot: #a463f2;
+        --ink-google: #3ca951;
+        --ink-kimi: #efb118;
+        --ledger-accent: var(--brand);
+        --blueprint: rgba(31, 38, 44, 0.05);
+        /* 与博客详情页同款 display 栈(.font-display) */
+        --font-display: "Playfair Display", Georgia, "Times New Roman", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans SC", "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", serif;
+        width: min(100% - 2.5rem, 45rem);
         margin: 0 auto;
-        padding: 3.5rem 0 2rem;
+        padding: 4rem 0 6rem;
         color: var(--text-primary);
     }
 
-    :global(html.dark) .ai-ledger-page {
-        --ai-chatgpt: #68c3a7;
-        --ai-chatgpt-soft: #1b3b34;
-        --ai-claude: #e29a76;
-        --ai-claude-soft: #442c23;
-        --ai-copilot: #9aa9ea;
-        --ai-copilot-soft: #2c3355;
-        --ai-mixed: #a8b0b6;
-        --ai-mixed-soft: #30383d;
-        --ai-total-line: #91bdca;
-        --ai-total-fill: #223b44;
+    :global(html.dark) .ai-ledger {
+        --ink-chatgpt: #8aa8ec;
+        --ink-claude: #ff9683;
+        --ink-copilot: #bd93f7;
+        --ink-google: #6fc584;
+        --ink-kimi: #f5c95c;
+        --blueprint: rgba(237, 242, 244, 0.055);
     }
 
-    [data-scope="core"] [data-scope-view="wide"],
-    [data-scope="wide"] [data-scope-view="core"] {
-        display: none !important;
-    }
+    .tint-chatgpt { --product-ink: var(--ink-chatgpt); }
+    .tint-claude { --product-ink: var(--ink-claude); }
+    .tint-copilot { --product-ink: var(--ink-copilot); }
+    .tint-google { --product-ink: var(--ink-google); }
+    .tint-kimi { --product-ink: var(--ink-kimi); }
+    .chip-chatgpt { --product-ink: var(--ink-chatgpt); }
+    .chip-claude { --product-ink: var(--ink-claude); }
+    .chip-copilot { --product-ink: var(--ink-copilot); }
+    .chip-google { --product-ink: var(--ink-google); }
+    .chip-kimi { --product-ink: var(--ink-kimi); }
+    .band-chatgpt { background: var(--ink-chatgpt); }
+    .band-claude { background: var(--ink-claude); }
+    .band-copilot { background: var(--ink-copilot); }
+    .band-google { background: var(--ink-google); }
+    .band-kimi { background: var(--ink-kimi); }
 
-    .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    }
+    /* 图标用品牌色,数据条用图表色:OpenAI/Copilot/Kimi 墨色,Claude 官方陶土,Google 四色 G */
+    .ai-ledger { --brand-claude: #c96f4a; }
+    :global(html.dark) .ai-ledger { --brand-claude: #e29470; }
 
-    .ledger-hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.28fr) minmax(18rem, 0.72fr);
-        column-gap: clamp(2.5rem, 6vw, 6rem);
-        row-gap: 2.5rem;
-        padding: 2.2rem 0 5.6rem;
-        border-bottom: 1px solid var(--border-subtle);
-    }
+    .tint-chatgpt,
+    .chip-chatgpt,
+    .tint-copilot,
+    .chip-copilot,
+    .tint-kimi,
+    .chip-kimi { --icon-ink: var(--text-primary); }
 
-    .ledger-kicker,
-    .section-eyebrow {
+    .tint-claude,
+    .chip-claude { --icon-ink: var(--brand-claude); }
+
+    .tint-google,
+    .chip-google { --icon-ink: var(--muted-text); }
+
+    /* ── Eyebrow:mono 标签寄存器 ── */
+    .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         margin: 0 0 1rem;
-        color: var(--accent-hover);
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: 0.7rem;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-    }
-
-    .hero-copy h1 {
-        max-width: 10ch;
-        margin: 0;
-        font-family: "Fraunces", "Source Serif 4", Georgia, serif;
-        font-size: clamp(3.3rem, 7.2vw, 6.8rem);
-        font-weight: 430;
-        line-height: 0.9;
-        letter-spacing: -0.055em;
-        text-wrap: balance;
-    }
-
-    .hero-intro {
-        max-width: 39rem;
-        margin: 1.7rem 0 0;
-        color: var(--text-secondary);
-        font-family: "Source Serif 4", "Noto Sans SC", serif;
-        font-size: clamp(1.05rem, 1.5vw, 1.28rem);
-        line-height: 1.7;
-    }
-
-    .scope-switch {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.55rem;
-        max-width: 36rem;
-        margin-top: 2rem;
-        padding: 0.3rem;
-        border: 1px solid var(--border-subtle);
-        border-radius: 0.8rem;
-        background: color-mix(in srgb, var(--panel-subtle) 70%, transparent);
-    }
-
-    .scope-switch a {
-        min-height: 3.7rem;
-        padding: 0.65rem 0.8rem;
-        border: 1px solid transparent;
-        border-radius: 0.58rem;
         color: var(--muted-text);
-        text-decoration: none;
-        transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
-    }
-
-    .scope-switch a span,
-    .scope-switch a small {
-        display: block;
-    }
-
-    .scope-switch a span {
-        font-size: 0.84rem;
-        font-weight: 700;
-    }
-
-    .scope-switch a small {
-        margin-top: 0.18rem;
+        font-family: "JetBrains Mono", monospace;
         font-size: 0.66rem;
-        line-height: 1.35;
-    }
-
-    .scope-switch a[aria-current="page"] {
-        border-color: var(--border-subtle);
-        background: var(--panel-bg);
-        color: var(--text-primary);
-        box-shadow: var(--shadow-sm);
-    }
-
-    .scope-switch a:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 2px;
-    }
-
-    .hero-ledger {
-        align-self: start;
-        padding-top: 2.2rem;
-    }
-
-    .hero-ledger > p,
-    .current-run-rate > span,
-    .currency-ledger-title > span {
-        margin: 0;
-        color: var(--muted-text);
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
+        font-weight: 500;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
     }
 
-    .hero-ledger > strong {
-        display: block;
-        margin: 0.55rem 0 0;
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: clamp(2.5rem, 4.5vw, 4.25rem);
-        font-weight: 500;
-        line-height: 1;
-        letter-spacing: -0.055em;
-        font-variant-numeric: tabular-nums;
-    }
-
-    .hero-total-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.45rem 1rem;
-        margin-top: 0.85rem;
-        color: var(--text-secondary);
-        font-size: 0.78rem;
-    }
-
-    .hero-stamp {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0.2rem 0.65rem;
-        margin-top: 3rem;
-        padding-top: 1rem;
-        border-top: 1px solid var(--border-subtle);
-        color: var(--muted-text);
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: 0.68rem;
-    }
-
-    .hero-stamp time {
-        color: var(--text-primary);
-        text-align: right;
-    }
-
-    .hero-stamp small {
-        grid-column: 1 / -1;
-        color: var(--muted-text);
-    }
-
-    .currency-ledger {
-        grid-column: 1 / -1;
-        display: grid;
-        grid-template-columns: minmax(9rem, 0.38fr) 1fr;
-        gap: 1.5rem;
-        align-items: end;
-        padding-top: 1.25rem;
-        border-top: 1px solid var(--border-subtle);
-    }
-
-    .currency-ledger-title small {
-        display: block;
-        margin-top: 0.35rem;
-        color: var(--muted-text);
-        font-size: 0.67rem;
-    }
-
-    .currency-ledger-values {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 1rem;
-    }
-
-    .currency-ledger-values span {
-        display: grid;
-        gap: 0.32rem;
-        color: var(--text-primary);
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: 0.78rem;
-        font-variant-numeric: tabular-nums;
-        white-space: nowrap;
-    }
-
-    .currency-ledger-values b {
-        color: var(--muted-text);
-        font-size: 0.62rem;
-        letter-spacing: 0.08em;
-    }
-
-    .story-section {
-        padding: clamp(4.8rem, 9vw, 8rem) 0;
-        border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .section-heading {
-        max-width: 49rem;
-        margin-bottom: 3.1rem;
-    }
-
-    .section-heading h2 {
-        margin: 0;
-        font-family: "Fraunces", "Source Serif 4", Georgia, serif;
-        font-size: clamp(2.15rem, 4vw, 3.8rem);
-        font-weight: 440;
-        line-height: 1.08;
-        letter-spacing: -0.035em;
-        text-wrap: balance;
-    }
-
-    .section-heading > p:last-child,
-    .split-heading > div > p:last-child {
-        max-width: 44rem;
-        margin: 1.15rem 0 0;
-        color: var(--text-secondary);
-        font-family: "Source Serif 4", "Noto Sans SC", serif;
-        font-size: 1.03rem;
-        line-height: 1.72;
-    }
-
-    .split-heading {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        max-width: none;
-        gap: 3rem;
-        align-items: end;
-    }
-
-    .current-run-rate {
-        min-width: 14rem;
-        padding-left: 1.5rem;
-        border-left: 1px solid var(--border-subtle);
-    }
-
-    .current-run-rate strong {
-        display: block;
-        margin-top: 0.4rem;
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: 2rem;
-        font-weight: 500;
-        letter-spacing: -0.045em;
-        font-variant-numeric: tabular-nums;
-    }
-
-    .current-run-rate small {
-        color: var(--muted-text);
-        font-size: 0.7rem;
-    }
-
-    .current-subscriptions {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        border-top: 1px solid var(--border-subtle);
-    }
-
-    .current-row {
-        --product-color: var(--muted-text);
-        display: grid;
-        grid-template-columns: minmax(15rem, 1fr) minmax(12rem, 0.65fr) minmax(10rem, auto);
-        gap: 1.3rem;
-        align-items: center;
-        min-height: 6rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .product-chatgpt { --product-color: var(--ai-chatgpt); }
-    .product-claude { --product-color: var(--ai-claude); }
-    .product-copilot { --product-color: var(--ai-copilot); }
-    .product-mixed { --product-color: var(--ai-mixed); }
-
-    .current-product {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-    }
-
-    .current-icon {
-        width: 1.55rem;
-        height: 1.55rem;
-        flex: none;
-        color: var(--product-color);
-    }
-
-    .current-product strong,
-    .current-product span,
-    .current-price strong,
-    .current-price span {
-        display: block;
-    }
-
-    .current-product strong {
-        font-size: 1rem;
-    }
-
-    .current-product span,
-    .current-status,
-    .current-price span {
-        margin-top: 0.25rem;
-        color: var(--muted-text);
-        font-size: 0.75rem;
-    }
-
-    .current-status {
-        display: flex;
-        gap: 0.55rem;
-        align-items: center;
-        margin: 0;
-        color: var(--text-secondary);
-    }
-
-    .status-dot {
+    .sq {
         width: 0.5rem;
         height: 0.5rem;
         flex: none;
-        border-radius: 50%;
-        background: var(--product-color);
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--product-color) 15%, transparent);
+        background: var(--ledger-accent);
     }
 
-    .current-price {
-        text-align: right;
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+    /* ── Hero:蓝图网格上的账本封面 ── */
+    .hero {
+        position: relative;
+        padding: 3.2rem 0 2.6rem;
+    }
+
+    .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0 -3rem;
+        z-index: -1;
+        background:
+            linear-gradient(var(--blueprint) 1px, transparent 1px) 0 0 / 44px 44px,
+            linear-gradient(90deg, var(--blueprint) 1px, transparent 1px) 0 0 / 44px 44px;
+        mask-image: radial-gradient(120% 100% at 22% 0%, #000 40%, transparent 92%);
+        pointer-events: none;
+    }
+
+    .hero h1 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(2.4rem, 5vw, 3.4rem);
+        font-weight: 500;
+        letter-spacing: -0.025em;
+        line-height: 1.12;
+        text-wrap: balance;
+    }
+
+    .hero h1 em {
+        position: relative;
+        color: var(--ledger-accent);
+        font-style: normal;
+        white-space: nowrap;
+    }
+
+    .hero h1 em::after {
+        content: "";
+        position: absolute;
+        right: 0.04em;
+        bottom: 0.02em;
+        left: 0.04em;
+        height: 1px;
+        background: var(--ledger-accent);
+        transform-origin: left center;
+    }
+
+    .hero-intro {
+        max-width: 36em;
+        margin: 1.4rem 0 0;
+        color: var(--text-secondary);
+        font-size: clamp(0.95rem, 1.5vw, 1.04rem);
+        line-height: 1.85;
+    }
+
+    .stack-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1.6rem 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.42rem;
+        padding: 0.32rem 0.78rem;
+        border: 1px solid var(--border-subtle);
+        border-radius: 999px;
+        background: var(--panel-bg);
+        color: var(--text-secondary);
+        font-size: 0.78rem;
+        font-weight: 600;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .chip :global(svg) {
+        width: 0.85rem;
+        height: 0.85rem;
+        color: var(--icon-ink, var(--product-ink));
+    }
+
+    /* ── 三格 stat row:衬线数字 + mono 标签 + 会计双线收尾 ── */
+    .stat-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 2.6rem 0 0;
+        border-top: 1px solid var(--border-subtle);
+        border-bottom: 3px double color-mix(in srgb, var(--text-primary) 72%, transparent);
+    }
+
+    .stat-row > div {
+        min-width: 0;
+        padding: 1rem 1.2rem 1.1rem 0;
+    }
+
+    .stat-row > div + div {
+        padding-left: 1.2rem;
+        border-left: 1px solid var(--border-subtle);
+    }
+
+    .stat-row dt {
+        margin: 0 0 0.4rem;
+        color: var(--muted-text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.62rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+    }
+
+    .stat-row dd {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    .stat-currency {
+        margin-right: 0.05em;
+        color: var(--text-secondary);
+        font-size: 0.55em;
+    }
+
+    .fx-line {
+        margin: 1.1rem 0 0;
+        color: var(--muted-text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.66rem;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.9;
+    }
+
+    .fx-line b { font-weight: 500; opacity: 0.65; }
+
+    /* ── 月度支出刻度带:柱内按币种堆叠 ── */
+    .meter {
+        position: relative;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 1.4rem;
+        align-items: center;
+        margin-top: 2.6rem;
+        padding: 0.75rem 0;
+        border-block: 1px solid var(--border-subtle);
+        --cur-USD: #4269d0;
+        --cur-PHP: #efb118;
+        --cur-TRY: #ff725c;
+        --cur-NGN: #a463f2;
+        --cur-CNY: #3ca951;
+    }
+
+    :global(html.dark) .meter {
+        --cur-USD: #8aa8ec;
+        --cur-PHP: #f5c95c;
+        --cur-TRY: #ff9683;
+        --cur-NGN: #bd93f7;
+        --cur-CNY: #6fc584;
+    }
+
+    .meter-label {
+        color: var(--muted-text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.6rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        white-space: nowrap;
+    }
+
+    .meter-bars {
+        display: flex;
+        gap: 3px;
+        align-items: stretch;
+        height: 30px;
+    }
+
+    .m-col {
+        position: relative;
+        display: flex;
+        flex: 1;
+        min-width: 2px;
+        align-items: flex-end;
+        cursor: pointer;
+    }
+
+    .m-col:hover .m-stack { opacity: 1; filter: brightness(1.08); }
+
+    .m-stack {
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 1px;
+        opacity: 0.88;
+    }
+
+    .m-stack b { flex-basis: 0; min-height: 1px; }
+    .cur-USD { background: var(--cur-USD); }
+    .cur-PHP { background: var(--cur-PHP); }
+    .cur-TRY { background: var(--cur-TRY); }
+    .cur-NGN { background: var(--cur-NGN); }
+    .cur-CNY { background: var(--cur-CNY); }
+
+    .m-empty {
+        width: 100%;
+        height: 2px;
+        background: color-mix(in srgb, var(--muted-text) 25%, transparent);
+    }
+
+    .meter-tip {
+        position: absolute;
+        z-index: 9;
+        display: grid;
+        gap: 0.2rem;
+        padding: 0.5rem 0.7rem;
+        border: 1px solid var(--border-subtle);
+        border-radius: 0.6rem;
+        background: var(--panel-bg);
+        box-shadow: var(--shadow-md);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 120ms ease;
+    }
+
+    .meter-tip[hidden] { display: none; }
+    .meter-tip.is-show { opacity: 1; }
+
+    .meter-tip-title {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        font-weight: 600;
         font-variant-numeric: tabular-nums;
     }
 
-    .current-price strong {
-        font-size: 0.92rem;
-        font-weight: 600;
+    .meter-tip-lines {
+        margin: 0;
+        color: var(--muted-text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.62rem;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.6;
+        white-space: pre;
     }
 
-    .current-price em,
-    .ledger-cny em {
-        display: block;
-        margin-top: 0.3rem;
-        color: var(--ai-claude);
-        font-size: 0.58rem;
-        font-style: normal;
-        font-weight: 700;
-        letter-spacing: 0.04em;
+    .meter-tip-lines:empty { display: none; }
+
+    /* ── Section 骨架 ── */
+    .block { padding-top: 4.4rem; }
+
+    .block h2,
+    .split-col h2 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(1.6rem, 3vw, 2.1rem);
+        font-weight: 500;
+        letter-spacing: -0.025em;
+        line-height: 1.15;
     }
 
-    .composition-bar {
-        display: flex;
-        height: 3.4rem;
-        overflow: hidden;
-        border: 1px solid var(--border-subtle);
+    .block-meta {
+        margin: 0.7rem 0 0;
+        color: var(--muted-text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .block-intro {
+        max-width: 46em;
+        margin: 0.9rem 0 0;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.8;
+    }
+
+    /* ── 账目行:点线把名字和金额缝起来 ── */
+    .plan-rows {
+        margin: 1.7rem 0 0;
+        padding: 0;
+        border-top: 1px solid var(--border-subtle);
+        list-style: none;
+    }
+
+    .plan-row {
+        display: grid;
+        grid-template-columns: auto auto minmax(1.5rem, 1fr) auto auto;
+        gap: 1rem;
+        align-items: center;
+        padding: 0.85rem 0.15rem;
+        border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 72%, transparent);
+        transition: background-color 160ms ease;
+    }
+
+    .plan-row:hover { background: color-mix(in srgb, var(--product-ink) 4%, transparent); }
+
+    .plan-dots {
+        align-self: center;
+        height: 2px;
+        background-image: radial-gradient(circle, color-mix(in srgb, var(--muted-text) 52%, transparent) 1px, transparent 1.1px);
+        background-size: 7px 2px;
+        background-repeat: repeat-x;
+        background-position: center;
+    }
+
+    .plan-icon {
+        display: grid;
+        place-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border: 1px solid color-mix(in srgb, var(--icon-ink, var(--product-ink)) 22%, var(--border-subtle));
         border-radius: 0.7rem;
+        background: color-mix(in srgb, var(--icon-ink, var(--product-ink)) 7%, var(--panel-bg));
+        color: var(--icon-ink, var(--product-ink));
+    }
+
+    .plan-icon :global(svg) { width: 1rem; height: 1rem; }
+    .plan-icon.small { width: 1.85rem; height: 1.85rem; border-radius: 0.58rem; }
+    .plan-icon.small :global(svg) { width: 0.8rem; height: 0.8rem; }
+
+    .plan-name { display: grid; gap: 0.14rem; min-width: 0; }
+    .plan-name strong { font-size: 0.93rem; font-weight: 650; letter-spacing: -0.01em; }
+    .plan-name small { color: var(--muted-text); font-size: 0.71rem; }
+
+    .plan-price { display: grid; gap: 0.14rem; text-align: right; }
+    .plan-price strong {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.88rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+    .plan-price small {
+        color: var(--muted-text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.69rem;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .plan-date {
+        display: grid;
+        gap: 0.14rem;
+        min-width: 5.4rem;
+        text-align: right;
+    }
+    .plan-date small { color: var(--muted-text); font-size: 0.67rem; }
+    .plan-date time {
+        color: var(--text-secondary);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.77rem;
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* ── 时间线容器:hairline + 内部微光 ── */
+    .timeline-shell {
+        margin-top: 1.7rem;
+        padding: 1.4rem 1.5rem 1.1rem;
+        border: 1px solid var(--border-subtle);
+        border-radius: 0.9rem;
+        background:
+            radial-gradient(70% 90% at 50% 0%, color-mix(in srgb, var(--ledger-accent) 4.5%, transparent) 0%, transparent 68%),
+            var(--panel-bg);
+        overflow: hidden;
+    }
+
+    /* ── 统计区:窄栏下纵向堆叠,与整页内容流一致 ── */
+    .split-col { min-width: 0; }
+    .split-col + .split-col { margin-top: 4.4rem; }
+
+    .mix-band {
+        display: flex;
+        height: 0.5rem;
+        margin-top: 1.6rem;
+        overflow: hidden;
+        border-radius: 999px;
         background: var(--panel-subtle);
     }
 
-    .composition-segment {
-        display: grid;
-        place-items: center;
-        min-width: 2px;
-        transition: filter 160ms ease;
-    }
+    .mix-band span + span { border-left: 2px solid var(--page-bg); }
 
-    .composition-segment + .composition-segment {
-        box-shadow: -1px 0 0 color-mix(in srgb, white 45%, transparent);
-    }
+    .year-band span { background: color-mix(in srgb, var(--text-primary) calc(var(--band-alpha, 0.2) * 100%), var(--panel-subtle)); }
+    .year-band .band-now { background: var(--ledger-accent); }
 
-    .composition-segment b {
-        color: white;
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: 0.72rem;
-        font-variant-numeric: tabular-nums;
-        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
-    }
-
-    .segment-chatgpt { background: var(--ai-chatgpt); }
-    .segment-claude { background: var(--ai-claude); }
-    .segment-copilot { background: var(--ai-copilot); }
-    .segment-mixed {
-        background-color: var(--ai-mixed);
-        background-image: repeating-linear-gradient(135deg, transparent 0 5px, rgba(255, 255, 255, 0.25) 5px 7px);
-    }
-
-    .composition-list {
-        list-style: none;
-        margin: 2rem 0 0;
+    .mix-rows,
+    .year-rows {
+        margin: 0.9rem 0 0;
         padding: 0;
         border-top: 1px solid var(--border-subtle);
-    }
-
-    .composition-list li {
-        display: grid;
-        grid-template-columns: 1rem 2.3rem minmax(10rem, 1fr) 7rem 9rem 5rem;
-        gap: 1rem;
-        align-items: baseline;
-        min-height: 4.5rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .product-symbol {
-        --symbol-color: var(--muted-text);
-        display: inline-block;
-        width: 0.62rem;
-        height: 0.62rem;
-        flex: none;
-        background: var(--symbol-color);
-    }
-
-    .symbol-circle { --symbol-color: var(--ai-chatgpt); border-radius: 50%; }
-    .symbol-square { --symbol-color: var(--ai-claude); border-radius: 2px; }
-    .symbol-diamond { --symbol-color: var(--ai-copilot); transform: rotate(45deg) scale(0.78); border-radius: 1px; }
-    .symbol-stripe {
-        --symbol-color: var(--ai-mixed);
-        border-radius: 1px;
-        background: repeating-linear-gradient(135deg, var(--ai-mixed) 0 2px, transparent 2px 4px);
-        outline: 1px solid var(--ai-mixed);
-    }
-
-    .composition-rank {
-        color: var(--muted-text);
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: 0.7rem;
-    }
-
-    .composition-list strong {
-        font-size: 1rem;
-    }
-
-    .composition-list li > span:nth-of-type(3) {
-        color: var(--muted-text);
-        font-size: 0.75rem;
-    }
-
-    .composition-list li > b,
-    .composition-list li > em {
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-variant-numeric: tabular-nums;
-        text-align: right;
-    }
-
-    .composition-list li > b {
-        font-size: 0.9rem;
-    }
-
-    .composition-list li > em {
-        color: var(--muted-text);
-        font-size: 0.78rem;
-        font-style: normal;
-    }
-
-    .year-share {
-        align-self: center;
-        color: var(--accent-hover);
-        font-family: "Fraunces", "Source Serif 4", serif;
-        font-size: clamp(4.8rem, 9vw, 8rem);
-        font-weight: 350;
-        line-height: 0.82;
-        letter-spacing: -0.07em;
-    }
-
-    .product-key {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem 1.2rem;
-        margin: -1rem 0 1.2rem;
-        color: var(--text-secondary);
-        font-size: 0.72rem;
-    }
-
-    .product-key span {
-        display: inline-flex;
-        gap: 0.48rem;
-        align-items: center;
-    }
-
-    [data-scope="core"] .mixed-key {
-        display: none;
-    }
-
-    .chart-mobile {
-        display: none;
-    }
-
-    .annual-strip {
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        margin-top: 1.5rem;
-        border-top: 1px solid var(--border-subtle);
-        border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .annual-strip > div {
-        display: grid;
-        gap: 0.4rem;
-        min-height: 6.2rem;
-        padding: 1.1rem 1.2rem;
-        border-right: 1px solid var(--border-subtle);
-    }
-
-    .annual-strip > div:last-child {
-        border-right: 0;
-    }
-
-    .annual-strip span,
-    .annual-strip strong,
-    .annual-strip small {
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-variant-numeric: tabular-nums;
-    }
-
-    .annual-strip span,
-    .annual-strip small {
-        color: var(--muted-text);
-        font-size: 0.65rem;
-    }
-
-    .annual-strip strong {
-        align-self: end;
-        font-size: 0.86rem;
-    }
-
-    .annual-strip .is-empty strong {
-        color: var(--muted-text);
-    }
-
-    .timeline-notes {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
-        list-style: none;
-        margin: 2.4rem 0 0;
-        padding: 0;
-    }
-
-    .timeline-notes li {
-        position: relative;
-        padding: 1rem 1.1rem 1rem 1.3rem;
-        border-left: 2px solid var(--note-color, var(--border-subtle));
-        background: color-mix(in srgb, var(--panel-subtle) 58%, transparent);
-        color: var(--text-secondary);
-        font-family: "Source Serif 4", "Noto Sans SC", serif;
-        font-size: 0.86rem;
-        line-height: 1.6;
-    }
-
-    .note-copilot { --note-color: var(--ai-copilot); }
-    .note-claude { --note-color: var(--ai-claude); }
-    .note-chatgpt { --note-color: var(--ai-chatgpt); }
-
-    .ledger-years {
-        border-top: 1px solid var(--border-subtle);
-    }
-
-    .ledger-years details {
-        border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .ledger-years summary {
-        display: grid;
-        grid-template-columns: 1fr auto auto;
-        gap: 2rem;
-        align-items: center;
-        min-height: 5.2rem;
-        cursor: pointer;
         list-style: none;
     }
 
-    .ledger-years summary::-webkit-details-marker {
-        display: none;
-    }
-
-    .ledger-years summary::before {
-        content: "+";
-        grid-column: 1;
-        grid-row: 1;
-        width: 1.2rem;
-        color: var(--muted-text);
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-    }
-
-    .ledger-years details[open] summary::before {
-        content: "−";
-    }
-
-    .ledger-years summary > span:first-of-type {
-        grid-column: 1;
-        grid-row: 1;
-        padding-left: 2rem;
-        font-family: "Fraunces", "Source Serif 4", serif;
-        font-size: 1.65rem;
-    }
-
-    .ledger-years summary > span:nth-of-type(2),
-    .ledger-years summary > strong {
-        color: var(--muted-text);
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: 0.75rem;
-        font-variant-numeric: tabular-nums;
-    }
-
-    .ledger-years summary > strong {
-        min-width: 7rem;
-        color: var(--text-primary);
-        text-align: right;
-    }
-
-    .ledger-years summary:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 3px;
-    }
-
-    .ledger-table {
-        padding-bottom: 1.5rem;
-    }
-
-    .ledger-table-head,
-    .ledger-row {
+    .mix-rows li {
         display: grid;
-        grid-template-columns: 7.5rem minmax(16rem, 1fr) 10.5rem 8.5rem 7rem;
-        gap: 1rem;
+        grid-template-columns: auto auto minmax(1rem, 1fr) auto auto;
+        gap: 0.8rem;
         align-items: center;
-    }
-
-    .ledger-table-head {
-        min-height: 2.5rem;
-        border-top: 1px solid var(--border-subtle);
-        border-bottom: 1px solid var(--border-subtle);
-        color: var(--muted-text);
-        font-size: 0.63rem;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-    }
-
-    .ledger-table-head span:nth-child(4),
-    .ledger-table-head span:nth-child(5) {
-        text-align: right;
-    }
-
-    .ledger-table ol {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .ledger-row {
-        --product-color: var(--muted-text);
-        min-height: 5rem;
         padding: 0.75rem 0;
         border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 72%, transparent);
     }
 
-    .ledger-row:last-child {
-        border-bottom: 0;
-    }
+    .mix-rows li:last-child { border-bottom: 0; }
+    .mix-name { display: grid; gap: 0.1rem; }
+    .mix-name strong { font-size: 0.85rem; font-weight: 650; }
+    .mix-name small { color: var(--muted-text); font-size: 0.66rem; }
 
-    .ledger-row > time,
-    .ledger-channel,
-    .ledger-original,
-    .ledger-cny {
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: 0.72rem;
+    .mix-value {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.81rem;
+        font-weight: 600;
         font-variant-numeric: tabular-nums;
     }
 
-    .ledger-row > time,
-    .ledger-channel {
-        color: var(--muted-text);
-    }
-
-    .ledger-product {
-        display: flex;
-        gap: 0.75rem;
-        align-items: center;
-    }
-
-    .ledger-product > span,
-    .ledger-product strong,
-    .ledger-product small,
-    .ledger-product em {
-        display: block;
-    }
-
-    .ledger-product strong {
-        font-size: 0.82rem;
-    }
-
-    .ledger-product small {
-        margin-top: 0.14rem;
-        color: var(--text-secondary);
-        font-size: 0.7rem;
-    }
-
-    .ledger-product em {
-        margin-top: 0.18rem;
-        color: var(--muted-text);
-        font-size: 0.62rem;
+    .mix-share {
+        min-width: 3.1rem;
+        color: var(--product-ink);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.73rem;
         font-style: normal;
-    }
-
-    .ledger-original,
-    .ledger-cny {
+        font-variant-numeric: tabular-nums;
         text-align: right;
     }
 
-    .ledger-cny {
+    .year-rows { margin-top: 1.7rem; border-top: 1px solid var(--border-subtle); }
+
+    .year-rows li {
+        display: grid;
+        grid-template-columns: 3rem minmax(0, 1fr) auto;
+        gap: 0.4rem 0.9rem;
+        align-items: center;
+        padding: 0.72rem 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 72%, transparent);
+    }
+
+    .year-rows li:last-child { border-bottom: 0; }
+
+    .year-rows time {
+        color: var(--text-secondary);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.76rem;
+    }
+
+    .year-bar {
+        height: 0.45rem;
+        overflow: hidden;
+        border-radius: 999px;
+        background: var(--panel-subtle);
+    }
+
+    .year-bar i {
+        display: block;
+        height: 100%;
+        min-width: 3px;
+        border-radius: inherit;
+        background: color-mix(in srgb, var(--text-primary) 62%, var(--panel-subtle));
+    }
+
+    .year-rows .is-now .year-bar i { background: var(--ledger-accent); }
+
+    .year-rows b {
+        min-width: 4.4rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
         font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        text-align: right;
     }
 
-    .methodology-section {
-        border-bottom: 0;
-        padding-bottom: 3rem;
-    }
-
-    .method-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        border-top: 1px solid var(--border-subtle);
-    }
-
-    .method-grid > div {
-        display: grid;
-        grid-template-columns: 2rem 1fr;
-        gap: 1rem;
-        padding: 1.6rem 1.6rem 1.6rem 0;
-        border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .method-grid > div:nth-child(odd) {
-        padding-right: 2rem;
-        border-right: 1px solid var(--border-subtle);
-    }
-
-    .method-grid > div:nth-child(even) {
-        padding-left: 2rem;
-    }
-
-    .method-grid span {
+    .year-rows small {
+        grid-column: 2 / 4;
+        margin-top: -0.3rem;
         color: var(--muted-text);
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: 0.68rem;
+        font-size: 0.62rem;
+        text-align: right;
     }
 
-    .method-grid p {
-        margin: 0;
-        color: var(--text-secondary);
-        font-family: "Source Serif 4", "Noto Sans SC", serif;
-        font-size: 0.92rem;
-        line-height: 1.65;
-    }
+    .year-rows .is-now small { color: var(--ledger-accent); font-weight: 600; }
 
-    .provisional-note {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0.8rem;
-        margin-top: 1.5rem;
-        padding: 1rem 1.2rem;
-        border: 1px solid color-mix(in srgb, var(--ai-claude) 35%, var(--border-subtle));
-        border-radius: 0.55rem;
-        background: color-mix(in srgb, var(--ai-claude-soft) 40%, transparent);
-        color: var(--text-secondary);
-        font-size: 0.78rem;
-        line-height: 1.55;
-    }
-
-    .provisional-note span {
-        color: var(--ai-claude);
-        font-weight: 700;
-    }
-
-    .provisional-note p {
-        margin: 0;
-    }
-
-    .source-list {
-        margin: 2.5rem 0 0;
-        border-top: 1px solid var(--border-subtle);
-    }
-
-    .source-list > div {
-        display: grid;
-        grid-template-columns: 10rem 1fr;
-        gap: 1.5rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .source-list dt {
-        color: var(--muted-text);
-        font-size: 0.7rem;
-        font-weight: 700;
-    }
-
-    .source-list dd {
-        margin: 0;
-        color: var(--text-secondary);
-        font-size: 0.78rem;
-    }
-
-    .ledger-links {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 2rem;
-        align-items: end;
-        margin-top: 3rem;
-    }
-
-    .ledger-links p {
-        max-width: 35rem;
-        margin: 0;
-        color: var(--muted-text);
-        font-size: 0.78rem;
-        line-height: 1.6;
-    }
-
-    .ledger-links > div {
+    /* ── Colophon ── */
+    .colophon {
         display: flex;
-        flex-direction: column;
-        gap: 0.7rem;
-        align-items: flex-end;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.8rem 2rem;
+        margin-top: 4.4rem;
+        padding-top: 1.3rem;
+        border-top: 1px solid var(--border-subtle);
     }
 
-    .ledger-links a {
-        color: var(--accent-hover);
-        font-size: 0.78rem;
-        font-weight: 700;
-        text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
-        text-underline-offset: 0.25em;
+    .colophon p {
+        margin: 0;
+        color: var(--muted-text);
+        font-size: 0.73rem;
     }
 
+    .colophon nav { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; }
+
+    .colophon a {
+        color: var(--ledger-accent);
+        font-size: 0.77rem;
+        font-weight: 650;
+        text-decoration: none;
+    }
+
+    .colophon a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── 入场:一次编排 ── */
     @media (prefers-reduced-motion: no-preference) {
-        .ledger-hero,
-        .story-section {
-            animation: ledger-reveal 520ms both cubic-bezier(0.22, 1, 0.36, 1);
+        .hero > * {
+            animation: rise 560ms both cubic-bezier(0.22, 1, 0.36, 1);
         }
-
-        .story-section:nth-of-type(1) { animation-delay: 60ms; }
-        .story-section:nth-of-type(2) { animation-delay: 100ms; }
-        .story-section:nth-of-type(3) { animation-delay: 140ms; }
-
-        @keyframes ledger-reveal {
-            from { opacity: 0; transform: translateY(10px); }
+        .hero > :nth-child(2) { animation-delay: 60ms; }
+        .hero > :nth-child(3) { animation-delay: 110ms; }
+        .hero > :nth-child(4) { animation-delay: 150ms; }
+        .hero > :nth-child(5) { animation-delay: 190ms; }
+        .hero > :nth-child(6) { animation-delay: 230ms; }
+        .hero h1 em::after {
+            animation: draw 360ms 760ms both cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .meter { animation: rise 560ms 260ms both cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
-    }
-
-    @media (max-width: 860px) {
-        .ledger-hero {
-            grid-template-columns: 1fr minmax(16rem, 0.72fr);
-            column-gap: 2.5rem;
-        }
-
-        .currency-ledger-values {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .composition-list li {
-            grid-template-columns: 1rem 2rem minmax(8rem, 1fr) 6rem 7.5rem 4.5rem;
-            gap: 0.7rem;
-        }
-
-        .current-row {
-            grid-template-columns: minmax(13rem, 1fr) minmax(10rem, 0.7fr) auto;
-        }
-
-        .ledger-table-head,
-        .ledger-row {
-            grid-template-columns: 6.7rem minmax(14rem, 1fr) 9.5rem 7.8rem 6.5rem;
-            gap: 0.7rem;
+        @keyframes draw {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
         }
     }
 
-    @media (max-width: 800px) {
-        .chart-desktop {
-            display: none;
-        }
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+        .ai-ledger { width: min(100% - 1.6rem, 56rem); padding: 2.4rem 0 4.5rem; }
+        .hero { padding: 2.2rem 0 2.2rem; }
+        .block { padding-top: 3.4rem; }
 
-        .chart-mobile {
-            display: block;
-            max-width: 40rem;
-            margin-inline: auto;
-        }
+        .stat-row { grid-template-columns: 1fr; border-bottom-width: 3px; }
+        .stat-row > div { padding: 0.85rem 0; }
+        .stat-row > div + div { padding-left: 0; border-top: 1px solid var(--border-subtle); border-left: 0; }
 
-        .ledger-table-head {
-            display: none;
-        }
+        .meter { gap: 0.9rem; margin-top: 2rem; }
+        .meter-label:last-child { display: none; }
+        .meter-bars { gap: 2px; }
+        .stat-row dd { font-size: 1.8rem; }
 
-        .ledger-row {
-            grid-template-columns: 5.8rem minmax(0, 1fr) auto;
-            gap: 0.6rem 0.75rem;
-            align-items: start;
-            min-height: 0;
-            padding: 1.15rem 0;
-        }
-
-        .ledger-row > time {
-            grid-column: 1;
-            grid-row: 1;
-            padding-top: 0.16rem;
-            font-size: 0.66rem;
-        }
-
-        .ledger-product {
-            grid-column: 2 / -1;
-            grid-row: 1;
-        }
-
-        .ledger-channel {
-            grid-column: 2;
-            grid-row: 2;
-            padding-left: 1.35rem;
-            font-size: 0.64rem;
-        }
-
-        .ledger-original {
-            grid-column: 2;
-            grid-row: 3;
-            padding-left: 1.35rem;
-            text-align: left;
-        }
-
-        .ledger-cny {
-            grid-column: 3;
-            grid-row: 2 / span 2;
-            align-self: end;
-        }
-
-        .ledger-product em {
-            line-height: 1.45;
-        }
-    }
-
-    @media (max-width: 639px) {
-        .ai-ledger-page {
-            width: min(100% - 2rem, 34rem);
-            padding-top: 1.4rem;
-        }
-
-        .ledger-hero {
-            grid-template-columns: 1fr;
-            row-gap: 2.2rem;
-            padding: 2rem 0 4rem;
-        }
-
-        .hero-copy h1 {
-            max-width: 8ch;
-            font-size: clamp(3.3rem, 17vw, 5.4rem);
-        }
-
-        .hero-intro {
-            font-size: 1rem;
-            line-height: 1.65;
-        }
-
-        .scope-switch {
-            grid-template-columns: 1fr;
-        }
-
-        .scope-switch a {
-            min-height: 3.25rem;
-        }
-
-        .hero-ledger {
-            padding-top: 0;
-        }
-
-        .hero-ledger > strong {
-            font-size: clamp(2.8rem, 13vw, 4rem);
-        }
-
-        .hero-stamp {
-            margin-top: 2rem;
-        }
-
-        .currency-ledger {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .currency-ledger-values {
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem 0.8rem;
-        }
-
-        .currency-ledger-values span {
-            font-size: 0.7rem;
-        }
-
-        .story-section {
-            padding: 4.6rem 0;
-        }
-
-        .section-heading {
-            margin-bottom: 2.25rem;
-        }
-
-        .section-heading h2 {
-            font-size: clamp(2.05rem, 10vw, 3rem);
-        }
-
-        .section-heading > p:last-child,
-        .split-heading > div > p:last-child {
-            font-size: 0.95rem;
-            line-height: 1.65;
-        }
-
-        .split-heading {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        .current-run-rate {
+        .plan-row { grid-template-columns: auto minmax(0, 1fr) auto; gap: 0.35rem 0.85rem; padding: 0.9rem 0.1rem; }
+        .plan-dots { display: none; }
+        .plan-price { grid-column: 3; }
+        .plan-date {
+            grid-column: 2 / 4;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.45rem;
             min-width: 0;
-            padding: 1rem 0 0;
-            border-top: 1px solid var(--border-subtle);
-            border-left: 0;
+            margin-top: -0.1rem;
         }
 
-        .current-run-rate strong {
-            font-size: 1.8rem;
-        }
+        .mix-rows li { grid-template-columns: auto auto minmax(0.5rem, 1fr) auto; }
+        .mix-rows .plan-dots { display: none; }
+        .mix-value { display: none; }
 
-        .current-row {
-            grid-template-columns: 1fr auto;
-            gap: 0.9rem 1rem;
-            min-height: 7.2rem;
-        }
-
-        .current-status {
-            grid-column: 1;
-            padding-left: 2.55rem;
-        }
-
-        .current-price {
-            grid-column: 2;
-            grid-row: 1 / span 2;
-        }
-
-        .current-icon {
-            width: 1.35rem;
-            height: 1.35rem;
-        }
-
-        .composition-bar {
-            height: 2.6rem;
-        }
-
-        .composition-segment b {
-            font-size: 0.62rem;
-        }
-
-        .composition-list li {
-            grid-template-columns: 0.8rem 1.7rem minmax(0, 1fr) auto;
-            gap: 0.55rem;
-            min-height: 4.8rem;
-        }
-
-        .composition-list li > span:nth-of-type(3) {
-            display: none;
-        }
-
-        .composition-list li > b {
-            grid-column: 3;
-            color: var(--text-secondary);
-            font-size: 0.72rem;
-            text-align: left;
-        }
-
-        .composition-list li > em {
-            grid-column: 4;
-            grid-row: 1 / span 2;
-            align-self: center;
-        }
-
-        .year-share {
-            font-size: 4.7rem;
-        }
-
-        .product-key {
-            margin-top: -0.5rem;
-        }
-
-        .annual-strip {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .annual-strip > div {
-            min-height: 5.3rem;
-            padding: 0.9rem;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .annual-strip > div:nth-child(even) {
-            border-right: 0;
-        }
-
-        .annual-strip > div:last-child {
-            grid-column: 1 / -1;
-            border-bottom: 0;
-        }
-
-        .timeline-notes {
-            grid-template-columns: 1fr;
-            margin-top: 2rem;
-        }
-
-        .ledger-years summary {
-            grid-template-columns: 1fr auto;
-            gap: 0.5rem 1rem;
-            min-height: 5.5rem;
-        }
-
-        .ledger-years summary > span:nth-of-type(2) {
-            grid-column: 1;
-            padding-left: 2rem;
-        }
-
-        .ledger-years summary > strong {
-            grid-column: 2;
-            grid-row: 1 / span 2;
-            align-self: center;
-        }
-
-        .method-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .method-grid > div,
-        .method-grid > div:nth-child(odd),
-        .method-grid > div:nth-child(even) {
-            padding: 1.35rem 0;
-            border-right: 0;
-        }
-
-        .source-list > div {
-            grid-template-columns: 1fr;
-            gap: 0.35rem;
-        }
-
-        .ledger-links {
-            grid-template-columns: 1fr;
-        }
-
-        .ledger-links > div {
-            align-items: flex-start;
-        }
+        .timeline-shell { margin-inline: -0.35rem; padding: 1.1rem 0.85rem 0.9rem; }
+        .colophon { flex-direction: column; }
     }
 </style>
+
+<script type="module" data-astro-rerun>
+    // 刻度带悬浮卡
+    for (const meter of document.querySelectorAll(".meter")) {
+        const tip = meter.querySelector(".meter-tip");
+        if (!tip || tip.dataset.wired) continue;
+        tip.dataset.wired = "1";
+        const titleEl = tip.querySelector(".meter-tip-title");
+        const linesEl = tip.querySelector(".meter-tip-lines");
+        let active = null;
+
+        const show = (col) => {
+            active = col;
+            titleEl.textContent = col.dataset.tipTitle;
+            linesEl.textContent = col.dataset.tipLines || "";
+            tip.hidden = false;
+            const meterRect = meter.getBoundingClientRect();
+            const colRect = col.getBoundingClientRect();
+            const tipRect = tip.getBoundingClientRect();
+            const centerX = colRect.left - meterRect.left + colRect.width / 2;
+            const left = Math.min(Math.max(centerX - tipRect.width / 2, 2), meterRect.width - tipRect.width - 2);
+            tip.style.left = `${left}px`;
+            tip.style.top = `${colRect.top - meterRect.top - tipRect.height - 8}px`;
+            tip.classList.add("is-show");
+        };
+
+        const hide = () => {
+            active = null;
+            tip.classList.remove("is-show");
+            tip.hidden = true;
+        };
+
+        meter.addEventListener("mouseover", (event) => {
+            const col = event.target.closest(".m-col");
+            if (col) show(col);
+        });
+        meter.addEventListener("mouseout", (event) => {
+            if (event.target.closest(".m-col")) hide();
+        });
+        meter.addEventListener("click", (event) => {
+            const col = event.target.closest(".m-col");
+            if (!col) return hide();
+            if (active === col) return hide();
+            show(col);
+        });
+    }
+
+    // 合计数字滚动到位,只跑一次
+    const el = document.querySelector("[data-countup]");
+    if (el && !el.dataset.done) {
+        el.dataset.done = "1";
+        const target = Number(el.dataset.countup);
+        const digits = el.querySelector(".ledger-digits");
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (digits && !reduced && Number.isFinite(target)) {
+            const locale = document.documentElement.lang === "zh" ? "zh-CN" : "en-US";
+            const fmt = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+            const duration = 780;
+            const start = performance.now();
+            const ease = (t) => 1 - Math.pow(1 - t, 3);
+            const tick = (now) => {
+                const progress = Math.min(1, (now - start) / duration);
+                digits.textContent = fmt.format(Math.round(target * ease(progress)));
+                if (progress < 1) requestAnimationFrame(tick);
+            };
+            digits.textContent = fmt.format(0);
+            requestAnimationFrame(tick);
+        }
+    }
+</script>

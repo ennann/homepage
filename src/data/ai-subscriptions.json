@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "asOf": "2026-08-26",
   "integrity": {
-    "coreRecordCount": 93,
-    "wideRecordCount": 96,
-    "coreEstimatedCny": 12214.52,
-    "wideEstimatedCny": 12614.66,
+    "coreRecordCount": 94,
+    "wideRecordCount": 97,
+    "coreEstimatedCny": 12286.28,
+    "wideEstimatedCny": 12686.42,
     "currentEstimatedCny": 1781.3,
     "hasProvisionalFx": true
   },
@@ -18,7 +18,7 @@
       "currency": "PHP",
       "originalAmount": 8919.64,
       "estimatedCny": 983.46,
-      "statusType": "through",
+      "statusType": "renews",
       "statusDate": "2026-09-11",
       "provisionalFx": false
     },
@@ -42,7 +42,7 @@
       "currency": "USD",
       "originalAmount": 100,
       "estimatedCny": 672.1,
-      "statusType": "through",
+      "statusType": "renews",
       "statusDate": "2026-09-25",
       "provisionalFx": true
     },
@@ -66,7 +66,7 @@
       "currency": "CNY",
       "originalAmount": 15,
       "estimatedCny": 15,
-      "statusType": "through",
+      "statusType": "renews",
       "statusDate": "2027-07-01",
       "provisionalFx": false
     }
@@ -156,7 +156,7 @@
       "product": "google",
       "planKey": "google-ai-pro",
       "channel": "google-direct",
-      "start": "2026-07-01",
+      "start": "2026-04-01",
       "end": "2027-07-01",
       "current": true
     },
@@ -409,6 +409,19 @@
       "originalAmount": 10,
       "estimatedCny": 71,
       "servicePeriod": "2023-12-26 - 2024-01-25",
+      "provisionalFx": false
+    },
+    {
+      "date": "2024-01-27",
+      "scope": "core",
+      "product": "copilot",
+      "app": "GitHub Copilot",
+      "planKey": "copilot-monthly",
+      "channel": "github-direct",
+      "currency": "USD",
+      "originalAmount": 10,
+      "estimatedCny": 71.76,
+      "servicePeriod": "2024-01-26 - 2024-02-25",
       "provisionalFx": false
     },
     {

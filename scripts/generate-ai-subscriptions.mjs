@@ -251,7 +251,7 @@ for (const row of readCsv("evidence/anthropic-direct/manifest.csv")) {
   );
 }
 
-// 档案外的补充记录:2022-12 至 2023-12 的 Copilot 月付(按当月汇率估算),
+// 档案外的补充记录:2022-12 至 2024-01 的 Copilot 月付(按当月汇率估算),
 // 以及 Kimi Code 人民币直付(发票 26112000002996642581)。
 const supplementalRecords = [
   ...[
@@ -268,6 +268,7 @@ const supplementalRecords = [
     ["2023-10-27", 73.2, "2023-10-26 - 2023-11-25"],
     ["2023-11-27", 71.5, "2023-11-26 - 2023-12-25"],
     ["2023-12-27", 71.0, "2023-12-26 - 2024-01-25"],
+    ["2024-01-27", 71.76, "2024-01-26 - 2024-02-25"],
   ].map(([date, estimatedCny, servicePeriod]) => ({
     date,
     scope: "core",
@@ -321,11 +322,11 @@ records.push(...supplementalRecords);
 records.sort((a, b) => a.date.localeCompare(b.date) || a.app.localeCompare(b.app));
 
 const selectors = [
-  ["chatgpt", "chatgpt-pro-20x", "openai-direct", "through"],
+  ["chatgpt", "chatgpt-pro-20x", "openai-direct", "renews"],
   ["chatgpt", "chatgpt-plus", "apple-turkey", "renews"],
-  ["claude", "claude-max-5x", "anthropic-direct", "through"],
+  ["claude", "claude-max-5x", "anthropic-direct", "renews"],
   ["copilot", "copilot-pro", "apple-nigeria", "renews"],
-  ["google", "google-ai-pro", "google-direct", "through"],
+  ["google", "google-ai-pro", "google-direct", "renews"],
 ];
 
 function serviceEnd(servicePeriod) {
@@ -377,7 +378,7 @@ const coverageSpans = [
   { product: "claude", planKey: "claude-max-5x", channel: "anthropic-direct", start: "2026-07-25", end: "2026-09-25", current: true },
   { product: "kimi", planKey: "kimi-code", channel: "moonshot-direct", start: "2026-07-20", end: "2026-08-20" },
   { product: "google", planKey: "google-ai-pro", channel: "google-direct", start: "2025-04-01", end: "2026-04-01" },
-  { product: "google", planKey: "google-ai-pro", channel: "google-direct", start: "2026-07-01", end: "2027-07-01", current: true },
+  { product: "google", planKey: "google-ai-pro", channel: "google-direct", start: "2026-04-01", end: "2027-07-01", current: true },
 ];
 
 const coreRecords = records.filter((record) => record.scope === "core");
@@ -389,7 +390,7 @@ const currentCny = sumCny(currentSubscriptions);
 const expectedCore = ledger.match(/\*\*核心 AI 小计\*\*.*?\*\*¥([\d,.]+)\*\*/)?.[1];
 const expectedWide = ledger.match(/\*\*宽口径 AI 相关合计\*\*.*?\*\*¥([\d,.]+)\*\*/)?.[1];
 
-if (coreRecords.length !== 93 || records.length !== 96) {
+if (coreRecords.length !== 94 || records.length !== 97) {
   throw new Error(`Unexpected record counts: core=${coreRecords.length}, wide=${records.length}`);
 }
 if (

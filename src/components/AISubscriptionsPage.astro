@@ -14,29 +14,34 @@ const thisYear = Number(buildToday.slice(0, 4));
 
 const copy = isZh
     ? {
-          heroTag: "AI SUBSCRIPTION LEDGER",
+          heroTag: "AI 订阅账本",
           titleBefore: "我为 AI ",
           titleVerb: "付费",
           titleAfter: "这四年",
           intro: "2022 年 8 月付了第一笔 Copilot，账越记越长，现在 5 个订阅同时在跑。",
-          statTotal: "TO DATE",
-          statYear: `IN ${thisYear}`,
-          statMonthly: "MONTHLY AVG",
+          statTotal: "累计支出",
+          statYear: `${thisYear} 年支出`,
+          statMonthly: "今年月均",
+          paymentLabel: "付款记录",
           payments: "笔付款",
           active: "个订阅在跑",
+          currentSection: "当前订阅",
           currentTitle: "正在订阅中",
           perMonth: "/ 月",
           yearly: "年付",
-          renews: "续费",
+          renews: "续费日",
           through: "服务至",
+          timelineSection: "订阅时间线",
           timelineTitle: "订阅时间线",
           timelineIntro: "Copilot 一路没断，ChatGPT 从 2024 年加入，Google、Claude 陆续跟上，Kimi 试了一个月。",
+          productSection: "按产品",
           mixTitle: "按产品",
-          mixIntro: "只算 AI 订阅本身，捆绑套餐没记进来。",
+          mixIntro: "按 AI 产品汇总累计支出与占比。",
+          yearSection: "按年份",
           yearTitle: "按年份",
           yearIntro: `${thisYear} 年还没过完，已经超过前四年的总和。`,
           ongoing: "进行中",
-          fxNote: "非人民币金额按付款当月汇率折算成人民币",
+          fxNote: "非人民币金额按付款日附近的历史汇率估算为人民币",
           updated: "更新于",
           usage: "最近 30 天 AI 用量",
           related: "跨区订阅怎么开",
@@ -50,21 +55,26 @@ const copy = isZh
           statTotal: "TO DATE",
           statYear: `IN ${thisYear}`,
           statMonthly: "MONTHLY AVG",
+          paymentLabel: "PAYMENTS",
           payments: "payments",
           active: "active plans",
+          currentSection: "RUNNING",
           currentTitle: "active subscriptions",
           perMonth: "/ mo",
           yearly: "yearly",
           renews: "Renews",
           through: "Through",
+          timelineSection: "TIMELINE",
           timelineTitle: "the timeline",
           timelineIntro: "copilot never stopped. chatgpt joined in 2024, google and claude followed, and kimi lasted one month.",
+          productSection: "BY PRODUCT",
           mixTitle: "by product",
-          mixIntro: "ai plans only, bundles not counted.",
+          mixIntro: "lifetime spend and share by ai product.",
+          yearSection: "BY YEAR",
           yearTitle: "by year",
           yearIntro: `${thisYear} is not over yet and already tops the previous four years combined.`,
           ongoing: "ongoing",
-          fxNote: "non-cny amounts are converted at the month-of-payment rate",
+          fxNote: "non-cny amounts are estimated using historical rates near each payment date",
           updated: "updated",
           usage: "ai usage, last 30 days",
           related: "how i set up cross-region plans",
@@ -102,7 +112,7 @@ const productMeta = {
 
 const productOrder = ["chatgpt", "claude", "copilot", "google", "kimi"] as const;
 const currencyOrder = ["USD", "PHP", "TRY", "NGN", "CNY"];
-const currencySymbols: Record<string, string> = { USD: "US$", PHP: "₱", TRY: "₺", NGN: "₦", CNY: "¥" };
+const currencySymbols: Record<string, string> = { USD: "$", PHP: "₱", TRY: "₺", NGN: "₦", CNY: "¥" };
 const round2 = (value: number) => Math.round((value + Number.EPSILON) * 100) / 100;
 const formatNumber = (value: number, digits = 2) =>
     new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
@@ -125,7 +135,12 @@ const formatShortDate = (date: string) =>
 
 const coreRecords = snapshot.records.filter((record) => record.scope === "core");
 const lifetimeTotal = round2(coreRecords.reduce((sum, record) => sum + record.estimatedCny, 0));
-const currentTotal = round2(snapshot.currentSubscriptions.reduce((sum, item) => sum + item.estimatedCny, 0));
+const currentMonthlyTotal = round2(
+    snapshot.currentSubscriptions.reduce(
+        (sum, item) => sum + item.estimatedCny / (YEARLY_PLANS.has(item.planKey) ? 12 : 1),
+        0,
+    ),
+);
 const thisYearTotal = round2(
     coreRecords
         .filter((record) => Number(record.date.slice(0, 4)) === thisYear)
@@ -259,7 +274,7 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
     </header>
 
     <aside class="meter" aria-label={isZh ? "月度支出刻度" : "monthly spend readout"}>
-        <span class="meter-label">PAYMENTS · {coreRecords.length}</span>
+        <span class="meter-label">{copy.paymentLabel} · {coreRecords.length}</span>
         <span class="meter-bars">
             {meterMonths.map((month) => (
                 <span
@@ -286,9 +301,9 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
     </aside>
 
     <section class="block" aria-labelledby="current-title">
-        <p class="eyebrow"><i class="sq" aria-hidden="true"></i>01 · RUNNING</p>
+        <p class="eyebrow"><i class="sq" aria-hidden="true"></i>01 · {copy.currentSection}</p>
         <h2 id="current-title">{copy.currentTitle}</h2>
-        <p class="block-meta">≈ {formatCny(Math.round(currentTotal), 0)} {copy.perMonth} · {snapshot.currentSubscriptions.length} {copy.active}</p>
+        <p class="block-meta">≈ {formatCny(Math.round(currentMonthlyTotal), 0)} {copy.perMonth} · {snapshot.currentSubscriptions.length} {copy.active}</p>
 
         <ol class="plan-rows">
             {snapshot.currentSubscriptions.map((sub) => (
@@ -313,7 +328,7 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
     </section>
 
     <section class="block" aria-labelledby="timeline-title">
-        <p class="eyebrow"><i class="sq" aria-hidden="true"></i>02 · TIMELINE</p>
+        <p class="eyebrow"><i class="sq" aria-hidden="true"></i>02 · {copy.timelineSection}</p>
         <h2 id="timeline-title">{copy.timelineTitle}</h2>
         <p class="block-intro">{copy.timelineIntro}</p>
 
@@ -324,7 +339,7 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
 
     <section class="block split" aria-label={isZh ? "支出统计" : "spending stats"}>
         <div class="split-col" aria-labelledby="mix-title">
-            <p class="eyebrow"><i class="sq" aria-hidden="true"></i>03 · BY PRODUCT</p>
+            <p class="eyebrow"><i class="sq" aria-hidden="true"></i>03 · {copy.productSection}</p>
             <h2 id="mix-title">{copy.mixTitle}</h2>
             <p class="block-intro">{copy.mixIntro}</p>
 
@@ -351,7 +366,7 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
         </div>
 
         <div class="split-col" aria-labelledby="year-title">
-            <p class="eyebrow"><i class="sq" aria-hidden="true"></i>04 · BY YEAR</p>
+            <p class="eyebrow"><i class="sq" aria-hidden="true"></i>04 · {copy.yearSection}</p>
             <h2 id="year-title">{copy.yearTitle}</h2>
             <p class="block-intro">{copy.yearIntro}</p>
 
@@ -797,6 +812,14 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
     }
 
     .plan-icon :global(svg) { width: 1rem; height: 1rem; }
+    .plan-row .plan-icon {
+        width: 1.8rem;
+        height: 1.8rem;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+    }
+    .plan-row .plan-icon :global(svg) { width: 1.44rem; height: 1.44rem; }
     .plan-icon.small { width: 1.85rem; height: 1.85rem; border-radius: 0.58rem; }
     .plan-icon.small :global(svg) { width: 0.8rem; height: 0.8rem; }
 

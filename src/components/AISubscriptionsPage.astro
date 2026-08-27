@@ -14,10 +14,10 @@ const thisYear = Number(buildToday.slice(0, 4));
 
 const copy = isZh
     ? {
-          heroTag: "AI 订阅账本",
-          titleBefore: "我为 AI ",
-          titleVerb: "付费",
-          titleAfter: "这四年",
+          heroTag: "AI 订阅账单",
+          titleBefore: "我的 AI 订阅账单",
+          titleVerb: "",
+          titleAfter: "",
           intro: "2022 年 8 月付了第一笔 Copilot，账越记越长，现在 5 个订阅同时在跑。",
           statTotal: "累计支出",
           statYear: `${thisYear} 年支出`,
@@ -237,7 +237,7 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
 <article class="ai-ledger">
     <header class="hero">
         <p class="eyebrow"><i class="sq" aria-hidden="true"></i>{copy.heroTag} · 2022—{thisYear}</p>
-        <h1>{copy.titleBefore}<em>{copy.titleVerb}</em>{copy.titleAfter}</h1>
+        <h1>{copy.titleBefore}{copy.titleVerb && <em>{copy.titleVerb}</em>}{copy.titleAfter}</h1>
         <p class="hero-intro">{copy.intro}</p>
 
         <ul class="stack-chips" aria-label={isZh ? "在用的 AI 产品" : "ai products in use"}>

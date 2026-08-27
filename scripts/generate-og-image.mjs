@@ -127,9 +127,9 @@ const page = (isZh) => `<!doctype html><html><head><meta charset="utf-8"><style>
     font-family:"JetBrains Mono",Menlo,monospace; font-size:16px; color:#7b858b; letter-spacing:.04em; }
 </style></head><body>
 <div class="card">
-  <p class="eyebrow"><i></i>AI SUBSCRIPTION LEDGER · 2022—${today.slice(0, 4)}</p>
+  <p class="eyebrow"><i></i>${isZh ? "AI 订阅账单" : "AI SUBSCRIPTION LEDGER"} · 2022—${today.slice(0, 4)}</p>
   <div class="head">
-    <h1>${isZh ? '我为 AI <em>付费</em>这四年' : 'four years of <em>paying</em> for ai'}</h1>
+    <h1>${isZh ? "我的 AI 订阅账单" : 'four years of <em>paying</em> for ai'}</h1>
     <div class="total"><small>${isZh ? "截至目前 · TO DATE" : "TO DATE"}</small><b>¥${lifetime.toLocaleString("en-US")}</b></div>
   </div>
   <div class="chart">

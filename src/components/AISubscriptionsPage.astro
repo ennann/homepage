@@ -21,7 +21,7 @@ const copy = isZh
           intro: "2022 年 8 月付了第一笔 Copilot，账越记越长，现在 5 个订阅同时在跑。",
           statTotal: "TO DATE",
           statYear: `IN ${thisYear}`,
-          statMonthly: "MONTHLY",
+          statMonthly: "MONTHLY AVG",
           payments: "笔付款",
           active: "个订阅在跑",
           currentTitle: "正在订阅中",
@@ -49,7 +49,7 @@ const copy = isZh
           intro: "first charge: github copilot, august 2022. five subscriptions are running now.",
           statTotal: "TO DATE",
           statYear: `IN ${thisYear}`,
-          statMonthly: "MONTHLY",
+          statMonthly: "MONTHLY AVG",
           payments: "payments",
           active: "active plans",
           currentTitle: "active subscriptions",
@@ -131,6 +131,10 @@ const thisYearTotal = round2(
         .filter((record) => Number(record.date.slice(0, 4)) === thisYear)
         .reduce((sum, record) => sum + record.estimatedCny, 0),
 );
+// 今年月均 = 今年累计 ÷ 今年已过月份数
+const monthsElapsed = Number(buildToday.slice(5, 7));
+const monthlyAvg = round2(thisYearTotal / monthsElapsed);
+
 const activeProducts = productOrder.filter((product) =>
     snapshot.currentSubscriptions.some((sub) => sub.product === product),
 );
@@ -243,7 +247,7 @@ const relatedUrl = isZh ? "/zh/blog/202603/app-store-ai-subscription" : "/blog/2
             </div>
             <div>
                 <dt>{copy.statMonthly}</dt>
-                <dd><span class="stat-currency">≈ ¥</span>{formatNumber(Math.round(currentTotal), 0)}</dd>
+                <dd><span class="stat-currency">≈ ¥</span>{formatNumber(Math.round(monthlyAvg), 0)}</dd>
             </div>
         </dl>
 

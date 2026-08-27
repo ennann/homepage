@@ -17,8 +17,6 @@ cover: "/blog/202608/philippines-maya-bank-dito-esim-cover.webp"
 
 本文整理于 2026 年 8 月 25 日。截图里的价格、活动、审核时间和界面都可能变化，操作时以 DITO 与 Maya App 当时显示的内容为准。
 
-> DITO 与 Maya 开户流程的截图整理自[原始资料](https://bytedance.sg.larkoffice.com/docx/P000dibDjohwe3xqJBZlqO9igNd)。Smart 实体卡经历、邀请码、Visa 入金活动和 Wise 资金路径是我另外补充的内容。
-
 > **隐私说明：** 本文只保留不包含账户凭据的截图。邮箱、手机号、OTP、eSIM 二维码、初始密码、证件号、住址、银行账号和交易编号均不进入网站仓库。
 
 ## 先分清 Wallet、Savings 和 Card

@@ -138,7 +138,7 @@ So even though I use multiple devices, their network proxy configurations are es
 
 I might also frequently switch Claude accounts on these devices — as I mentioned earlier, during my multi-Pro phase my quota was never enough, so frequent switching was necessary.
 
-Here's my Surge network rule set, which includes rules for common AI tools. For me, the most critical rules are for Claude. You can have any AI agent translate these rules into the format your own proxy software requires: [Surge AI Rule List](https://github.com/ennann/SurgeToolkit/blob/main/Rules/ai.list)
+Here's my Surge network rule set, which includes rules for common AI tools. For me, the most critical rules are for Claude. You can have any AI agent translate these rules into the format your own proxy software requires: [Surge AI Rule List](https://github.com/imetn/SurgeToolkit/blob/main/Rules/ai.list)
 
 ## Conclusion
 

@@ -49,7 +49,7 @@ tags: ["AI", "Token", "工具"]
 AIUsage 的部署就是这样设计的。你不需要读任何文档，直接把这条指令发给你的 Code Agent：
 
 ```
-Clone https://github.com/ennann/aiusage.git, read skills/aiusage-server/aiusage-server.md,
+Clone https://github.com/imetn/aiusage.git, read skills/aiusage-server/aiusage-server.md,
 and help me deploy AIUsage to my Cloudflare account.
 After the server is up, follow skills/aiusage-cli/aiusage-cli.md to connect this device.
 ```
@@ -96,7 +96,7 @@ aiusage report
 
 如果想要跨设备同步、Dashboard 可视化、Widget 嵌入这些功能，把上面那条指令发给你的 Code Agent，十分钟内就能跑起来。
 
-- **GitHub**：[github.com/ennann/aiusage](https://github.com/ennann/aiusage)
+- **GitHub**：[github.com/imetn/aiusage](https://github.com/imetn/aiusage)
 - **在线演示**：[aiusage.yizhe.me](https://aiusage.yizhe.me)
 
 如果觉得这个项目不错，也欢迎你在 GitHub 帮我点个 Star。

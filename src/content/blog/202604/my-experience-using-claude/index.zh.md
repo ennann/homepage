@@ -138,7 +138,7 @@ claude --dangerously-skip-permissions --remote-control
 
 我也可能会经常在这些设备上去切换 Claude 的账号。这个我上面已经说过了，因为在我使用多个 Pro 账号的时候，我的额度是不够用的，所以我需要去频繁切换。
 
-这里也分享一下我的 Surge 网络规则，里边集成了一些常用的 AI 工具。其实对我来说，最主要、最重要的就是 Claude 的规则。你可以让各种 AI Agent 把这些规则翻译成你自己的代理软件所需要的格式：[Surge AI 规则列表](https://github.com/ennann/SurgeToolkit/blob/main/Rules/ai.list)
+这里也分享一下我的 Surge 网络规则，里边集成了一些常用的 AI 工具。其实对我来说，最主要、最重要的就是 Claude 的规则。你可以让各种 AI Agent 把这些规则翻译成你自己的代理软件所需要的格式：[Surge AI 规则列表](https://github.com/imetn/SurgeToolkit/blob/main/Rules/ai.list)
 
 ## 总结
 

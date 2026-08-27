@@ -45,7 +45,7 @@ The old path — read docs, understand, then act — is getting longer. The bett
 AIUsage is designed exactly this way. You don't need to read any documentation. Just send this prompt to your Code Agent:
 
 ```
-Clone https://github.com/ennann/aiusage.git, read skills/aiusage-server/aiusage-server.md,
+Clone https://github.com/imetn/aiusage.git, read skills/aiusage-server/aiusage-server.md,
 and help me deploy AIUsage to my Cloudflare account.
 After the server is up, follow skills/aiusage-cli/aiusage-cli.md to connect this device.
 ```
@@ -88,7 +88,7 @@ aiusage report
 
 For cross-device sync, Dashboard visualization, and Widget embedding, send the prompt above to your Code Agent. It'll be running within ten minutes.
 
-- **GitHub**: [github.com/ennann/aiusage](https://github.com/ennann/aiusage)
+- **GitHub**: [github.com/imetn/aiusage](https://github.com/imetn/aiusage)
 - **Live Demo**: [aiusage.yizhe.me](https://aiusage.yizhe.me)
 
 If you find this useful, a star on GitHub would mean a lot.

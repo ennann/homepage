@@ -1,7 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Hero from "../../components/Hero.astro";
-import About from "../../components/About.astro";
 import Projects from "../../components/Projects.astro";
 import Toolkit from "../../components/Toolkit.astro";
 import Contact from "../../components/Contact.astro";
@@ -11,10 +10,9 @@ import Footer from "../../components/Footer.astro";
 <Layout title="Ethan Zhao - AI 产品构建者" preloadImages={["/bg.webp", "/person.webp"]} fontProfile="minimal">
     <main>
         <Hero />
-        <About />
         <Projects />
         <Toolkit />
-        <Contact />
+        <Contact showTitle={false} />
     </main>
     <Footer />
 </Layout>

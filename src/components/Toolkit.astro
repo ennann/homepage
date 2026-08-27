@@ -50,14 +50,18 @@ const timelineStart = (() => {
             <h3 class="toolkit-label">{t("toolkit.dailyTools")}</h3>
             <div class="toolkit-items">
                 <div class="toolkit-pill">
+                    <Icon name="simple-icons:openai" class="toolkit-icon icon-codex" />
+                    <span class="toolkit-name">Codex</span>
+                </div>
+                <div class="toolkit-pill">
+                    <Icon name="simple-icons:claude" class="toolkit-icon icon-claude" />
+                    <span class="toolkit-name">Claude</span>
+                </div>
+                <div class="toolkit-pill">
                     <svg class="toolkit-icon icon-ghostty" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C8.13 2 5 5.13 5 9v11l2-2 2 2 2-2 2 2 2-2 2 2V9c0-3.87-3.13-7-7-7zm-2.5 8.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                     </svg>
                     <span class="toolkit-name">Ghostty</span>
-                </div>
-                <div class="toolkit-pill">
-                    <Icon name="simple-icons:openai" class="toolkit-icon icon-codex" />
-                    <span class="toolkit-name">Codex</span>
                 </div>
                 <div class="toolkit-pill">
                     <Icon name="simple-icons:xcode" class="toolkit-icon icon-xcode" />
@@ -67,14 +71,6 @@ const timelineStart = (() => {
                     <Icon name="simple-icons:visualstudiocode" class="toolkit-icon icon-vscode" />
                     <span class="toolkit-name">VS Code</span>
                     <span class="toolkit-tag">{t("toolkit.vscodeNote")}</span>
-                </div>
-                <div class="toolkit-pill is-deprecated">
-                    <Icon name="simple-icons:warp" class="toolkit-icon icon-warp" />
-                    <span class="toolkit-name">Warp</span>
-                </div>
-                <div class="toolkit-pill is-deprecated">
-                    <Icon name="simple-icons:cursor" class="toolkit-icon icon-cursor" />
-                    <span class="toolkit-name">Cursor</span>
                 </div>
             </div>
         </div>
@@ -256,13 +252,10 @@ const timelineStart = (() => {
     :global(.dark) .icon-kimi { color: #d4d4d8; }
     .icon-ghostty { color: #6b5b50; }
     :global(.dark) .icon-ghostty { color: #c4b5a8; }
-    .icon-warp { color: #01a4ff; }
     .icon-codex { color: #1a1a1a; }
     :global(.dark) .icon-codex { color: #d4d4d8; }
     .icon-xcode { color: #147efb; }
     .icon-vscode { color: #007acc; }
-    .icon-cursor { color: #555; }
-    :global(.dark) .icon-cursor { color: #777; }
 
     /* ── Name ── */
     .toolkit-name {
@@ -303,39 +296,6 @@ const timelineStart = (() => {
         background: var(--panel-subtle);
         color: var(--muted-text);
         white-space: nowrap;
-    }
-
-    /* ── Deprecated ── */
-    .is-deprecated {
-        background: color-mix(in oklab, var(--panel-subtle) 76%, transparent);
-        border-color: color-mix(in oklab, var(--border-subtle) 82%, transparent);
-        border-style: dashed;
-        box-shadow: none;
-        opacity: 1;
-    }
-
-    .is-deprecated .toolkit-icon {
-        color: var(--muted-text) !important;
-        filter: grayscale(1) saturate(0);
-        opacity: 0.52;
-    }
-
-    .is-deprecated .toolkit-name {
-        color: var(--muted-text);
-        opacity: 0.72;
-        text-decoration: line-through;
-        text-decoration-thickness: 1.5px;
-        text-decoration-color: currentColor;
-    }
-
-    :global(.dark) .is-deprecated .toolkit-name {
-        color: var(--muted-text);
-    }
-
-    .is-deprecated:hover {
-        transform: none;
-        box-shadow: none;
-        border-color: color-mix(in oklab, var(--border-subtle) 82%, transparent);
     }
 
     /* ── Responsive ── */
@@ -404,10 +364,10 @@ const timelineStart = (() => {
         position: relative;
         display: block;
         padding: 1.1rem 1.2rem 2.1rem;
-        border: 1px solid var(--border-subtle);
+        border: 1px solid color-mix(in oklab, var(--border-subtle) 72%, transparent);
         border-radius: 1rem;
         background: var(--panel-bg);
-        box-shadow: var(--shadow-sm);
+        box-shadow: none;
         text-decoration: none;
         color: inherit;
         transition:
@@ -418,8 +378,13 @@ const timelineStart = (() => {
 
     .toolkit-timeline:hover {
         transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-        border-color: var(--accent);
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.07);
+        border-color: rgba(37, 99, 235, 0.18);
+    }
+
+    :global(.dark) .toolkit-timeline:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        border-color: rgba(96, 165, 250, 0.18);
     }
 
     .toolkit-timeline :global(.tl-span) { cursor: pointer; }

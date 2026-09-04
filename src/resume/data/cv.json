@@ -161,6 +161,26 @@
       "text": "把分散的会话日志转成可核对的 Token、成本和趋势数据，用自己的 Cloudflare Worker 与数据服务跨设备同步。它也是我审视 AI 工作方式、判断效率与成本的基础设施。"
     }
   ],
+  "aiPracticeEvidence": {
+    "title": "长期使用，也留下可核对的证据",
+    "intro": "订阅记录说明长期投入，Token 看板说明真实使用。它们不能替代项目结果，但能补充说明 AI 已经进入我的日常工作流。",
+    "items": [
+      {
+        "eyebrow": "持续投入",
+        "name": "AI 订阅账单",
+        "description": "从 2022 年开始记录 ChatGPT、Claude、Copilot 等订阅与付款时间线。",
+        "url": "https://yizhe.me/zh/ai-subscriptions/",
+        "icon": "lucide:receipt"
+      },
+      {
+        "eyebrow": "真实使用",
+        "name": "近 30 天 Token 使用情况",
+        "description": "汇总 Codex、Claude Code 等真实会话的 Token、成本与趋势。",
+        "url": "https://token.yizhe.me/",
+        "icon": "lucide:chart-no-axes-column-increasing"
+      }
+    ]
+  },
   "work": [
     {
       "name": "字节跳动 · 飞书",

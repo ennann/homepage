@@ -13,7 +13,7 @@ function securityHeaders(headers = new Headers()) {
     headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()");
     headers.set(
         "Content-Security-Policy",
-        "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+        "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
     );
     headers.append("Vary", "Cookie");
     return headers;

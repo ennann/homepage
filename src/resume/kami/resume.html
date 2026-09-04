@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>赵宜哲 · 简历</title>
+<meta name="author" content="赵宜哲">
+<meta name="description" content="5 年飞书企业应用与 aPaaS 经验，长期在客户现场、产品能力与工程交付之间工作。能把需求变成可运行方案，也能围绕上下文、工具、边界验收与工作轨迹，让 Agent 进入真实企业流程。">
+<meta name="keywords" content="企业 AI, Agent, aPaaS, 产品经理, 企业解决方案">
+<meta name="generator" content="Kami">
+<style>
+  /* W04 / regular face for body text */
+  @font-face {
+    font-family: "TsangerJinKai02";
+    src: url("file:///Users/Ethan/Projects/LarkOffice/tmp/kami-reference/skills/kami/assets/fonts/TsangerJinKai02-W04.ttf") format("truetype"),
+       url("https://cdn.jsdelivr.net/gh/tw93/Kami@main/assets/fonts/TsangerJinKai02-W04.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  /* W05 / medium face for headings (no synthetic bold) */
+  @font-face {
+    font-family: "TsangerJinKai02";
+    src: url("file:///Users/Ethan/Projects/LarkOffice/tmp/kami-reference/skills/kami/assets/fonts/TsangerJinKai02-W05.ttf") format("truetype"),
+       url("https://cdn.jsdelivr.net/gh/tw93/Kami@main/assets/fonts/TsangerJinKai02-W05.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+  }
+
+@page {
+    size: A4;
+    margin: 11mm 13mm 11mm 13mm;
+    background: #f5f4ed;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --parchment: #f5f4ed;
+    --ivory:     #faf9f5;
+    --border:    #e8e6dc;
+    --border-soft: #e5e3d8;
+    --near-black: #141413;
+    --dark-warm: #3d3d3a;
+    --olive:     #504e49;
+    --stone:     #6b6a64;
+    --brand:     #1B365D;
+    --brand-tint: #EEF2F7;          /* solid equivalent of rgba(1B365D, 0.08), avoids tag double-rectangle bug */
+    --serif: "TsangerJinKai02", "Source Han Serif SC", "Source Han Serif CN", "Noto Serif CJK SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+    --sans: var(--serif);
+  }
+
+  html, body { background: var(--parchment); }
+
+  @media screen {
+    body { max-width: 210mm; margin: 0 auto; padding: 11mm 13mm; }
+  }
+
+  body {
+    color: var(--near-black);
+    font-family: var(--serif);
+    font-size: 9.2pt;
+    line-height: 1.42;
+    letter-spacing: 0.3pt;
+    widows: 3;
+    orphans: 3;
+  }
+
+  .serif {
+    font-family: var(--serif);
+  }
+
+  a { color: var(--brand); text-decoration: none; }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 4.2mm;
+    padding-bottom: 2.3mm;
+    border-bottom: 0.6pt solid var(--border);
+  }
+  .header > div:first-child { flex-shrink: 0; }
+  .name {
+    font-family: var(--serif);
+    font-size: 26.5pt;
+    font-weight: 500;
+    letter-spacing: 0.5pt;
+    color: var(--near-black);
+    line-height: 1;
+    margin-bottom: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 2.2mm;
+    white-space: nowrap;
+  }
+  .alias {
+    font-size: 12.5pt;
+    font-weight: 400;
+    color: var(--stone);
+    letter-spacing: 0.2pt;
+  }
+  .alias::before {
+    content: "";
+  }
+  .tagline { font-size: 9.5pt; color: var(--olive); line-height: 1.3; }
+  .tagline .accent { color: var(--brand); font-weight: 500; }
+
+  .contact {
+    text-align: right;
+    font-size: 9pt;
+    color: var(--stone);
+    line-height: 1.5;
+    margin-bottom: -0.5mm;
+  }
+  .contact a { color: var(--dark-warm); }
+  .contact .loc { color: var(--olive); font-weight: 500; }
+  .contact .role { color: var(--brand); font-size: 10.5pt; font-weight: 500; }
+  .contact .sep { color: var(--border); margin: 0 0.4em; }
+
+  /* METRICS */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 6mm;
+    margin-bottom: 3mm;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .metric {
+    background: transparent;
+    padding: 1mm 0 1.2mm;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7mm;
+    min-width: 0;
+    break-inside: avoid;
+  }
+  .metric-value {
+    font-family: var(--serif);
+    font-size: 13pt;
+    font-weight: 500;
+    color: var(--brand);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .metric-label {
+    font-size: 9pt;
+    color: var(--olive);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .metric-value .unit {
+    font-size: 10.5pt;
+    margin-left: 0.3mm;
+    font-weight: 500;
+    color: var(--brand);
+  }
+
+  .metrics--stack .metric {
+    gap: 0.5mm;
+    padding-bottom: 2mm;
+    border-bottom: 0.3pt dotted var(--border);
+  }
+
+  /* SECTION */
+  .section-title {
+    font-family: var(--serif);
+    font-size: 12.5pt;
+    font-weight: 500;
+    color: var(--near-black);
+    border-bottom: 0.5pt solid var(--border);
+    padding: 0 0 1mm 0;
+    margin: 5.8mm 0 1.7mm 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2mm;
+  }
+  .section-title .sub {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 9pt;
+    color: var(--stone);
+    letter-spacing: 0.3pt;
+  }
+
+  section:first-of-type .section-title { margin-top: 0; }
+  .page-break > .section-title { margin-top: 0; }
+
+  /* Unify gap from section-title bottom border to first content's first line = 3mm
+     (section-title margin-bottom 1.8mm + first-child top spacing 1.2mm) */
+  .section-title + .skill-row { padding-top: 1.2mm; }
+  .section-title + .edu-row { padding-top: 1.2mm; }
+
+  /* SUMMARY */
+  .summary { font-size: 9.2pt; line-height: 1.42; color: var(--near-black); }
+  .summary .em-brand { color: var(--brand); }
+  .summary .hl { color: var(--brand); }
+
+  /* TIMELINE */
+  .timeline { display: flex; gap: 6mm; margin-bottom: 2mm; margin-left: 0; margin-right: 0; }
+  .tl-step {
+    flex: 1; background: transparent;
+    padding: 0.8mm 0;
+    break-inside: avoid;
+  }
+  .tl-top {
+    display: flex; align-items: baseline; gap: 1.5mm;
+    margin-bottom: 0.5mm;
+  }
+  .tl-year {
+    font-family: var(--serif);
+    font-size: 11pt; font-weight: 500;
+    color: var(--brand); line-height: 1;
+  }
+  .tl-head {
+    font-size: 11pt; font-weight: 500;
+    color: var(--near-black);
+  }
+  .tl-body { font-size: 9pt; color: var(--olive); line-height: 1.4; letter-spacing: 0.3pt; }
+
+  /* PROJECTS */
+  .project {
+    padding: 2.6mm 0;
+    break-inside: avoid;
+  }
+  .project:first-of-type { padding-top: 1.2mm; }
+  .proj-head {
+    display: block; margin-bottom: 0.75mm;
+  }
+  .proj-name {
+    font-family: var(--serif);
+    font-size: 11pt; font-weight: 500; color: var(--near-black);
+  }
+  .proj-kind { font-size: 11pt; color: var(--olive); margin-left: 1.5mm; }
+  .proj-role {
+    font-size: 9pt; color: var(--brand); font-weight: 500;
+    float: right; background: #EEF2F7;
+    padding: 0.4mm 1.2mm; border-radius: 2pt; letter-spacing: 0.05pt;
+    white-space: nowrap;
+  }
+  .proj-lines { display: table; width: 100%; }
+  .proj-row { display: table-row; }
+  .proj-label {
+    display: table-cell; width: 11mm;
+    font-size: 9pt; color: var(--brand);
+    font-weight: 500; letter-spacing: 0.2pt;
+    padding: 0.2mm 0 0.4mm 0; vertical-align: top;
+  }
+  .proj-text {
+    display: table-cell; font-size: 9pt;
+    color: var(--near-black); line-height: 1.4; letter-spacing: 0.3pt;
+    padding: 0 0 0.4mm 0.5mm;
+  }
+  .proj-text .hl { color: var(--brand); }
+
+  /* PAGE 2 FORCE BREAK */
+  .page-break { break-before: page; }
+
+  /* OPEN SOURCE - NEW ENHANCED LAYOUT */
+  .os-intro {
+    font-size: 9.2pt; line-height: 1.4; letter-spacing: 0.3pt;
+    color: var(--near-black);
+    padding: 0; margin: 1.2mm 0 2mm 0;
+    background: transparent;
+    break-inside: avoid;
+  }
+  .os-intro .hl { color: var(--brand); }
+  .os-intro .strong { color: var(--near-black); }
+
+  .os-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 8mm; row-gap: 1mm;
+  }
+  .os-item {
+    display: flex; align-items: baseline;
+    gap: 2mm; padding: 1mm 0 1mm 0;
+    border-bottom: 0.3pt dotted var(--border);
+    break-inside: avoid;
+  }
+  .os-item:last-child,
+  .os-item:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+  .os-name {
+    font-family: var(--serif);
+    font-size: 10pt; font-weight: 500;
+    flex-shrink: 0; min-width: 14mm;
+  }
+  .os-name a { color: var(--brand); }
+  .os-desc { font-size: 9pt; color: var(--olive); line-height: 1.4; flex: 1; }
+  .os-star {
+    font-size: 9pt; color: var(--dark-warm);
+    font-weight: 500; white-space: nowrap; flex-shrink: 0; min-width: 7.5mm; text-align: right;
+  }
+  .os-star.big { color: var(--brand); font-size: 9.2pt; }
+
+  .os-highlight {
+    margin-top: 2.5mm;
+    padding: 1.8mm 2.8mm;
+    background: var(--ivory);
+    border-radius: 2pt;
+    font-size: 9pt; line-height: 1.4;
+    color: var(--near-black);
+    letter-spacing: 0.3pt;
+    break-inside: avoid;
+  }
+  .os-highlight .hl { color: var(--brand); }
+  .os-highlight .tag {
+    display: inline-block;
+    background: transparent; color: var(--brand);
+    font-size: 9pt; font-weight: 500;
+    padding: 0; border-radius: 0;
+    margin-right: 1.2mm; letter-spacing: 0.3pt;
+    transform: none;
+  }
+
+  /* AI CONVICTION - NEW SECTION */
+  .convictions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 7mm;
+    row-gap: 3mm;
+    margin-top: 1.8mm;
+  }
+  .conv-card {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0 2mm 0 0;
+    break-inside: avoid;
+  }
+  .conv-head, .ai-card-head {
+    font-family: var(--serif);
+    font-size: 9.8pt; font-weight: 500;
+    color: var(--near-black); margin-bottom: 0.9mm;
+    display: flex; align-items: baseline; gap: 1.5mm;
+  }
+  .conv-head .year, .ai-card-head .year {
+    color: var(--brand); font-weight: 500;
+    font-size: 9pt;
+  }
+  .conv-body, .ai-card-body {
+    font-size: 9pt; color: var(--olive);
+    line-height: 1.4; letter-spacing: 0.3pt;
+  }
+  .conv-body .hl, .ai-card-body .hl { color: var(--brand); }
+  .conv-body .em-brand, .ai-card-body .em-brand { color: var(--brand); }
+
+  .product-grid { grid-template-columns: 1fr 1fr; row-gap: 1.5mm; }
+  .product-grid .os-item { align-items: flex-start; padding: 1.5mm 0; }
+  .product-note { display: block; margin-top: 0.8mm; color: var(--near-black); }
+
+  /* INFLUENCE */
+  .handle-strip {
+    background: transparent;
+    padding: 0; margin: 1.2mm 0 2mm 0;
+    display: flex; align-items: baseline; gap: 3mm;
+    break-inside: avoid;
+  }
+  .handle-strip .handle {
+    font-family: var(--serif);
+    font-size: 9.8pt; font-weight: 500; color: var(--brand);
+    flex-shrink: 0;
+  }
+  .handle-strip .follower { font-size: 9pt; color: var(--stone); flex-shrink: 0; }
+  .handle-strip .desc { font-size: 9pt; color: var(--olive); line-height: 1.4; letter-spacing: 0.3pt; flex: 1; }
+
+  .impact-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 5.5mm; }
+  .inf-block-title {
+    margin-top: 2.5mm;
+    font-family: var(--serif);
+    font-size: 9.8pt; font-weight: 500;
+    color: var(--near-black);
+    margin-bottom: 1.5mm; padding-bottom: 0.5mm;
+    border-bottom: 0.3pt dotted var(--border);
+    display: flex; align-items: baseline; gap: 2mm;
+  }
+  .inf-block-title .small {
+    font-family: var(--serif);
+    font-size: 9pt; color: var(--stone);
+    font-weight: 400; margin-left: 0; letter-spacing: 0.2pt;
+  }
+  .art-row {
+    padding: 1.6mm 0;
+    border-bottom: 0.3pt dotted var(--border-soft);
+  }
+  .talk-row {
+    display: flex; justify-content: space-between;
+    align-items: flex-start;
+    gap: 2mm; padding: 1.6mm 0;
+    border-bottom: 0.3pt dotted var(--border-soft);
+  }
+  .art-row:last-of-type, .talk-row:last-of-type { border-bottom: none; }
+  .art-header {
+    display: flex; align-items: baseline;
+    justify-content: space-between;
+    gap: 2mm; padding-right: 3mm;
+  }
+  .art-title, .talk-title {
+    font-size: 9pt; color: var(--near-black);
+    font-weight: 500; line-height: 1.4;
+    flex: 1 1 auto; min-width: 0;
+  }
+  .art-stats, .talk-venue {
+    font-size: 9pt; color: var(--stone);
+    line-height: 1.4; margin-top: 0.5mm; padding-left: 0; letter-spacing: 0.3pt;
+    white-space: nowrap;
+  }
+  .art-stats .em-brand {
+    color: var(--brand);
+  }
+  .art-date {
+    font-size: 9pt; color: var(--stone);
+    font-variant-numeric: tabular-nums;
+    font-weight: 400;
+  }
+  .art-stats .lang-cn, .art-stats .lang-en {
+    display: inline-block;
+    font-size: 9pt; font-weight: 500;
+    margin-right: 0.5mm;
+    letter-spacing: 0.2pt;
+    color: var(--stone);
+  }
+  .talk-date {
+    font-size: 9pt; color: var(--stone); font-weight: 500;
+    white-space: nowrap; font-variant-numeric: tabular-nums;
+    padding-top: 0.3mm;
+  }
+
+  /* SKILLS */
+  .skill-row {
+    display: flex; gap: 2.5mm; padding: 1.7mm 0;
+    border-bottom: 0.3pt dotted var(--border);
+    align-items: baseline;
+  }
+  .skill-row:last-of-type { border-bottom: none; }
+  .skill-label {
+    font-size: 9pt; font-weight: 500;
+    color: var(--brand); letter-spacing: 0.3pt;
+    width: 22mm; flex-shrink: 0;
+    line-height: 1.36;
+  }
+  .skill-body { font-size: 9pt; color: var(--near-black); line-height: 1.4; letter-spacing: 0.3pt; flex: 1; }
+  .skill-body .em-brand { color: var(--brand); }
+
+  .no-break { break-inside: avoid; }
+
+  /* EDUCATION */
+  .edu-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; font-size: 9.5pt; padding: 1.7mm 0;
+  }
+  .edu-row .school {
+    font-family: var(--serif);
+    font-weight: 500; font-size: 10.7pt;
+  }
+  .edu-row .major { color: var(--olive); font-size: 9.5pt; }
+  .edu-row .date { color: var(--stone); font-variant-numeric: tabular-nums; font-size: 9pt; }
+
+  /* TABLE (kami-table) */
+  table, .kami-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9pt;
+    margin: 6pt 0;
+    break-inside: avoid;
+  }
+  table th, .kami-table th {
+    text-align: left;
+    font-weight: 500;
+    color: var(--dark-warm);
+    padding: 5pt 6pt;
+    border-bottom: 0.6pt solid var(--border);
+    background: transparent;
+  }
+  table td, .kami-table td {
+    padding: 4pt 6pt;
+    border-bottom: 0.25pt solid var(--border);
+    vertical-align: top;
+  }
+  table.compact th, .kami-table.compact th { padding: 3pt 4pt; font-size: 8pt; }
+  table.compact td, .kami-table.compact td { padding: 2.5pt 4pt; font-size: 8pt; line-height: 1.4; }
+  table.financial td:not(:first-child), .kami-table.financial td:not(:first-child) {
+    text-align: right; font-variant-numeric: tabular-nums;
+  }
+  table.financial th:not(:first-child), .kami-table.financial th:not(:first-child) { text-align: right; }
+  table.striped tbody tr:nth-child(even) td, .kami-table.striped tbody tr:nth-child(even) td {
+    background: var(--ivory);
+  }
+  table .total td, .kami-table .total td {
+    font-weight: 500; border-top: 0.6pt solid var(--border); border-bottom: none; color: var(--near-black);
+  }
+
+  /* DENSE VARIANT: add class="resume--dense" to <body> when 5+ projects overflow */
+  body.resume--dense { font-size: 9pt; }
+  body.resume--dense .proj-text { line-height: 1.38; }
+  body.resume--dense .tl-body { font-size: 8.5pt; }
+  body.resume--dense .project { padding: 1.6mm 0; }
+  body.resume--dense .section-title { margin-top: 4.2mm; margin-bottom: 1.2mm; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div><div class="name serif">赵宜哲<span class="alias">Ethan Zhao</span></div></div>
+  <div class="contact"><span class="role">千问办公 AI 产品经理 · 企业级能力方向</span><br>杭州 · 17624863927 · hi@yizhe.me<br>微信 qingnianxiaozhe · yizhe.me · GitHub @imetn</div>
+</div>
+
+<div class="metrics">
+  <div class="metric"><span class="metric-value serif">5 年</span><span class="metric-label">飞书企业应用与 aPaaS</span></div>
+  <div class="metric"><span class="metric-value serif">8,000 家</span><span class="metric-label">AI 质检方案覆盖门店</span></div>
+  <div class="metric"><span class="metric-value serif">90%+</span><span class="metric-label">试点样本人机一致率</span></div>
+  <div class="metric"><span class="metric-value serif">98,317</span><span class="metric-label">独立产品单月活跃</span></div>
+</div>
+
+<section>
+  <div class="section-title">个人简介</div>
+  <div class="summary"><span class="hl">5 年飞书企业应用与 aPaaS</span> 经验，长期在客户现场、产品能力与工程交付之间工作。能把需求变成可运行方案，也能围绕上下文、工具、边界验收与工作轨迹，<span class="hl">让 Agent 进入真实企业流程</span>。</div>
+</section>
+
+<section>
+  <div class="section-title">工作经历<span class="sub">2021.07 - 至今 · 飞书低代码平台解决方案工程师</span></div>
+  <div class="timeline">
+    <div class="tl-step">
+      <div class="tl-top"><div class="tl-year serif">一线</div></div>
+      <div class="tl-body">进入消费零售、制造和企业服务客户现场，连接业务、产品与工程。</div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-top"><div class="tl-year serif">产品化</div></div>
+      <div class="tl-body">把业务对象、权限、状态和验收规则沉淀为可复用产品能力。</div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-top"><div class="tl-year serif">Agent</div></div>
+      <div class="tl-body">把 Agent 作为新的执行主体，用上下文、工具、边界验收和工作轨迹保证可信交付。</div>
+    </div>
+  </div>
+  <div class="project">
+    <div class="proj-head">
+      <span class="proj-name serif">一店一群 2.0 / 3.0</span>
+      <span class="proj-kind">· 消费行业 · 门店经营管理</span>
+      <span class="proj-role">方向主导</span>
+    </div>
+    <div class="proj-lines">
+      <div class="proj-row"><div class="proj-label">角色</div><div class="proj-text">主导 2.0、3.0 的方案与架构设计，把总部经营动作转成门店每天执行的工作流。</div></div>
+      <div class="proj-row"><div class="proj-label">现场</div><div class="proj-text">总部任务与一线协作散落在群聊和表格中，门店越多，任务越难追踪，执行结果也越难验收。</div></div>
+      <div class="proj-row"><div class="proj-label">动作</div><div class="proj-text">抽象门店、人员、群组、消息与任务，统一权限、状态和验收规则，以飞书群连接分派、执行与验收。</div></div>
+      <div class="proj-row"><div class="proj-label">判断</div><div class="proj-text">确认 Agent 要可靠执行，业务对象和规则必须先被结构化，否则只能给出建议。</div></div>
+      <div class="proj-row"><div class="proj-label">结果</div><div class="proj-text">支撑门店规模从 <span class="hl">2,000 家扩展到 6,000+</span>，完成万店规模预研，方案影响 <span class="hl">ARR 超过 350 万元</span>，并沉淀模板、交付规范和伙伴实施路径。</div></div>
+    </div>
+  </div>
+  <div class="project">
+    <div class="proj-head">
+      <span class="proj-name serif">益禾堂门店 AI 质检与经营洞察</span>
+      <span class="proj-kind">· 消费行业 · 企业 AI</span>
+      <span class="proj-role">方案负责</span>
+    </div>
+    <div class="proj-lines">
+      <div class="proj-row"><div class="proj-label">角色</div><div class="proj-text">负责场景抽象、方案设计、指标定义与落地推动，把人工逐条检查改为 AI 初筛、人工复核和问题反馈。</div></div>
+      <div class="proj-row"><div class="proj-label">现场</div><div class="proj-text">传统抽检覆盖有限、口径不一；即使任务显示完成，总部仍难以及时判断门店真实执行质量。</div></div>
+      <div class="proj-row"><div class="proj-label">动作</div><div class="proj-text">将质检标准拆成可配置规则、提示词、正反样例与例外条件，建立错判反馈和持续迭代机制。</div></div>
+      <div class="proj-row"><div class="proj-label">判断</div><div class="proj-text">形成判断：企业 AI 进入生产前，人的标准必须可配置、可复核，并能通过反馈持续改进。</div></div>
+      <div class="proj-row"><div class="proj-label">结果</div><div class="proj-text">在已复核的试点样本中，人机判断一致率达到 <span class="hl">90%+</span>，高于客户最初 50% 的可接受目标，减少督导 <span class="hl">60%+</span> 的重复劳动，支撑约 8,000 家门店和 17 万+ 条巡检结果。</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title">其他企业产品沉淀<span class="sub">从项目交付到平台复用</span></div>
+  <div class="timeline">
+    <div class="tl-step"><div class="tl-top"><div class="tl-year serif">资产管理</div></div><div class="tl-body">从 0 到 1 交付资产管理助手，覆盖欢乐互娱、美图等 10+ 客户，累计 ARR 124 万元。</div></div>
+    <div class="tl-step"><div class="tl-top"><div class="tl-year serif">PLM / CMF</div></div><div class="tl-body">服务蔚来、倍思、禾赛、导远等客户，驻场识别并推动解决 100+ 个平台与业务问题。</div></div>
+    <div class="tl-step"><div class="tl-top"><div class="tl-year serif">平台复用</div></div><div class="tl-body">上架 10+ 应用模板和 10+ 通用组件，反馈平台需求与缺陷 90+ 项。</div></div>
+  </div>
+</section>
+
+<section class="no-break">
+  <div class="section-title">教育背景</div>
+  <div class="edu-row"><div><span class="school serif">浙江工业大学</span><span class="major">　· 硕士</span></div><div class="date">2018.09 - 2021.07</div></div>
+  <div class="edu-row"><div><span class="school serif">沈阳理工大学</span><span class="major">　· 本科</span></div><div class="date">2014.09 - 2018.07</div></div>
+</section>
+
+<section class="page-break">
+  <div class="section-title">Agent 工程闭环<span class="sub">新的执行主体 · 四个必要条件</span></div>
+  <div class="os-intro">我把 <span class="hl">Agent 当作新的执行主体</span>。上下文决定它理解什么，工具决定它能做什么，边界、验收和工作轨迹决定结果能不能被信任。</div>
+  <div class="convictions">
+    <div class="conv-card"><div class="conv-head"><span class="year">01</span>上下文</div><div class="conv-body">知识库 MCP 供应可检索、可引用的项目知识，覆盖 1,167 篇文章、1,977 个代码块和 9,056 张图片。</div></div>
+    <div class="conv-card"><div class="conv-head"><span class="year">02</span>工具</div><div class="conv-body">Node SDK 封装对象、附件、流程、身份与构建器能力，让 Agent 可以在明确边界内操作真实项目。</div></div>
+    <div class="conv-card"><div class="conv-head"><span class="year">03</span>边界与验收</div><div class="conv-body">8 个 Skills 写清高频任务的做法、约束与写后验证，减少每个项目从零理解平台的成本。</div></div>
+    <div class="conv-card"><div class="conv-head"><span class="year">04</span>工作轨迹</div><div class="conv-body">Worktrace 保存执行证据；已记录 975 条真实轨迹，并形成 10 组可复现的回放与评测案例。</div></div>
+  </div>
+  <div class="project">
+    <div class="proj-head">
+      <span class="proj-name serif">aPaaS Agent 开发三件套</span>
+      <span class="proj-kind">· Node SDK · Skills · MCP</span>
+      <span class="proj-role">能力建设</span>
+    </div>
+    <div class="proj-lines">
+      <div class="proj-row"><div class="proj-label">角色</div><div class="proj-text">围绕真实 aPaaS 项目建设 Agent 开发三件套，并把执行证据交给 Agent Worktrace。</div></div>
+      <div class="proj-row"><div class="proj-label">动作</div><div class="proj-text">Node SDK 提供对象、附件、流程与身份操作，8 个 Skills 写清做法和约束，知识库 MCP 供应可检索项目知识。<br>按上下文、工具、边界验收和工作轨迹组织真实开发与交付。</div></div>
+      <div class="proj-row"><div class="proj-label">结果</div><div class="proj-text">知识库覆盖 <span class="hl">1,167 篇文章</span>、1,977 个代码块和 <span class="hl">9,056 张图片</span>，减少 Agent 猜测字段、忽略业务错误和遗漏批量失败。</div></div>
+    </div>
+  </div>
+  <div class="project">
+    <div class="proj-head">
+      <span class="proj-name serif">Agents Harness Worktrace</span>
+      <span class="proj-kind">· Agent 工作轨迹可观测与评估</span>
+      <span class="proj-role">独立构建</span>
+    </div>
+    <div class="proj-lines">
+      <div class="proj-row"><div class="proj-label">角色</div><div class="proj-text">构建本地 Agent 工作轨迹产品，让执行过程可观察、可回放、可评估。</div></div>
+      <div class="proj-row"><div class="proj-label">动作</div><div class="proj-text">解析 Codex JSONL，将会话、时间线、工具调用、失败、审批点、Token 与上下文峰值转成可观察界面。<br>把 Codex 与 Claude Code 设计为可插拔数据源，围绕成功率、耗时、介入、错误和回滚定义评测。</div></div>
+      <div class="proj-row"><div class="proj-label">结果</div><div class="proj-text">截至 2026-08-19 已接入 <span class="hl">975 条真实本地轨迹</span>，形成 <span class="hl">10 组可复现回放与评测案例</span>，为 Agent 可靠性改进留下执行证据。</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title">独立产品<span class="sub">人与 Agent 的职责分工</span></div>
+  <div class="os-intro">AI 把一个人能负责的产品范围放大了。<span class="hl">问题选择、产品取舍、数据口径和上线验收仍由我负责</span>，Agent 承担调研、实现和迭代中的高频执行。</div>
+  <div class="project">
+    <div class="proj-head">
+      <span class="proj-name serif">App Store Price 产品体系</span>
+      <span class="proj-kind">· 独立产品 · Web 与原生 App</span>
+      <span class="proj-role">独立负责</span>
+    </div>
+    <div class="proj-lines">
+      <div class="proj-row"><div class="proj-label">角色</div><div class="proj-text">独立负责问题选择、产品取舍、数据口径、上线验收与持续运营，Agent 承担调研、实现和迭代中的高频执行。</div></div>
+      <div class="proj-row"><div class="proj-label">动作</div><div class="proj-text">完成 Web、iOS、Chrome 扩展、Telegram Bot 与数据服务，并根据真实使用路径调整信息架构、性能和国际化。<br>由人掌握目标、权衡与风险边界，让 Agent 在约束下完成工程执行和修正。</div></div>
+      <div class="proj-row"><div class="proj-label">结果</div><div class="proj-text">单月活跃用户 <span class="hl">98,317</span>，会话 181,871，页面浏览 <span class="hl">1,235,915</span>，验证一个人与 Agent 可以长期运行多端公开产品。</div></div>
+      <div class="proj-row"><div class="proj-label">矩阵</div><div class="proj-text">App Store Price · 30+ 地区价格对比 · Web、Chrome 扩展、Telegram Bot 与数据服务 · 98,317 月活</div></div>
+    </div>
+  </div>
+  <div class="os-grid product-grid">
+    <div class="os-item"><span class="os-desc">Pinlist · SwiftUI 原生价格追踪 · iOS、iPadOS 与 macOS · 独立设计与发布<span class="product-note">围绕收藏、更新追踪与价格变化完成原生体验、数据同步、测试和 App Store 发布。</span></span></div>
+    <div class="os-item"><span class="os-desc">AIUsage · Token 与成本追踪 · Codex、Claude Code 与多设备同步<span class="product-note">把分散日志转成可核对的 Token、成本与趋势数据，用于审视 AI 工作方式、效率和成本。</span></span></div>
+  </div>
+  <div class="os-highlight">6 次 Spot Bonus · 覆盖成就客户、担当可信赖、追求极致、谋远大有耐心等方向</div>
+</section>
+
+<section>
+  <div class="section-title">核心能力</div>
+  <div class="skill-row"><div class="skill-label">企业级产品：</div><div class="skill-body"><span class="em-brand">组织、权限、数据安全</span>、开放接口与客户交付，覆盖消费零售、制造和企业服务。</div></div>
+  <div class="skill-row"><div class="skill-label">Agent 系统：</div><div class="skill-body"><span class="em-brand">上下文工程</span>、任务编排、Skills、MCP、工具调用、评测、可观测性与人工确认。</div></div>
+  <div class="skill-row"><div class="skill-label">产品闭环：</div><div class="skill-body">用户调研、需求定义、<span class="em-brand">MVP 验证</span>、指标体系、数据分析和用户反馈。</div></div>
+  <div class="skill-row"><div class="skill-label">工程实现：</div><div class="skill-body">TypeScript、Node.js、React、Next.js、SQL、Python、<span class="em-brand">Cloudflare Workers / D1</span>。</div></div>
+  <div class="skill-row"><div class="skill-label">原生与语言：</div><div class="skill-body">SwiftUI、SwiftData、CloudKit、StoreKit，英语可作为工作语言，<span class="em-brand">雅思 6.5</span>。</div></div>
+</section>
+
+</body>
+</html>

@@ -1,8 +1,9 @@
 ---
+import { Icon } from "astro-icon/components";
 import ResumeLayout from "../../resume/Layout.astro";
 import cv from "../../resume/data/cv.json";
 
-const { basics, focus, caseStudies, agentEngineering, independentProducts, work, skills, recognition, meta } = cv;
+const { basics, focus, caseStudies, agentEngineering, independentProductInsight, independentProducts, work, skills, recognition, meta } = cv;
 const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     year: "numeric",
     month: "2-digit"
@@ -32,13 +33,10 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
             </div>
 
             <nav class="quick-links" aria-label="简历快捷操作">
-                <a href="#about">关于我</a>
-                <span aria-hidden="true">·</span>
-                <a href={meta.pdfPath} download="赵宜哲-简历.pdf">下载 PDF</a>
-                <span aria-hidden="true">·</span>
-                <a href={`mailto:${basics.email}`}>{basics.email}</a>
-                <span aria-hidden="true">·</span>
-                <a href={basics.github} target="_blank" rel="noreferrer">GitHub</a>
+                <a href="#about"><Icon name="lucide:user-round" class="quick-link-icon" aria-hidden="true" /><span>关于我</span></a>
+                <a href={meta.pdfPath} download="赵宜哲-简历.pdf"><Icon name="lucide:file-text" class="quick-link-icon" aria-hidden="true" /><span>下载 PDF</span></a>
+                <a href={`mailto:${basics.email}`}><Icon name="lucide:mail" class="quick-link-icon" aria-hidden="true" /><span>{basics.email}</span></a>
+                <a href={basics.github} target="_blank" rel="noreferrer"><Icon name="lucide:github" class="quick-link-icon" aria-hidden="true" /><span>GitHub</span></a>
             </nav>
         </header>
 
@@ -76,6 +74,10 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
                             ))}
                         </div>
                         <p class="my-role"><strong>我的角色</strong>{project.role}</p>
+                        <div class="project-insight">
+                            <p class="insight-label">Agent 判断</p>
+                            <p>{project.agentInsight}</p>
+                        </div>
                     </article>
                 ))}
             </div>
@@ -103,6 +105,10 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
             <p class="section-intro">
                 独立产品让我持续面对真实选择：什么值得做、怎样快速上线、数据说明了什么，以及一个产品如何被长期维护。
             </p>
+            <div class="project-insight product-insight">
+                <p class="insight-label">人与 Agent</p>
+                <p>{independentProductInsight}</p>
+            </div>
 
             <div class="product-list">
                 {independentProducts.map((product, index) => (
@@ -118,13 +124,17 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
                                 decoding="async"
                             />
                         </a>
-                        <div class="product-copy">
+                        <div class="product-summary">
                             <p class="project-index">{String(index + 1).padStart(2, "0")} / 独立产品</p>
                             <h3>{product.name}</h3>
                             <p class="product-label">{product.label}</p>
+                        </div>
+                        <div class="product-detail">
                             <p>{product.text}</p>
-                            <p class="product-metrics">{product.metrics}</p>
-                            <a class="text-link" href={product.url} target="_blank" rel="noreferrer">查看产品</a>
+                            <div class="product-footer">
+                                <p class="product-metrics">{product.metrics}</p>
+                                <a class="text-link" href={product.url} target="_blank" rel="noreferrer">查看产品</a>
+                            </div>
                         </div>
                     </article>
                 ))}
@@ -222,7 +232,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
         width: 88px;
         height: 88px;
         border-radius: 50%;
-        background: #eef1f3;
+        background: var(--soft);
         object-fit: cover;
     }
 
@@ -247,14 +257,14 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     h1 {
         margin-bottom: 12px;
         font-size: 22px;
-        font-weight: 650;
+        font-weight: 500;
         letter-spacing: 0;
     }
 
     h2 {
         margin-bottom: 14px;
         font-size: 20px;
-        font-weight: 650;
+        font-weight: 500;
         line-height: 1.45;
         letter-spacing: 0;
     }
@@ -262,7 +272,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     h3 {
         margin-bottom: 12px;
         font-size: 18px;
-        font-weight: 650;
+        font-weight: 500;
         line-height: 1.45;
         letter-spacing: 0;
     }
@@ -273,7 +283,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     dt {
         color: var(--body);
         font-size: 16px;
-        line-height: 1.85;
+        line-height: 1.68;
         line-break: strict;
         text-wrap: pretty;
         word-break: normal;
@@ -282,28 +292,44 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     .intro-copy p {
         margin-bottom: 8px;
         font-size: 17px;
-        line-height: 1.8;
+        line-height: 1.7;
     }
 
     .intro-copy .intro-lead {
         color: var(--ink);
-        font-weight: 520;
+        font-weight: 500;
     }
 
     .quick-links {
         display: flex;
         flex-wrap: wrap;
-        gap: 7px 10px;
+        gap: 10px 18px;
         margin: 26px 0 0 120px;
         color: var(--body);
         font-size: 14px;
     }
 
-    .quick-links a,
+    .quick-links a {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .quick-link-icon {
+        width: 15px;
+        height: 15px;
+        flex: 0 0 auto;
+        color: var(--muted);
+        stroke-width: 1.8;
+        transition: color 160ms ease;
+    }
+
+    .quick-links a span,
     .text-link,
     .footer a {
         text-decoration-line: underline;
-        text-decoration-color: #9a9b96;
+        text-decoration-color: #b8b7b0;
         text-decoration-thickness: 1px;
         text-underline-offset: 4px;
         transition: color 160ms ease, text-decoration-color 160ms ease;
@@ -313,6 +339,15 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     .text-link:hover,
     .footer a:hover {
         color: var(--accent);
+    }
+
+    .quick-links a:hover .quick-link-icon {
+        color: var(--accent);
+    }
+
+    .quick-links a:hover span,
+    .text-link:hover,
+    .footer a:hover {
         text-decoration-color: var(--accent);
     }
 
@@ -326,7 +361,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
         margin-bottom: 8px;
         color: var(--muted);
         font-size: 12px;
-        font-weight: 600;
+        font-weight: 500;
         line-height: 1.5;
         letter-spacing: 0;
         text-transform: uppercase;
@@ -344,7 +379,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
 
     .focus-row {
         display: grid;
-        grid-template-columns: 34px minmax(220px, 1.6fr) minmax(120px, 1fr) auto;
+        grid-template-columns: 34px minmax(0, 3fr) minmax(0, 1.5fr) 140px;
         gap: 14px;
         align-items: center;
         padding: 14px 0;
@@ -367,12 +402,13 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     .focus-title {
         color: var(--ink);
         font-size: 14px;
-        font-weight: 560;
+        font-weight: 500;
     }
 
     .focus-name,
     .focus-result {
         font-size: 13px;
+        text-align: left;
     }
 
     .case-list {
@@ -394,7 +430,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
         margin-bottom: 22px;
         color: var(--ink);
         font-size: 16px;
-        font-weight: 540;
+        font-weight: 500;
         line-height: 1.75;
     }
 
@@ -407,7 +443,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
 
     .story strong {
         color: var(--ink);
-        font-weight: 650;
+        font-weight: 500;
     }
 
     .story span {
@@ -416,9 +452,9 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
 
     .my-role {
         margin: 20px 0 0;
-        padding: 12px 16px;
-        background: var(--soft);
-        color: #6f706c;
+        padding: 0;
+        background: transparent;
+        color: var(--muted);
         font-size: 13px;
         line-height: 1.65;
     }
@@ -426,7 +462,33 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     .my-role strong {
         margin-right: 10px;
         color: var(--body);
-        font-weight: 650;
+        font-weight: 500;
+    }
+
+    .project-insight {
+        display: grid;
+        grid-template-columns: 92px minmax(0, 1fr);
+        gap: 16px;
+        margin: 12px 0 0;
+        padding: 14px 16px;
+        border-radius: 4px;
+        background: var(--soft);
+    }
+
+    .project-insight p {
+        margin: 0;
+        color: var(--body);
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .project-insight .insight-label {
+        color: var(--ink);
+        font-weight: 500;
+    }
+
+    .product-insight {
+        margin: -10px 0 8px;
     }
 
     .capability-list {
@@ -450,7 +512,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     .capability-row dt {
         color: var(--ink);
         font-size: 14px;
-        font-weight: 650;
+        font-weight: 500;
     }
 
     .capability-row dt span {
@@ -469,15 +531,16 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     .section-conclusion {
         margin: 22px 0 0;
         color: var(--ink);
-        font-weight: 540;
+        font-weight: 500;
     }
 
     .product {
         display: grid;
-        grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
-        gap: 34px;
+        grid-template-columns: 20% minmax(0, 1fr);
+        column-gap: 30px;
+        row-gap: 22px;
         align-items: start;
-        padding: 34px 0 50px;
+        padding: 30px 0 44px;
         scroll-margin-top: 28px;
     }
 
@@ -486,32 +549,75 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     }
 
     .product-image-link {
-        display: block;
+        display: grid;
+        overflow: hidden;
+        place-items: center;
         width: 100%;
+        aspect-ratio: 4 / 3;
+        border: 1px solid var(--hairline);
+        border-radius: 8px;
+        background: var(--soft);
+        transition: border-color 180ms ease;
     }
 
     .product-image {
         display: block;
         width: 100%;
-        height: auto;
-        border: 1px solid #e8e6df;
-        border-radius: 8px;
-        background: #f2f4f5;
+        height: 100%;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
         object-fit: contain;
-        transition: transform 220ms ease, border-color 220ms ease;
+        object-position: center;
+        transition: transform 180ms ease;
+    }
+
+    .product-image-link:hover {
+        border-color: #cbc8bd;
     }
 
     .product-image-link:hover .product-image {
-        transform: translateY(-2px);
-        border-color: #c9c7c0;
+        transform: scale(1.015);
     }
 
-    .product-copy {
-        max-width: 720px;
+    .product-summary {
+        align-self: center;
+        min-width: 0;
     }
 
-    .product-copy > p {
-        margin-bottom: 13px;
+    .product-summary h3 {
+        margin-bottom: 7px;
+    }
+
+    .product-summary .project-index,
+    .product-summary .product-label,
+    .product-detail p {
+        margin-top: 0;
+    }
+
+    .product-detail {
+        display: grid;
+        grid-column: 1 / 3;
+        gap: 14px;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .product-detail > p {
+        max-width: 740px;
+        margin-bottom: 0;
+    }
+
+    .product-footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 22px;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+
+    .product-footer .text-link {
+        margin-top: 0;
     }
 
     .product-label {
@@ -522,7 +628,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     .product-metrics {
         color: var(--ink);
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 500;
         font-variant-numeric: tabular-nums;
     }
 
@@ -531,7 +637,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
         margin-top: 5px;
         color: var(--ink);
         font-size: 14px;
-        font-weight: 560;
+        font-weight: 500;
     }
 
     .experience {
@@ -697,7 +803,8 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
 
         .story p,
         .capability-row,
-        .skill-row {
+        .skill-row,
+        .project-insight {
             grid-template-columns: 1fr;
             gap: 4px;
         }
@@ -711,12 +818,13 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
         }
 
         .product {
-            grid-template-columns: 1fr;
-            gap: 24px;
+            grid-template-columns: 24% minmax(0, 1fr);
+            column-gap: 20px;
+            row-gap: 18px;
         }
 
         .product-image-link {
-            width: min(100%, 440px);
+            width: 100%;
         }
 
         .experience-heading {
@@ -756,6 +864,12 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
 
         .quick-links {
             margin-left: 0;
+        }
+
+        .product {
+            grid-template-columns: 92px minmax(0, 1fr);
+            column-gap: 16px;
+            row-gap: 16px;
         }
 
         h1 {
@@ -829,7 +943,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
         }
 
         .focus-row {
-            grid-template-columns: 8mm 1.5fr 1fr auto;
+            grid-template-columns: 8mm 68mm 40mm 1fr;
             padding: 2.5mm 0;
         }
 
@@ -860,11 +974,14 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
         }
 
         .product {
+            grid-template-columns: 1fr;
+            gap: 1.5mm;
             padding: 3mm 0 6mm;
         }
 
-        .product-copy {
-            max-width: none;
+        .product-summary,
+        .product-detail {
+            grid-column: 1;
         }
 
         .product-secondary {

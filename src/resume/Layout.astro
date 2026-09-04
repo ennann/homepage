@@ -16,7 +16,7 @@ const canonicalUrl = new URL("/resume", Astro.site ?? Astro.url.origin).toString
         <meta name="description" content={description} />
         <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
         <meta name="referrer" content="no-referrer" />
-        <meta name="theme-color" content="#fbfaf7" />
+        <meta name="theme-color" content="#f5f4ed" />
         <meta name="color-scheme" content="light" />
         <link rel="canonical" href={canonicalUrl} />
         <link rel="icon" type="image/png" href="/yizhe.png" />
@@ -31,18 +31,19 @@ const canonicalUrl = new URL("/resume", Astro.site ?? Astro.url.origin).toString
 <style is:global>
     :root {
         color-scheme: light;
-        font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC",
-            "Source Han Sans SC", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+        font-family: "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif CJK SC",
+            "Noto Serif SC", Georgia, serif;
         font-synthesis: none;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
-        --paper: #fbfaf7;
-        --ink: #1b1b19;
-        --body: #3f403d;
-        --muted: #6f706c;
-        --hairline: #dfded8;
-        --accent: #43677e;
-        --soft: #f2f1ed;
+        --paper: #f5f4ed;
+        --ink: #141413;
+        --body: #3d3d3a;
+        --muted: #6b6a64;
+        --hairline: #e8e6dc;
+        --accent: #1b365d;
+        --soft: #faf9f5;
+        --brand-tint: #eef2f7;
     }
 
     * {
@@ -62,7 +63,7 @@ const canonicalUrl = new URL("/resume", Astro.site ?? Astro.url.origin).toString
     }
 
     ::selection {
-        background: #dbe6eb;
+        background: #e4ecf5;
         color: var(--ink);
     }
 

@@ -2,50 +2,54 @@
 
 **比较基准**
 
-- Source visual truth: `/Users/Ethan/.codex/generated_images/01a06b88-0138-78b2-af88-e7524dfcb3b6/exec-2865cc23-f57c-412c-a16d-75200faf227e.png`
-- Rendered implementation: `tmp/design-qa/resume-top.jpg`
-- Independent-product focus: `tmp/design-qa/resume-products-two-column.jpg`
-- Side-by-side evidence: `tmp/design-qa/source-vs-implementation.jpg`
-- Viewport/state: Codex in-app browser, desktop light theme, authenticated `/resume`, 1001 × 1119 CSS px, device density 1
-- Pixel dimensions: source 1435 × 1096; implementation captures 1001 × 1119; comparison canvas 2014 × 1119
-- Normalization: the source was proportionally fitted into a 1001 × 1119 frame without cropping; the implementation used a native 1001 × 1119 browser capture. Browser chrome was excluded.
+- 页面气质参考：`/Users/Ethan/.codex/generated_images/01a06b88-0138-78b2-af88-e7524dfcb3b6/exec-2865cc23-f57c-412c-a16d-75200faf227e.png`
+- 独立产品布局参考：`/var/folders/p1/d1ljqlb17q3gxtrr4xw639p40000gp/T/codex-clipboard-1c21faf0-078b-40ab-bee6-9b297a2c7cbe.png`
+- 排版与内容原则：`/Users/Ethan/Projects/LarkOffice/tmp/kami-reference/skills/kami/`
+- 最终产品对照：`tmp/design-qa/product-source-vs-kami-final.png`
+- 桌面全宽验收：`tmp/design-qa/resume-kami-wide.png`，浏览器视口 1280 × 720
+- 桌面章节验收：`tmp/design-qa/resume-kami-agent-engineering.png`、`tmp/design-qa/resume-kami-product-compare.png`
+- 手机验收：`tmp/design-qa/resume-kami-mobile-375.png`、`tmp/design-qa/resume-kami-mobile-cases-375.png`、`tmp/design-qa/resume-kami-mobile-products-375.png`，内嵌内容视口 375 × 812
 
-**Findings**
+**结论**
 
-- No actionable P0, P1, or P2 findings remain.
-- Typography: the implementation keeps the Chinese system-font stack ahead of Latin fonts, uses zero negative tracking, readable optical weights, and body line height around 1.8. Chinese wrapping and hierarchy remain clear at the reviewed viewport.
-- Spacing and layout rhythm: the 780 px editorial column, generous section intervals, one-pixel dividers, and restrained grid preserve the selected reference's quiet personal-portfolio rhythm. The product region now uses a 320 px left image column and a flexible right copy column.
-- Colors and tokens: warm paper background, near-black text, muted gray metadata, and restrained blue accent are consistent throughout; contrast remains sufficient without introducing decorative dashboard styling.
-- Image quality and fidelity: all product captures use real project assets, retain their intrinsic aspect ratio, use `height: auto` and `object-fit: contain`, and are no longer cropped into a synthetic 16:9 frame. Avatar and product images remain sharp at displayed size.
-- Copy and content: the page presents 一店一群、益禾堂门店 AI 质检、Agent 工程闭环 and three independent products as distinct stories with evidence-bound outcomes and clear personal attribution.
+- 未发现仍需处理的 P0、P1 或 P2 问题。
+- Kami 的暖纸色、墨蓝、中文衬线层级和减法设计原则已经进入网站；标题只使用 500 字重，正文保持舒展行高，不使用阴影、装饰竖线或合成粗体。
+- 首屏、四项能力、客户项目、Agent 工程闭环、独立产品、工作经历和收尾形成连续叙事。Agent 不再只是技能词，而是通过上下文、工具、边界、验收、工作轨迹和人机分工表达具体判断。
+- 一店一群与门店 AI 质检各自保留现场、判断、结果和个人角色，并新增独立的 `Agent 判断`；归因边界清楚，没有把团队成果写成个人独立完成。
+- 独立产品使用真实截图，统一放进 4:3 框并采用 `object-fit: contain`，原始比例未变形、内容未裁切。
+- 独立产品首行采用 20% 图片加项目摘要，详细说明、指标和链接使用整行；最终对照图确认信息结构与用户参考一致，图片下方没有残留空洞。
+- About、PDF、邮箱和 GitHub 均使用 Lucide 图标与文字标签，链接名称和键盘可访问性未受影响。
+- 1280 桌面视口未出现断行、溢出或列错位；375 手机视口正确切换为单列叙事，项目图片与摘要仍保持紧凑并排，正文和 `Agent 判断` 自动堆叠。
 
-**Intentional Differences**
+**有意保留的差异**
 
-- Chinese body text is slightly larger and looser than the visual concept to improve long-form Chinese readability.
-- The selected concept showed an independent-product image as a broad block. After explicit user review, the implementation instead uses a smaller left-image/right-content layout while preserving the original image ratio.
-- Internal customer projects intentionally use text-led case studies because no suitable public source imagery is available; no placeholder or fabricated visual was introduced.
+- 中文正文比概念稿略大、行距略松，以保证招聘者长时间阅读时的清晰度。
+- 客户项目保持文字案例形式，因为目前没有适合公开使用的真实图片；未引入占位图或虚构素材。
+- 网站吸收 Kami 的设计令牌和写作方法，但不照搬它的打印模板；网页保留锚点导航、真实产品截图和响应式能力，PDF 再使用严格两页 A4 结构。
 
-**Comparison History**
+**PDF 验收**
 
-1. Initial comparison found product images visually dominant and cropped to 16:9, a P2 hierarchy and asset-fidelity issue.
-2. Fix: removed fixed-ratio cropping, added intrinsic image dimensions, changed images to `height: auto` with `object-fit: contain`, and rebuilt the product section as a 320 px / flexible two-column layout.
-3. Post-fix evidence: `tmp/design-qa/resume-products-two-column.jpg` shows all three product images smaller, uncropped, and aligned left of their corresponding content. No new overflow, distortion, or hierarchy regression is visible.
+- 来源：`src/resume/kami/content.json` 与 `src/resume/kami/resume.html`；产物：`public/resume/yizhe-zhao-resume.pdf`。
+- Kami 内容覆盖、占位符、样式、中文字体、密度和页面平衡检查全部通过。
+- 最终为 2 页 A4，页面填充 83% / 90%，差值 7%；CJK 正文使用已嵌入的 TsangerJinKai02，共识别 1,705 个汉字。
+- 两页已逐页查看，没有字体回退方框、乱码、裁切、重叠、孤立标题或异常断行。
 
-**Open Questions**
+**验收清单**
 
-- None blocking. The mobile breakpoint is implemented as a single-column stack and code-reviewed; the final desktop visual is the primary HR interview surface requested in this iteration.
+- [x] 保持图片原始比例并统一视觉高度
+- [x] 产品图片占首行约 20%
+- [x] 图片、编号、标题和短描述组成首行
+- [x] 详细项目说明使用整行宽度
+- [x] 四项能力的各列左对齐
+- [x] 快捷入口使用真实图标库
+- [x] 明确表达 Agent 认知、人机分工与生产边界
+- [x] 1280 桌面视口通过
+- [x] 375 手机视口通过
+- [x] 静态构建通过
+- [x] PDF 严格两页并通过 Kami 全套检查
 
-**Implementation Checklist**
+**后续低优先级优化**
 
-- [x] Preserve original image proportions
-- [x] Reduce product-image prominence
-- [x] Use left image / right content on desktop
-- [x] Stack cleanly on narrow screens
-- [x] Keep PDF styling and web styling visually coherent
-- [x] Verify the final static build
-
-**Follow-up Polish**
-
-- P3: if a future project has public-safe photography or diagrams, add one real source image to each enterprise case study; do not use decorative placeholders.
+- P3：若未来获得可公开的客户现场图或架构图，可为两个企业案例各增加一张真实素材；继续避免装饰性占位图。
 
 final result: passed

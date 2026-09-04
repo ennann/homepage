@@ -17,6 +17,26 @@
     font-style: normal;
   }
 
+  /* Keep Chinese in TsangerJinKai02, but give Latin letters and numbers a
+     cleaner sans-serif companion. */
+  @font-face {
+    font-family: "ResumeLatin";
+    src: url("file:///Users/Ethan/Library/Fonts/SF-Pro-Text-Regular.otf") format("opentype"),
+         local("SF Pro Text");
+    font-weight: 400;
+    font-style: normal;
+    unicode-range: U+0000-024F, U+2000-206F;
+  }
+
+  @font-face {
+    font-family: "ResumeLatin";
+    src: url("file:///Users/Ethan/Library/Fonts/SF-Pro-Text-Medium.otf") format("opentype"),
+         local("SF Pro Text Medium");
+    font-weight: 500;
+    font-style: normal;
+    unicode-range: U+0000-024F, U+2000-206F;
+  }
+
   /* W05 / medium face for headings (no synthetic bold) */
   @font-face {
     font-family: "TsangerJinKai02";
@@ -45,7 +65,7 @@
     --stone:     #6b6a64;
     --brand:     #1B365D;
     --brand-tint: #EEF2F7;          /* solid equivalent of rgba(1B365D, 0.08), avoids tag double-rectangle bug */
-    --serif: "TsangerJinKai02", "Source Han Serif SC", "Source Han Serif CN", "Noto Serif CJK SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+    --serif: "ResumeLatin", "TsangerJinKai02", "Source Han Serif SC", "Source Han Serif CN", "Noto Serif CJK SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
     --sans: var(--serif);
   }
 
@@ -323,8 +343,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 7mm;
-    row-gap: 3mm;
-    margin-top: 1.8mm;
+    row-gap: 2mm;
+    margin-top: 1mm;
   }
   .conv-card {
     background: transparent;
@@ -349,6 +369,15 @@
   }
   .conv-body .hl, .ai-card-body .hl { color: var(--brand); }
   .conv-body .em-brand, .ai-card-body .em-brand { color: var(--brand); }
+
+  .agent-principles .convictions {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 4mm;
+    row-gap: 0;
+  }
+  .agent-principles .conv-card { padding-right: 0; }
+  .agent-principles .conv-head { margin-bottom: 0.6mm; }
+  .agent-principles .conv-body { line-height: 1.35; }
 
   .product-grid { grid-template-columns: 1fr 1fr; row-gap: 1.5mm; }
   .product-grid .os-item { align-items: flex-start; padding: 1.5mm 0; }
@@ -438,6 +467,9 @@
     align-items: baseline;
   }
   .skill-row:last-of-type { border-bottom: none; }
+  .page-break .project { padding: 2.2mm 0; }
+  .skills-final .section-title { margin-top: 4.4mm; }
+  .skills-final .skill-row { padding: 1.35mm 0; }
   .skill-label {
     font-size: 9pt; font-weight: 500;
     color: var(--brand); letter-spacing: 0.3pt;
@@ -460,6 +492,8 @@
   }
   .edu-row .major { color: var(--olive); font-size: 9.5pt; }
   .edu-row .date { color: var(--stone); font-variant-numeric: tabular-nums; font-size: 9pt; }
+  .education-final .section-title { margin-top: 2mm; margin-bottom: 0.4mm; padding-bottom: 0.6mm; }
+  .education-final .edu-row { padding: 0.3mm 0; }
 
   /* TABLE (kami-table) */
   table, .kami-table {
@@ -577,13 +611,7 @@
   </div>
 </section>
 
-<section class="no-break">
-  <div class="section-title">教育背景</div>
-  <div class="edu-row"><div><span class="school serif">浙江工业大学</span><span class="major">　· 硕士</span></div><div class="date">2018.09 - 2021.07</div></div>
-  <div class="edu-row"><div><span class="school serif">沈阳理工大学</span><span class="major">　· 本科</span></div><div class="date">2014.09 - 2018.07</div></div>
-</section>
-
-<section class="page-break">
+<section class="agent-principles">
   <div class="section-title">Agent 工程闭环<span class="sub">新的执行主体 · 四个必要条件</span></div>
   <div class="os-intro">我把 <span class="hl">Agent 当作新的执行主体</span>。上下文决定它理解什么，工具决定它能做什么，边界、验收和工作轨迹决定结果能不能被信任。</div>
   <div class="convictions">
@@ -592,6 +620,10 @@
     <div class="conv-card"><div class="conv-head"><span class="year">03</span>边界与验收</div><div class="conv-body">8 个 Skills 写清高频任务的做法、约束与写后验证，减少每个项目从零理解平台的成本。</div></div>
     <div class="conv-card"><div class="conv-head"><span class="year">04</span>工作轨迹</div><div class="conv-body">Worktrace 保存执行证据；已记录 975 条真实轨迹，并形成 10 组可复现的回放与评测案例。</div></div>
   </div>
+</section>
+
+<section class="page-break agent-projects">
+  <div class="section-title">Agent 工程实践<span class="sub">从能力建设到可观测评估</span></div>
   <div class="project">
     <div class="proj-head">
       <span class="proj-name serif">aPaaS Agent 开发三件套</span>
@@ -641,13 +673,19 @@
   <div class="os-highlight">6 次 Spot Bonus · 覆盖成就客户、担当可信赖、追求极致、谋远大有耐心等方向</div>
 </section>
 
-<section>
+<section class="skills-final">
   <div class="section-title">核心能力</div>
   <div class="skill-row"><div class="skill-label">企业级产品：</div><div class="skill-body"><span class="em-brand">组织、权限、数据安全</span>、开放接口与客户交付，覆盖消费零售、制造和企业服务。</div></div>
   <div class="skill-row"><div class="skill-label">Agent 系统：</div><div class="skill-body"><span class="em-brand">上下文工程</span>、任务编排、Skills、MCP、工具调用、评测、可观测性与人工确认。</div></div>
   <div class="skill-row"><div class="skill-label">产品闭环：</div><div class="skill-body">用户调研、需求定义、<span class="em-brand">MVP 验证</span>、指标体系、数据分析和用户反馈。</div></div>
   <div class="skill-row"><div class="skill-label">工程实现：</div><div class="skill-body">TypeScript、Node.js、React、Next.js、SQL、Python、<span class="em-brand">Cloudflare Workers / D1</span>。</div></div>
   <div class="skill-row"><div class="skill-label">原生与语言：</div><div class="skill-body">SwiftUI、SwiftData、CloudKit、StoreKit，英语可作为工作语言，<span class="em-brand">雅思 6.5</span>。</div></div>
+</section>
+
+<section class="no-break education-final">
+  <div class="section-title">教育背景</div>
+  <div class="edu-row"><div><span class="school serif">浙江工业大学</span><span class="major">　· 硕士</span></div><div class="date">2018.09 - 2021.07</div></div>
+  <div class="edu-row"><div><span class="school serif">沈阳理工大学</span><span class="major">　· 本科</span></div><div class="date">2014.09 - 2018.07</div></div>
 </section>
 
 </body>

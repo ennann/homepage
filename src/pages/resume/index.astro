@@ -11,8 +11,6 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
 ---
 
 <ResumeLayout title={`${basics.name}｜${basics.label}`} description={basics.summary}>
-    <aside class="access-note" aria-label="访问状态">仅受邀访问</aside>
-
     <main class="resume" id="top">
         <header class="intro" aria-labelledby="resume-name">
             <div class="identity">
@@ -198,18 +196,6 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
 </ResumeLayout>
 
 <style>
-    .access-note {
-        position: fixed;
-        z-index: 10;
-        top: 30px;
-        right: 34px;
-        margin: 0;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 500;
-        letter-spacing: 0;
-    }
-
     .resume {
         width: min(780px, calc(100% - 48px));
         margin: 0 auto;
@@ -313,6 +299,7 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
         display: inline-flex;
         gap: 6px;
         align-items: center;
+        white-space: nowrap;
         text-decoration: none;
     }
 
@@ -753,12 +740,6 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     }
 
     @media (max-width: 720px) {
-        .access-note {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
         .resume {
             width: min(100% - 36px, 780px);
             padding-top: 66px;
@@ -863,6 +844,9 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
         }
 
         .quick-links {
+            display: grid;
+            grid-template-columns: max-content max-content;
+            gap: 12px 22px;
             margin-left: 0;
         }
 
@@ -886,7 +870,6 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     }
 
     @media print {
-        .access-note,
         .quick-links,
         .product-image-link,
         .footer a,

@@ -1,5 +1,6 @@
 const COOKIE_NAME = "resume_session";
 const SESSION_AGE_SECONDS = 60 * 60 * 24 * 14;
+const RESUME_PUBLIC = true;
 const encoder = new TextEncoder();
 
 function securityHeaders(headers = new Headers()) {
@@ -139,6 +140,15 @@ export async function onRequest(context) {
     const url = new URL(context.request.url);
     const isProtected = url.pathname === "/resume" || url.pathname.startsWith("/resume/");
     if (!isProtected) return context.next();
+
+    if (RESUME_PUBLIC) {
+        const response = await context.next();
+        return new Response(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: securityHeaders(new Headers(response.headers))
+        });
+    }
 
     const secret = context.env.RESUME_ACCESS_CODE;
     if (!secret) {

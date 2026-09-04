@@ -29,10 +29,29 @@ const canonicalUrl = new URL("/resume", Astro.site ?? Astro.url.origin).toString
 </html>
 
 <style is:global>
+    @font-face {
+        font-family: "ResumeLatinWeb";
+        src: local("SF Pro Text Regular"), local("SF Pro Text"), local("Avenir Next Regular"),
+            local("Avenir Next"), local("Segoe UI");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        unicode-range: U+0000-024F, U+2000-206F;
+    }
+
+    @font-face {
+        font-family: "ResumeLatinWeb";
+        src: local("SF Pro Text Medium"), local("Avenir Next Medium"), local("Segoe UI Semibold");
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        unicode-range: U+0000-024F, U+2000-206F;
+    }
+
     :root {
         color-scheme: light;
-        font-family: "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif CJK SC",
-            "Noto Serif SC", Georgia, serif;
+        font-family: "ResumeLatinWeb", "Songti SC", "STSong", "Source Han Serif SC",
+            "Noto Serif CJK SC", "Noto Serif SC", Georgia, serif;
         font-synthesis: none;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;

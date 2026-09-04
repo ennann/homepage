@@ -194,7 +194,11 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
                     </div>
                 ))}
             </div>
+        </section>
 
+        <section class="section recognition-section" id="recognition" aria-labelledby="recognition-title">
+            <p class="section-kicker">工作认可</p>
+            <h2 id="recognition-title">荣誉与认可</h2>
             <div class="recognition">
                 <p><strong>{recognition.title}</strong><span>{recognition.text}</span></p>
             </div>
@@ -801,8 +805,10 @@ const updatedLabel = new Intl.DateTimeFormat("zh-CN", {
     }
 
     .recognition {
-        margin-top: 28px;
+        margin-top: 22px;
         padding: 18px 0;
+        border-top: 1px solid var(--hairline);
+        border-bottom: 1px solid var(--hairline);
     }
 
     .recognition p {

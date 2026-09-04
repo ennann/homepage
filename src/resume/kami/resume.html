@@ -492,7 +492,15 @@
   }
   .edu-row .major { color: var(--olive); font-size: 9.5pt; }
   .edu-row .date { color: var(--stone); font-variant-numeric: tabular-nums; font-size: 9pt; }
-  .education-final .section-title { margin-top: 28mm; margin-bottom: 0.4mm; padding-bottom: 0.6mm; }
+  .recognition-final .section-title { margin-top: 5.8mm; margin-bottom: 0.8mm; }
+  .recognition-row {
+    display: flex; align-items: baseline; gap: 3mm;
+    padding: 1mm 0; font-size: 9.2pt; line-height: 1.4;
+    break-inside: avoid;
+  }
+  .recognition-row strong { color: var(--brand); font-size: 10pt; font-weight: 500; white-space: nowrap; }
+  .recognition-row span { color: var(--near-black); }
+  .education-final .section-title { margin-top: 12mm; margin-bottom: 0.4mm; padding-bottom: 0.6mm; }
   .education-final .edu-row { padding: 0.3mm 0; }
 
   /* TABLE (kami-table) */
@@ -670,7 +678,6 @@
     <div class="os-item"><span class="os-desc">Pinlist · SwiftUI 原生价格追踪 · iOS、iPadOS 与 macOS · 独立设计与发布<span class="product-note">围绕收藏、更新追踪与价格变化完成原生体验、数据同步、测试和 App Store 发布。</span></span></div>
     <div class="os-item"><span class="os-desc">AIUsage · Token 与成本追踪 · Codex、Claude Code 与多设备同步<span class="product-note">把分散日志转成可核对的 Token、成本与趋势数据，用于审视 AI 工作方式、效率和成本。</span></span></div>
   </div>
-  <div class="os-highlight">6 次 Spot Bonus · 覆盖成就客户、担当可信赖、追求极致、谋远大有耐心等方向</div>
 </section>
 
 <section>
@@ -680,6 +687,11 @@
     <div class="tl-step"><div class="tl-top"><div class="tl-year serif">PLM / CMF</div></div><div class="tl-body">服务蔚来、倍思、禾赛、导远等客户，驻场识别并推动解决 100+ 个平台与业务问题。</div></div>
     <div class="tl-step"><div class="tl-top"><div class="tl-year serif">平台复用</div></div><div class="tl-body">上架 10+ 应用模板和 10+ 通用组件，反馈平台需求与缺陷 90+ 项。</div></div>
   </div>
+</section>
+
+<section class="no-break recognition-final">
+  <div class="section-title">荣誉与认可</div>
+  <div class="recognition-row"><strong>6 次 Spot Bonus</strong><span>· 覆盖成就客户、担当可信赖、追求极致、谋远大有耐心等方向</span></div>
 </section>
 
 <section class="no-break education-final">

@@ -1,47 +1,27 @@
 ---
-import cv from "./data/cv.json";
-
-const basics = cv.basics ?? {};
-const { image = "", summary = "", url = "" } = basics;
-
 interface Props {
     title: string;
+    description: string;
 }
 
-const { title } = Astro.props;
+const { title, description } = Astro.props;
+const canonicalUrl = new URL("/resume", Astro.site ?? Astro.url.origin).toString();
 ---
 
 <!doctype html>
-<html lang="zh">
+<html lang="zh-CN">
     <head>
         <meta charset="UTF-8" />
-        <title>{title}</title>
-        <meta name="description" content={summary} />
-        <meta name="robots" content="noindex,nofollow" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta name="description" content={description} />
+        <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex" />
+        <meta name="referrer" content="no-referrer" />
+        <meta name="theme-color" content="#fbfaf7" />
+        <meta name="color-scheme" content="light" />
+        <link rel="canonical" href={canonicalUrl} />
         <link rel="icon" type="image/png" href="/yizhe.png" />
-        {image && <link rel="preload" as="image" href={image} />}
-
-        <!-- PWA / Mobile optimization -->
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Ethan Zhao" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <link rel="apple-touch-icon" href="/yizhe.png" />
-        <link rel="manifest" href="/manifest.webmanifest" />
-
-        <meta property="og:url" content={url} />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={summary} />
-        <meta property="og:image" content={image} />
-
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:domain" content={url.split("//")[1] ?? ""} />
-        <meta property="twitter:url" content={url} />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={summary} />
-        <meta name="twitter:image" content={image} />
+        <link rel="apple-touch-icon" href="/favorite.png" />
+        <title>{title}</title>
     </head>
     <body>
         <slot />
@@ -49,86 +29,82 @@ const { title } = Astro.props;
 </html>
 
 <style is:global>
-    html {
-        font-family:
-            Menlo,
-            Monaco,
-            Lucida Console,
-            "Courier New",
-            Courier,
-            monospace;
-        background: #fff;
-        letter-spacing: -0.025rem;
+    :root {
+        color-scheme: light;
+        font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC",
+            "Source Han Sans SC", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        --paper: #fbfaf7;
+        --ink: #1b1b19;
+        --body: #3f403d;
+        --muted: #6f706c;
+        --hairline: #dfded8;
+        --accent: #43677e;
+        --soft: #f2f1ed;
     }
 
-    body,
-    figure {
-        margin: 0;
-        padding: 0;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-    ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    *,
-    *::before,
-    *::after {
+    * {
         box-sizing: border-box;
     }
 
-    h1,
-    h2,
-    h3,
-    h4 {
-        margin: 0;
-        font-family:
-            system-ui,
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            "Open Sans",
-            "Helvetica Neue",
-            sans-serif;
+    html {
+        scroll-behavior: smooth;
+        background: var(--paper);
     }
 
-    p {
-        color: #666;
-        font-size: 0.9rem;
-        line-height: 1.5;
+    body {
         margin: 0;
-        text-wrap: pretty;
+        min-width: 320px;
+        background: var(--paper);
+        color: var(--ink);
     }
 
-    .print {
-        display: none !important;
+    ::selection {
+        background: #dbe6eb;
+        color: var(--ink);
+    }
+
+    a {
+        color: inherit;
+    }
+
+    button,
+    a {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 4px;
+        border-radius: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+            scroll-behavior: auto !important;
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+        }
     }
 
     @media print {
-        .no-print {
-            display: none !important;
+        @page {
+            size: A4;
+            margin: 14mm 15mm 16mm;
         }
 
-        .print {
-            display: block !important;
-        }
-
-        astro-dev-toolbar {
-            display: none !important;
-        }
-
-        article {
-            break-inside: avoid;
+        html,
+        body {
+            background: #fff !important;
         }
     }
 </style>

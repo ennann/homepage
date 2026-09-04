@@ -1,210 +1,193 @@
 {
   "meta": {
-    "theme": "professional"
+    "theme": "private-editorial",
+    "updatedAt": "2026-09-04",
+    "pdfPath": "/resume/yizhe-zhao-resume.pdf"
   },
   "basics": {
     "name": "赵宜哲",
-    "label": "飞书AI应用解决方案工程师｜低代码解决方案工程师",
+    "englishName": "Ethan Zhao",
+    "label": "企业 AI 产品与解决方案",
     "email": "hi@yizhe.me",
-    "phone": "17624863927",
-    "url": "https://yizhe.me",
-    "summary": "AI × SaaS 解决方案工程师，深耕零售/消费数字化，主导飞书「一店一群」等标杆方案，擅长平台化沉淀与生态赋能，项目累计影响 ARR 过千万；能在不确定中拆解问题、设计方案、推进落地，跨产研/GTM/生态高效协同。",
-    "highlights": [
-      "性格踏实直爽，注重执行力与责任感，习惯在不确定中主动发现并推进问题闭环。",
-      "深耕零售/消费行业数字化，主导飞书「一店一群」门店经营方案落地，具备前线需求洞察与标准方案建设经验。",
-      "主导多个平台级项目 0→1 交付，覆盖方案设计、技术架构、项目管理与商业化推广，支撑门店协作平台从千店到万店演进。",
-      "重视平台化沉淀与生态共建，上架模板/组件/连接器 20+，提升交付效率与客户成功率。",
-      "关注 AI × SaaS 场景，基于飞书 Aily 构建智能助手，能结合业务需求设计 Prompt 与功能边界。",
-      "沟通表达优秀，可跨产研、GTM、生态团队高效协同；英语可作为工作语言，雅思均分 6.5。"
-    ],
+    "url": "https://yizhe.me/resume",
+    "github": "https://github.com/imetn",
+    "image": "/person.webp",
     "location": {
       "city": "杭州",
       "region": "浙江",
       "countryCode": "CN"
     },
-    "profiles": []
+    "intro": [
+      "你好，我是宜哲",
+      "我在飞书做企业应用与解决方案，也会把客户现场的问题亲手做成能运行的产品。",
+      "过去 5 年，我一直在客户现场与工程实现之间工作：理解问题、形成判断、做出方案，再把它变成可以持续运行和复制的产品。现在我最关心的是，怎样让 AI 真正进入企业工作流，而不是停在演示里。"
+    ],
+    "summary": "5 年飞书企业应用与 aPaaS 实践，长期在客户一线完成业务调研、方案设计、产品化与交付，并将 AI Agent 能力沉淀为可复用的 SDK、Skills、MCP 和评估工具。"
   },
+  "focus": [
+    {
+      "number": "01",
+      "title": "把一线协作做成规模化产品",
+      "name": "一店一群",
+      "result": "2000 → 6000+ 门店",
+      "anchor": "store-community"
+    },
+    {
+      "number": "02",
+      "title": "把人工判断做成 AI 协同闭环",
+      "name": "门店 AI 质检",
+      "result": "90%+ 人机一致率",
+      "anchor": "ai-inspection"
+    },
+    {
+      "number": "03",
+      "title": "把方法变成 Agent 可复用的工具",
+      "name": "SDK / Skills / MCP",
+      "result": "8 Skills + 1 MCP",
+      "anchor": "agent-engineering"
+    },
+    {
+      "number": "04",
+      "title": "把想法独立做成长期运行的产品",
+      "name": "App Store Price",
+      "result": "98,317 月活",
+      "anchor": "indie-products"
+    }
+  ],
+  "caseStudies": [
+    {
+      "id": "store-community",
+      "eyebrow": "消费行业 · 门店经营管理",
+      "name": "一店一群 2.0 / 3.0",
+      "lead": "这不是一个简单的建群工具，而是把总部经营动作变成门店每天真正会执行的工作流。",
+      "story": [
+        {
+          "label": "现场",
+          "text": "连锁品牌的总部任务与一线协作彼此割裂：信息散落在群聊和表格里，任务难追踪，执行结果也难验收。门店越多，这个问题越容易被放大。"
+        },
+        {
+          "label": "判断",
+          "text": "关键不是再增加一个工具，而是把门店、人员、群组、消息和任务抽象为统一的产品对象，再以飞书群为门店入口，打通定义、分派、执行与验收。"
+        },
+        {
+          "label": "结果",
+          "text": "方案支撑门店规模从 2,000 家扩展到 6,000+，并完成万店规模下任务与消息链路预研；方案影响 ARR 超过 350 万元，同时沉淀应用模板、交付规范、培训材料和伙伴实施路径。"
+        }
+      ],
+      "role": "我主导 2.0、3.0 的方案与架构设计，推动客户交付、性能演进与标准化沉淀。"
+    },
+    {
+      "id": "ai-inspection",
+      "eyebrow": "消费行业 · 企业 AI",
+      "name": "益禾堂门店 AI 质检与经营洞察",
+      "lead": "任务完成率不等于执行质量。真正的问题，是总部无法用可承受的成本持续判断门店做得好不好。",
+      "story": [
+        {
+          "label": "现场",
+          "text": "传统抽检覆盖有限、口径不一，督导需要逐条查看门店提交的图片与记录；即使任务显示完成，总部仍然难以及时发现执行偏差。"
+        },
+        {
+          "label": "判断",
+          "text": "AI 不能只输出一个结论。我们把质检标准拆成可配置规则、提示词、正反样例与例外条件，并设计 AI 初筛、人工复核、错判反馈、门店整改的闭环，让模型结果可以被校验和持续改进。"
+        },
+        {
+          "label": "结果",
+          "text": "在已复核的试点样本中，人机判断一致率达到 90%+，高于客户最初 50% 的可接受目标，并减少一线督导 60%+ 的重复劳动。相关方案已支撑约 8,000 家门店和 17 万+ 条巡检结果。"
+        }
+      ],
+      "role": "我负责场景抽象、方案设计、指标定义与落地推动，并将一次性项目沉淀为可复用的巡检能力。"
+    }
+  ],
+  "agentEngineering": {
+    "id": "agent-engineering",
+    "eyebrow": "AI 工程闭环",
+    "name": "Agent 参与真实项目",
+    "intro": "我的目标不是让 AI 只帮忙写几段代码，而是让它能读懂项目、调用工具、复用知识，并留下可回放、可评估的工作证据。",
+    "items": [
+      {
+        "name": "Node SDK",
+        "text": "围绕 aPaaS 对象、附件、流程、身份与构建器能力封装工程接口，让 Agent 可以在明确边界内操作真实项目。"
+      },
+      {
+        "name": "8 个 Skills",
+        "text": "把高频开发任务、上下文准备、约束和验收方式写成可复用技能，减少每个项目从零理解平台的成本。"
+      },
+      {
+        "name": "知识库 MCP",
+        "text": "整理 1,167 篇知识内容、1,977 个代码块和 9,056 张图片，为 Agent 提供可检索、可引用的平台知识。"
+      },
+      {
+        "name": "Agent Worktrace",
+        "text": "沉淀工作轨迹、回放与评估能力；截至 2026-08-19 已记录 975 条轨迹，并形成 10 个可复现的回放与评估案例。"
+      }
+    ],
+    "conclusion": "这些工具共同构成从读取现有应用、理解需求、生成工程方案，到执行、验证和复盘的闭环。"
+  },
+  "independentProducts": [
+    {
+      "id": "app-store-price",
+      "name": "App Store Price",
+      "label": "全球 App Store 价格比较与追踪",
+      "image": "/app-store-price-20260827.webp",
+      "imageWidth": 920,
+      "imageHeight": 608,
+      "url": "https://appstoreprice.org",
+      "metrics": "98,317 月活 · 181,871 次会话 · 1,235,915 页面浏览",
+      "text": "从一个真实的价格信息问题出发，我独立完成产品判断、数据抓取、Web、iOS、Chrome 扩展、Telegram Bot、发布、监控与持续运营。它证明我不仅能设计企业方案，也能独立承担一个公开产品从 0 到 1 再到长期运行。"
+    },
+    {
+      "id": "pinlist",
+      "name": "Pinlist",
+      "label": "App Store 关注与价格追踪工具",
+      "image": "/pinlist.webp",
+      "imageWidth": 920,
+      "imageHeight": 788,
+      "url": "https://apps.apple.com/app/id6761153745",
+      "metrics": "iOS / iPadOS / macOS · 独立设计与发布",
+      "text": "围绕收藏、更新追踪和价格变化建立原生体验，覆盖产品设计、SwiftUI 开发、数据同步、测试与 App Store 发布。"
+    },
+    {
+      "id": "aiusage",
+      "name": "AIUsage",
+      "label": "本地 AI 编码用量与成本追踪",
+      "image": "/aiusage.webp",
+      "imageWidth": 920,
+      "imageHeight": 765,
+      "url": "https://aiusage.yizhe.me",
+      "metrics": "Codex / Claude Code / 多设备数据同步",
+      "text": "把分散的会话日志转成可核对的 Token、成本和趋势数据，用自己的 Cloudflare Worker 与数据服务跨设备同步。它也是我审视 AI 工作方式、判断效率与成本的基础设施。"
+    }
+  ],
   "work": [
     {
       "name": "字节跳动 · 飞书",
       "position": "低代码平台解决方案工程师",
-      "url": "https://www.feishu.cn/",
       "startDate": "2021-07-01",
-      "summary": "围绕飞书 aPaaS 主导行业方案、架构设计与商业化落地，沉淀模板/组件/连接器 20+，赋能伙伴交付与认证，服务奈雪、蜜雪冰城、绫致、美宜佳等客户。",
+      "endDate": null,
+      "summary": "面向消费零售、制造和企业服务客户，负责业务调研、方案架构、应用开发、项目交付、平台反馈与标准化沉淀，并持续把客户项目中的共性问题转成模板、组件和平台能力。",
       "highlights": [
-        "牵头「一店一群」2.0/3.0 架构，支撑门店规模 2000→6000+，打造高性能任务中心与消息推送。",
-        "方案累计影响 ARR 350 万+，成为奈雪、名创、武商等客户采购飞书的关键；绫致项目获客户效率评比一等奖。",
-        "主导资产管理助手方案，落地欢乐互娱、美图等 10+ 客户，ARR 124 万，跨部门整合 RFID/资产团队形成商业闭环。",
-        "深度参与 PLM 协同方案，驻场禾赛/导远等客户，闭环平台需求与问题 100+；基于 Aily 构建 PLM 智能助手。",
-        "沉淀模板/组件/连接器 20+，反馈平台能力/Bug 90+；录制培训、组织 60+ 伙伴认证，提升生态交付效率。",
-        "主导性能压测与缓存优化，完成万店规模应用挑战预研，支撑平台从千店到万店的容量演进。"
+        "长期在客户一线连接业务、产品与工程，既能完成方案设计，也能自己把核心路径做成可运行产品。",
+        "主导或深度参与门店经营、AI 质检、资产管理、PLM 协同等企业项目，兼顾商业结果、交付质量与复用价值。",
+        "围绕 Agent 与 aPaaS 建设 SDK、Skills、MCP 和评估工具，让 AI 能进入真实开发与交付流程。"
       ]
-    }
-  ],
-  "projects": [
-    {
-      "name": "门店经营管理方案（飞书「一店一群」）",
-      "description": "标杆案例，ARR 350 万+，零售门店经营管理与任务闭环平台。",
-      "isActive": true,
-      "highlights": [
-        "负责 2.0/3.0 架构，覆盖消息/任务闭环、角色权限与门店多角色协同。",
-        "打造高性能任务中心与消息推送，沉淀应用模板、交付规范与培训资料。",
-        "奈雪、名创、武商等客户的采购决策关键方案，绫致项目获效率评比一等奖。",
-        "从 2000 家到 6000+ 门店的性能与稳定性演进，持续支撑扩张。"
-      ],
-      "url": "https://bytedance.larkoffice.com/wiki/CiURw3i1GizB4akmCuXcF5Udnic"
-    },
-    {
-      "name": "资产管理助手方案",
-      "description": "落地 10+ 客户，ARR 124 万，聚焦 RFID 场景差异化。",
-      "highlights": [
-        "从方案设计到上线全程主导，服务欢乐互娱、美图等客户。",
-        "识别 RFID 场景痛点，推动与资产团队跨部门协同，形成商业闭环。",
-        "沉淀模板与交付手册，支持伙伴复制与规模化。"
-      ],
-      "url": "https://bytedance.larkoffice.com/wiki/JSzHwIFJiislLhkgdEdcrkLonwh"
-    },
-    {
-      "name": "飞书 PLM 协同方案与智能助手",
-      "description": "服务制造业客户，基于 Aily 构建 PLM 智能助手。",
-      "highlights": [
-        "主导 CMF 协同中心方案设计与推广，服务蔚来、倍思等客户。",
-        "驻场禾赛、导远等项目，识别并闭环平台需求/问题 100+，确保按期上线。",
-        "基于 Aily 构建 PLM 智能助手，结合文档/视频推广方案，提升品牌影响力。",
-        "在制造业场景中完善权限、版本、变更流程的协同体验。"
-      ],
-      "url": "https://bytedance.larkoffice.com/docx/NLVhd7tQ2oM8NGxYsQccPIQxnf9"
     }
   ],
   "skills": [
     {
-      "name": "飞书 aPaaS",
-      "level": "Expert",
-      "keywords": []
+      "name": "产品与方案",
+      "keywords": ["业务调研", "需求判断", "产品设计", "解决方案", "项目交付", "客户成功"]
     },
     {
-      "name": "零售/消费行业方案",
-      "level": "Expert",
-      "keywords": []
+      "name": "企业 AI",
+      "keywords": ["Agent", "MCP", "Skills", "Prompt 与上下文工程", "工具调用", "评估与回放"]
     },
     {
-      "name": "平台化与模板沉淀",
-      "level": "Advanced",
-      "keywords": []
-    },
-    {
-      "name": "行业方案与交付",
-      "level": "Expert",
-      "keywords": []
-    },
-    {
-      "name": "AI 大模型与 Prompt",
-      "level": "Advanced",
-      "keywords": []
-    },
-    {
-      "name": "Node.js",
-      "level": "Advanced",
-      "keywords": [
-        "nodejs"
-      ]
-    },
-    {
-      "name": "系统架构与性能压测",
-      "level": "Advanced",
-      "keywords": []
-    },
-    {
-      "name": "React",
-      "level": "Advanced",
-      "keywords": [
-        "react"
-      ]
-    },
-    {
-      "name": "Python",
-      "level": "Intermediate",
-      "keywords": [
-        "python"
-      ]
-    },
-    {
-      "name": "RFID/资产管理场景",
-      "level": "Intermediate",
-      "keywords": []
-    },
-    {
-      "name": "伙伴赋能与生态",
-      "level": "Advanced",
-      "keywords": []
-    },
-    {
-      "name": "制造业 PLM 协同",
-      "level": "Advanced",
-      "keywords": []
-    },
-    {
-      "name": "英语（IELTS 6.5）",
-      "level": "Professional",
-      "keywords": []
+      "name": "工程实现",
+      "keywords": ["Node.js", "TypeScript", "React", "SwiftUI", "Python", "Cloudflare"]
     }
   ],
-  "education": [
-    {
-      "institution": "浙江工业大学",
-      "area": "",
-      "studyType": "硕士",
-      "startDate": "2018-09-01",
-      "endDate": "2021-07-01"
-    },
-    {
-      "institution": "沈阳理工大学",
-      "area": "",
-      "studyType": "本科",
-      "startDate": "2014-09-01",
-      "endDate": "2018-07-01"
-    }
-  ],
-  "awards": [
-    {
-      "title": "Spot Bonus ×4",
-      "date": "2024-09-01",
-      "awarder": "字节跳动 Lark 部门",
-      "summary": "围绕成就客户与担当可信赖获得多次即时嘉奖。"
-    },
-    {
-      "title": "Lark 部门 2023 Q3 团队奖",
-      "date": "2023-09-01",
-      "awarder": "字节跳动",
-      "summary": "成就客户（连锁零售项目）。"
-    },
-    {
-      "title": "Lark 部门 2024 Q2 个人奖",
-      "date": "2024-06-01",
-      "awarder": "字节跳动",
-      "summary": "有担当可信赖。"
-    },
-    {
-      "title": "Lark 部门 2024 Q3 团队奖",
-      "date": "2024-09-01",
-      "awarder": "字节跳动",
-      "summary": "成就客户。"
-    },
-    {
-      "title": "浙江省优秀毕业生 / 中国国际「互联网+」大赛金奖",
-      "date": "2021-07-01",
-      "awarder": "浙江工业大学",
-      "summary": "第六届中国国际“互联网+”大赛金奖，一等奖学业奖学金。"
-    }
-  ],
-  "languages": [
-    {
-      "language": "Chinese",
-      "fluency": "Native"
-    },
-    {
-      "language": "English",
-      "fluency": "IELTS 6.5"
-    }
-  ]
+  "recognition": {
+    "title": "6 次 Spot Bonus",
+    "text": "围绕成就客户、担当可信赖和跨团队协作获得即时嘉奖。"
+  }
 }

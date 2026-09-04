@@ -2,12 +2,12 @@
   "type": "resume",
   "lang": "cn",
   "brief": {
-    "audience": "阿里千问办公 AI 企业级能力方向的招聘经理与面试官",
-    "job": "用真实企业项目、Agent 工程方法和独立产品结果证明岗位匹配度，争取面试",
+    "audience": "企业 AI、产品解决方案与 FDE 相关岗位的招聘经理与面试官",
+    "job": "用真实企业项目、Agent 工程方法和独立产品结果说明能力与适配方向",
     "template": "resume",
     "formats": ["html", "pdf"],
     "page_target": 2,
-    "narrative": "先建立企业 AI 产品定位，再用客户案例、Agent 工程闭环和独立产品证明判断与执行能力",
+    "narrative": "用客户案例、Agent 工程闭环和独立产品证明产品判断与执行能力",
     "required_facts": [
       "5 年飞书企业应用与 aPaaS 经验",
       "一店一群从 2,000 家扩展到 6,000+ 门店",
@@ -34,7 +34,7 @@
   },
   "content": {
     "name": "赵宜哲",
-    "title": "千问办公 AI 产品经理 · 企业级能力方向",
+    "title": "赵宜哲",
     "contact": "杭州 · 17624863927 · hi@yizhe.me",
     "summary": "5 年飞书企业应用与 aPaaS 经验，长期在客户现场、产品能力与工程交付之间工作。能把需求变成可运行方案，也能围绕上下文、工具、边界验收与工作轨迹，让 Agent 进入真实企业流程。",
     "metrics": [
@@ -111,7 +111,7 @@
       "Agent 系统：上下文工程、任务编排、Skills、MCP、工具调用、评测、可观测性与人工确认。",
       "产品闭环：用户调研、需求定义、MVP 验证、指标体系、数据分析和用户反馈。",
       "工程实现：TypeScript、Node.js、React、Next.js、SQL、Python、Cloudflare Workers / D1。",
-      "原生与语言：SwiftUI、SwiftData、CloudKit、StoreKit，英语可作为工作语言，雅思 6.5。"
+      "语言能力：英语可作为工作语言，雅思 6.5。"
     ],
     "education": [
       {"school": "浙江工业大学", "degree": "硕士", "period": "2018.09 - 2021.07"},
